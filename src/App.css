@@ -1,0 +1,74 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --night-color: #0d0618;
+  --surface-color: #130d24;
+  --card-color: #1c1232;
+  --border-color: #2d1f4e;
+  --violet-color: #7c3aed;
+  --lavender-color: #a78bfa;
+  --gold-color: #f59e0b;
+  --white-color: #f8f7ff;
+  --muted-color: #6b6b8a;
+  --green-color: #4ade80;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--night-color);
+  color: var(--white-color);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  width: 100vw;
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+.cursor-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition:
+    left 0.1s,
+    top 0.1s;
+  z-index: 1;
+}
+
+@import 'tailwindcss';
+
+@theme {
+  /* MAX WIDTHS */
+  --max-width-max-content: 1260px;
+  --max-width-max-content-tab: 650px;
+
+  /* SCREENS (BREAKPOINTS) */
+  --breakpoint-xs: 500px;
+
+  /* FONTS */
+  --font-inter: 'Inter', sans-serif;
+  --font-raleway: 'Raleway', sans-serif;
+  --font-edu-sa: 'Edu SA Beginner', cursive;
+  --font-mono: 'Roboto Mono', monospace;
+
+  /* COLORS */
+  --color-white: #fff;
+  --color-black: #000;
+  --color-transparent: #ffffff00;
+  --color-primary: #0ea2e7;
+  --color-accent: #d6ebf5;
+}

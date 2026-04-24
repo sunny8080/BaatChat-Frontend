@@ -1,11 +1,12 @@
+import './App.css';
+import './global.scss';
+import AppRoutes from './AppRoutes';
 
 function App() {
-
-
   return (
-    <>
-      <h1 className="tex text-5xl">adasfasdf</h1>
-    </>
+    <div className="w-screen min-h-screen overflow-hidden">
+      <AppRoutes />
+    </div>
   );
 }
 
