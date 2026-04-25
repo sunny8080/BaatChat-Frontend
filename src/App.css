@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 * {
   margin: 0;
   padding: 0;
@@ -48,8 +50,6 @@ body::before {
     top 0.1s;
   z-index: 1;
 }
-
-@import 'tailwindcss';
 
 @theme {
   /* MAX WIDTHS */
