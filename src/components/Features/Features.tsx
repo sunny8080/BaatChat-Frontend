@@ -35,8 +35,8 @@ const Features = () => {
   };
 
   return (
-    <section className="bc-Features w-full">
-      <div className="max-w-max-content mx-auto!">
+    <section className="bc-Features w-full bc-section">
+      <div className="bc-section-content">
         <div className="bc-sec-badge reveal-on-scroll" ref={revealRef}>
           Features
         </div>

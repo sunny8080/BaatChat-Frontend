@@ -1,6 +1,7 @@
 import Features from '../components/Features/Features';
 import GlobalCursorGlow from '../components/GlobalCursorGlow/GlobalCursorGlow';
 import HeroSection from '../components/HeroSection/HeroSection';
+import HowItWorks from '../components/HowItWorks/HowItWorks';
 import Navbar from '../components/Navbar/Navbar';
 
 function HomePage() {
@@ -13,6 +14,7 @@ function HomePage() {
       <div className="section-divider-glow"></div>
       <Features />
       <div className="section-divider-glow"></div>
+      <HowItWorks />
     </div>
   );
 }

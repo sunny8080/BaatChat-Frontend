@@ -1,0 +1,68 @@
+.bc-HowItWorks {
+  background: var(--surface-color);
+  text-align: center;
+}
+
+.bc-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 3.5rem;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 31px;
+    left: 10%;
+    right: 10%;
+    height: 0.5px;
+    background: linear-gradient(90deg, transparent, var(--border-color), var(--border-color), transparent);
+  }
+
+  @media screen and (max-width: 900px) {
+    gap: 1.75rem;
+    grid-template-columns: repeat(2, 1fr);
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .bc-step {
+    padding: 0 16px;
+
+    .bc-step-icon {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      border: 0.5px solid var(--border-color);
+      background: var(--card-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin: 0 auto 18px;
+      transition: all 0.3s;
+    }
+
+    &:hover .bc-step-icon {
+      background: var(--violet-color);
+      border-color: var(--violet-color);
+      transform: scale(1.1);
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    p {
+      font-size: 12px;
+      color: var(--muted-color);
+      line-height: 1.6;
+    }
+  }
+}

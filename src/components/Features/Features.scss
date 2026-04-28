@@ -1,32 +1,5 @@
 .bc-Features {
   background: var(--night-color);
-  padding: 100px 24px;
-  position: relative;
-  overflow: hidden;
-}
-.bc-sec-badge {
-  display: inline-block;
-  background: rgba(124, 58, 237, 0.15);
-  border: 0.5px solid rgba(124, 58, 237, 0.3);
-  border-radius: 100px;
-  padding: 4px 14px;
-  font-size: 10px;
-  color: var(--lavender-color);
-  letter-spacing: 2px;
-  margin-bottom: 16px;
-}
-.bc-sec-title {
-  font-size: clamp(28px, 5vw, 52px);
-  font-weight: 900;
-  letter-spacing: -2px;
-  line-height: 1.1;
-  margin-bottom: 14px;
-}
-.bc-sec-sub {
-  font-size: 15px;
-  color: var(--muted-color);
-  max-width: 500px;
-  line-height: 1.7;
 }
 
 .bc-features-grid {
