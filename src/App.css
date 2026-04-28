@@ -71,4 +71,16 @@ body::before {
   --color-transparent: #ffffff00;
   --color-primary: #0ea2e7;
   --color-accent: #d6ebf5;
+
+  /* COLORS Related to this project and theme */
+  --night-color: #0d0618;
+  --surface-color: #130d24;
+  --card-color: #1c1232;
+  --border-color: #2d1f4e;
+  --violet-color: #7c3aed;
+  --lavender-color: #a78bfa;
+  --gold-color: #f59e0b;
+  --white-color: #f8f7ff;
+  --muted-color: #6b6b8a;
+  --green-color: #4ade80;
 }

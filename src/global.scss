@@ -40,3 +40,41 @@
     }
   }
 }
+.section-divider-glow {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--violet-color), transparent);
+  opacity: 0.3;
+}
+
+.global-cursor-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  z-index: 999;
+  pointer-events: none;
+  background: red;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+  left: var(--mouseX, 50px);
+  top: var(--mouseY, 50px);
+  transform: translate(-50%, -50%);
+  transition:
+    left 50ms,
+    top 50ms;
+}
+
+// Reveal items when user scroll to it
+.reveal-on-scroll {
+  --extra-transition: opacity 0.7s ease;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease,
+    var(--extra-transition, none) !important;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
