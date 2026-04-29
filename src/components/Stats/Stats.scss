@@ -1,0 +1,90 @@
+.bc-Stats {
+  background: var(--surface-color);
+}
+
+.bc-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 56px;
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bc-stat {
+    background: var(--card-color);
+    border: 0.5px solid var(--border-color);
+    border-radius: 20px;
+    padding: 28px 20px;
+    text-align: center;
+    transform-style: preserve-3d;
+    transition: all 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      transition: width 0.6s ease;
+      border-radius: 0 0 20px 20px;
+    }
+
+    &.vlt::after {
+      background: linear-gradient(90deg, var(--violet-color), var(--lavender-color));
+    }
+
+    &.gld::after {
+      background: linear-gradient(90deg, var(--gold-color), #f97316);
+    }
+
+    &.grn::after {
+      background: linear-gradient(90deg, var(--green-color), #22c55e);
+    }
+
+    &:hover {
+      transform: perspective(400px) rotateX(-8deg) translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+
+      &::after {
+        width: 100%;
+      }
+    }
+
+    .stat-icon {
+      margin-bottom: 12px;
+      margin-inline: auto;
+      width: 28px;
+      height: 42px;
+      font-size: 28px;
+    }
+
+    .stat-title {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, var(--white-color), var(--lavender-color));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted-color);
+      letter-spacing: 2px;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+    .stat-sub {
+      font-size: 11px;
+      color: var(--muted-color);
+      margin-top: 4px;
+    }
+  }
+}

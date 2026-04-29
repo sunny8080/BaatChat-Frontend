@@ -4,6 +4,7 @@ import GlobalCursorGlow from '../components/GlobalCursorGlow/GlobalCursorGlow';
 import HeroSection from '../components/HeroSection/HeroSection';
 import HowItWorks from '../components/HowItWorks/HowItWorks';
 import Navbar from '../components/Navbar/Navbar';
+import Stats from '../components/Stats/Stats';
 import TechCarousel from '../components/TechCarousel/TechCarousel';
 
 function HomePage() {
@@ -23,7 +24,12 @@ function HomePage() {
 
       <TechCarousel />
       <div className="section-divider-glow"></div>
+
       <CallScreen3D />
+      <div className="section-divider-glow"></div>
+
+      <Stats />
+      <div className="section-divider-glow"></div>
     </div>
   );
 }

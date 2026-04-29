@@ -16,6 +16,7 @@
   --white-color: #f8f7ff;
   --muted-color: #6b6b8a;
   --green-color: #4ade80;
+  --violet-text-color: #ddd6fe;
 }
 html {
   scroll-behavior: smooth;
@@ -83,4 +84,5 @@ body::before {
   --white-color: #f8f7ff;
   --muted-color: #6b6b8a;
   --green-color: #4ade80;
+  --violet-text-color: #ddd6fe;
 }
