@@ -1,0 +1,54 @@
+.bc-TechCarousel {
+  padding: 3rem 0;
+  background: var(--card-color);
+  border-top: 0.5px solid var(--border-color);
+  border-bottom: 0.5px solid var(--border-color);
+  overflow: hidden;
+}
+
+.bc-tech-carousel-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: infinite-scroll 22s linear infinite;
+}
+
+@keyframes infinite-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.bc-tech-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface-color);
+  border: 0.5px solid var(--border-color);
+  border-radius: 100px;
+  padding: 9px 18px;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: default;
+
+  .tech-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+  }
+  .tech-title {
+    font-weight: 600;
+    color: var(--lavender-color);
+  }
+  .tech-uses {
+    color: var(--muted-color);
+    font-weight: 400;
+  }
+}

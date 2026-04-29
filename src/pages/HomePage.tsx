@@ -3,6 +3,7 @@ import GlobalCursorGlow from '../components/GlobalCursorGlow/GlobalCursorGlow';
 import HeroSection from '../components/HeroSection/HeroSection';
 import HowItWorks from '../components/HowItWorks/HowItWorks';
 import Navbar from '../components/Navbar/Navbar';
+import TechCarousel from '../components/TechCarousel/TechCarousel';
 
 function HomePage() {
   return (
@@ -12,9 +13,14 @@ function HomePage() {
 
       <HeroSection />
       <div className="section-divider-glow"></div>
+
       <Features />
       <div className="section-divider-glow"></div>
+
       <HowItWorks />
+      <div className="section-divider-glow"></div>
+      
+      <TechCarousel />
     </div>
   );
 }
