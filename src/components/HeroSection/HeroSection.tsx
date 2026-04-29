@@ -1,3 +1,4 @@
+import { Phone, Video } from 'lucide-react';
 import './HeroSection.scss';
 
 const HeroSection = () => {
@@ -36,8 +37,12 @@ const HeroSection = () => {
             </div>
           </div>
           <div className="chat-mock-ctas">
-            <div>📞</div>
-            <div>🎥</div>
+            <div>
+              <Phone width={14} color="var(--muted-color)" />
+            </div>
+            <div>
+              <Video width={14} color="var(--muted-color)" />
+            </div>
           </div>
         </div>
 
@@ -72,7 +77,7 @@ const HeroSection = () => {
             Let's do a video call tonight? 📹
             <div className="msg-time">10:44 AM ✓✓</div>
           </div>
-          <div className='typing-txt'>Sunny is typing...</div>
+          <div className="typing-txt">Sunny is typing...</div>
         </div>
       </div>
     </section>

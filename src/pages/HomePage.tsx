@@ -1,3 +1,4 @@
+import CallScreen3D from '../components/CallScreen3D/CallScreen3D';
 import Features from '../components/Features/Features';
 import GlobalCursorGlow from '../components/GlobalCursorGlow/GlobalCursorGlow';
 import HeroSection from '../components/HeroSection/HeroSection';
@@ -19,8 +20,10 @@ function HomePage() {
 
       <HowItWorks />
       <div className="section-divider-glow"></div>
-      
+
       <TechCarousel />
+      <div className="section-divider-glow"></div>
+      <CallScreen3D />
     </div>
   );
 }

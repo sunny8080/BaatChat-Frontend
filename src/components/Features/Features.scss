@@ -89,6 +89,7 @@
     background: var(--fg-card-icon-background);
     border: 0.5px solid var(--fg-card-icon-border);
     box-shadow: var(--fg-card-icon-box-shadow);
+    color: var(--fg-card-icon-color);
 
     transition:
       transform 0.35s,
@@ -285,6 +286,7 @@
     .fg-call-name {
       font-size: 9px;
       color: var(--muted-color);
+      margin-top: 4px;
     }
     .fg-call-live {
       font-size: 8px;
@@ -311,6 +313,7 @@
     padding: 10px;
 
     .fg-ctrl {
+      cursor: pointer;
       width: 2rem;
       height: 2rem;
       border-radius: 50%;
@@ -320,6 +323,11 @@
       font-size: 12px;
       background: var(--surface-color);
       border: 0.5px solid var(--border-color);
+      color: var(--white-color);
+
+      svg {
+        width: 14px;
+      }
 
       &.on {
         background: var(--violet-color);
@@ -372,6 +380,7 @@
     --fg-card-border: rgba(124, 58, 237, 0.6);
     --fg-card-shadow: 0 28px 80px rgba(124, 58, 237, 0.22);
     --fg-card-glow-color: var(--violet-color);
+    --fg-card-icon-color: var(--white-color);
     --fg-card-icon-background: rgba(124, 58, 237, 0.2);
     --fg-card-icon-border: rgba(124, 58, 237, 0.4);
     --fg-card-icon-box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
@@ -389,6 +398,7 @@
     --fg-card-border: rgba(245, 158, 11, 0.5);
     --fg-card-shadow: 0 28px 80px rgba(245, 158, 11, 0.15);
     --fg-card-glow-color: var(--gold-color);
+    --fg-card-icon-color: var(--gold-color);
     --fg-card-icon-background: rgba(245, 158, 11, 0.15);
     --fg-card-icon-border: rgba(245, 158, 11, 0.35);
     --fg-card-icon-box-shadow: 0 0 18px rgba(245, 158, 11, 0.15);
@@ -406,6 +416,7 @@
     --fg-card-border: rgba(74, 222, 128, 0.45);
     --fg-card-shadow: 0 28px 80px rgba(74, 222, 128, 0.12);
     --fg-card-glow-color: var(--green-color);
+    --fg-card-icon-color: var(--green-color);
     --fg-card-icon-background: rgba(74, 222, 128, 0.12);
     --fg-card-icon-border: rgba(74, 222, 128, 0.25);
     --fg-card-icon-box-shadow: 0 0 16px rgba(74, 222, 128, 0.12);

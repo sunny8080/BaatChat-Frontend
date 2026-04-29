@@ -1,6 +1,7 @@
 import type React from 'react';
 import useRevealOnScroll from '../../hooks/useRevealOnScroll';
 import './Features.scss';
+import { AudioLines, Lock, MessageCircleMore, Mic, MonitorUp, PhoneOff, UsersRound, Video } from 'lucide-react';
 
 const Features = () => {
   const revealRef = useRevealOnScroll();
@@ -52,7 +53,9 @@ const Features = () => {
           <div ref={revealRef} className="fg-card fg-hero violet reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
-              <div className="fg-card-icon lg">💬</div>
+              <div className="fg-card-icon lg">
+                <MessageCircleMore width={30} height={30} />
+              </div>
               <h3 className="fg-card-title lg">Real-time messaging</h3>
               <p className="fg-card-desc lg">Send texts, images, files and voice messages instantly. Read receipts, typing indicators, emoji reactions and delete-for-everyone — all powered by Socket.io.</p>
               <div className="fg-card-tag">Socket.io</div>
@@ -75,7 +78,9 @@ const Features = () => {
           <div ref={revealRef} className="fg-card fg-tall gold reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
-              <div className="fg-card-icon lg">📹</div>
+              <div className="fg-card-icon lg">
+                <Video />
+              </div>
               <h3 className="fg-card-title lg">HD video &amp; audio calls</h3>
               <p className="fg-card-desc lg">Crystal-clear peer-to-peer calls via WebRTC. No middleman, no lag. Screen sharing included.</p>
               <div className="fg-card-tag">WebRTC</div>
@@ -86,20 +91,28 @@ const Features = () => {
                 <div className="fg-call-tiles">
                   <div className="fg-call-tile">
                     <div className="fg-call-av caller1">P</div>
-                    <div className="fg-call-name">Priya</div>
+                    <div className="fg-call-name">Pia</div>
                     <div className="fg-call-live">Live</div>
                   </div>
                   <div className="fg-call-tile">
                     <div className="fg-call-av caller2">R</div>
-                    <div className="fg-call-name">Rahul</div>
+                    <div className="fg-call-name">Rancho</div>
                     <div className="fg-call-live">Live</div>
                   </div>
                 </div>
                 <div className="fg-call-ctrls">
-                  <div className="fg-ctrl on">🎙️</div>
-                  <div className="fg-ctrl on">📹</div>
-                  <div className="fg-ctrl off">🖥️</div>
-                  <div className="fg-ctrl end">📵</div>
+                  <div className="fg-ctrl on">
+                    <Mic />
+                  </div>
+                  <div className="fg-ctrl on">
+                    <Video />
+                  </div>
+                  <div className="fg-ctrl off">
+                    <MonitorUp />
+                  </div>
+                  <div className="fg-ctrl end">
+                    <PhoneOff />
+                  </div>
                 </div>
               </div>
             </div>
@@ -109,7 +122,9 @@ const Features = () => {
           <div ref={revealRef} className="fg-card fg-small violet reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
-              <div className="fg-card-icon sm">🔐</div>
+              <div className="fg-card-icon sm">
+                <Lock />
+              </div>
               <h3 className="fg-card-title sm">Secure auth</h3>
               <p className="fg-card-desc sm">JWT + Google + Facebook OAuth. Refresh token rotation keeps sessions safe.</p>
               <div className="fg-card-tag">Passport.js</div>
@@ -120,7 +135,9 @@ const Features = () => {
           <div ref={revealRef} className="fg-card fg-small gold reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
-              <div className="fg-card-icon sm">🎙️</div>
+              <div className="fg-card-icon sm">
+                <AudioLines />
+              </div>
               <h3 className="fg-card-title sm">Voice messages</h3>
               <p className="fg-card-desc sm">Record, visualize and play back voice notes with waveform in the browser.</p>
               <div className="fg-card-tag">Web Audio API</div>
@@ -131,7 +148,9 @@ const Features = () => {
           <div ref={revealRef} className="fg-card fg-small green reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
-              <div className="fg-card-icon sm">👥</div>
+              <div className="fg-card-icon sm">
+                <UsersRound />
+              </div>
               <h3 className="fg-card-title sm">Group chats</h3>
               <p className="fg-card-desc sm">Record, visualize and play back voice notes with waveform in the browser.</p>
               <div className="fg-card-tag">MongoDB</div>
