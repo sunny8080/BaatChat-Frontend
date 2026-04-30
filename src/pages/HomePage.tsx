@@ -6,6 +6,7 @@ import HowItWorks from '../components/HowItWorks/HowItWorks';
 import Navbar from '../components/Navbar/Navbar';
 import Stats from '../components/Stats/Stats';
 import TechCarousel from '../components/TechCarousel/TechCarousel';
+import TechOrbit from '../components/TechOrbit/TechOrbit';
 
 function HomePage() {
   return (
@@ -29,6 +30,9 @@ function HomePage() {
       <div className="section-divider-glow"></div>
 
       <Stats />
+      <div className="section-divider-glow"></div>
+
+      <TechOrbit />
       <div className="section-divider-glow"></div>
     </div>
   );

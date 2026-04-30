@@ -19,19 +19,19 @@ const Stats = () => {
         </p>
 
         <div className="bc-stats-grid">
-          <div className="bc-stat vlt">
+          <div className="bc-stat vlt" ref={revealRef}>
             <div className="stat-icon">⚡</div>
             <h4 className="stat-title">&lt;50ms</h4>
             <div className="stat-label">Latency</div>
             <p className="stat-sub">Socket.io powered</p>
           </div>
-          <div className="bc-stat gld">
+          <div className="bc-stat gld" ref={revealRef}>
             <div className="stat-icon">🔒</div>
             <h4 className="stat-title">E2E</h4>
             <div className="stat-label">Encrypted</div>
             <p className="stat-sub">End-to-end secure</p>
           </div>
-          <div className="bc-stat grn">
+          <div className="bc-stat grn" ref={revealRef}>
             <div className="stat-icon">
               <Video width={28} height={28} color="var(--violet-text-color)" />
             </div>
@@ -39,7 +39,7 @@ const Stats = () => {
             <div className="stat-label">Video Calls</div>
             <p className="stat-sub">WebRTC direct</p>
           </div>
-          <div className="bc-stat vlt">
+          <div className="bc-stat vlt" ref={revealRef}>
             <div className="stat-icon">⭐</div>
             <h4 className="stat-title">100%</h4>
             <div className="stat-label">Open Source</div>
