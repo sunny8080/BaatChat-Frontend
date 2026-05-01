@@ -1,0 +1,111 @@
+.bc-Footer {
+  padding: 0 24px;
+  border-top: 0.5px solid var(--border-color);
+  background: var(--surface-color);
+}
+
+.bc-nav-logo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  .logo-icon {
+    width: 34px;
+    height: 34px;
+    background: #1a0a2e;
+    border-radius: 9px;
+    border: 0.5px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-txt {
+    font-size: 18px;
+    font-weight: 800;
+    font-family: Georgia, serif;
+    color: var(--white-color);
+    span {
+      color: var(--lavender-color);
+    }
+  }
+}
+
+.bc-footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 3.5rem;
+  margin-bottom: 2.74rem;
+
+  @media screen and (max-width: 700px) {
+    .bc-footer-brand,
+    .bc-footer-links {
+      width: 100%;
+    }
+  }
+
+  .bc-footer-brand p {
+    color: var(--muted-color);
+    font-size: 13px;
+    margin-top: 10px;
+    max-width: 220px;
+    line-height: 1.6;
+  }
+  .bc-footer-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+
+    .footer-col {
+      h5 {
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: var(--muted-color);
+        margin-bottom: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+      a {
+        display: block;
+        color: var(--muted-color);
+        text-decoration: none;
+        font-size: 13px;
+        margin-bottom: 9px;
+        transition: color 0.2s;
+
+        &:hover {
+          color: var(--white-color);
+        }
+      }
+    }
+  }
+}
+.bc-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 0.5px solid var(--border-color);
+  padding-top: 32px;
+  padding-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 20px 10px;
+  text-align: center;
+
+  .bc-copyright-txt {
+    font-size: 12px;
+    color: var(--muted-color);
+  }
+  .bc-footer-morse {
+    font-family: monospace;
+    font-size: 11px;
+    color: rgba(245, 158, 11, 0.75);
+    letter-spacing: 2px;
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+}
