@@ -4,6 +4,7 @@ import GlobalCursorGlow from '../components/GlobalCursorGlow/GlobalCursorGlow';
 import HeroSection from '../components/HeroSection/HeroSection';
 import HowItWorks from '../components/HowItWorks/HowItWorks';
 import Navbar from '../components/Navbar/Navbar';
+import OpenSource from '../components/OpenSource/OpenSource';
 import Stats from '../components/Stats/Stats';
 import TechCarousel from '../components/TechCarousel/TechCarousel';
 import TechOrbit from '../components/TechOrbit/TechOrbit';
@@ -39,7 +40,7 @@ function HomePage() {
       <Testimonials />
       <div className="section-divider-glow"></div>
 
-      
+      <OpenSource />
     </div>
   );
 }

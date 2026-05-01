@@ -1,0 +1,177 @@
+[
+  {
+    "id": 1,
+    "morse": ".... .. .-. . -- .",
+    "decoded": "HIRE ME",
+    "hint": "👀 You decoded it. Now you know what to do.",
+    "category": "recruiter"
+  },
+  {
+    "id": 2,
+    "morse": "-- . .-. -. / ... - .- -.-. -.-",
+    "decoded": "MERN STACK",
+    "hint": "MongoDB + Express + React + Node.js — this whole app is built on it.",
+    "category": "tech"
+  },
+  {
+    "id": 3,
+    "morse": ".-- . -... .-. - -.-.",
+    "decoded": "WEBRTC",
+    "hint": "Peer-to-peer video calls. No middleman. Just you and them.",
+    "category": "tech"
+  },
+  {
+    "id": 4,
+    "morse": "... --- -.-. -.- . - .-.-.-  .. ---",
+    "decoded": "SOCKET.IO",
+    "hint": "The magic behind real-time messaging on this app.",
+    "category": "tech"
+  },
+  {
+    "id": 5,
+    "morse": ".. / .-.. --- ...- . / -.-. --- -.. .. -. --.",
+    "decoded": "I LOVE CODING",
+    "hint": "3 years and still going strong. 💻",
+    "category": "personal"
+  },
+  {
+    "id": 6,
+    "morse": "..-. ..- .-.. .-.. / ... - .- -.-. -.-",
+    "decoded": "FULL STACK",
+    "hint": "Frontend. Backend. Database. DevOps. All of it.",
+    "category": "personal"
+  },
+  {
+    "id": 7,
+    "morse": "... -.- .. .-.. .-.. . -.. / -.. . ...- . .-.. --- .--. . .-.",
+    "decoded": "SKILLED DEVELOPER",
+    "hint": "React, Node, MongoDB, WebRTC, Socket.io — need I say more?",
+    "category": "recruiter"
+  },
+  {
+    "id": 8,
+    "morse": "--- .--. . -. / ... --- ..- .-. -.-. .",
+    "decoded": "OPEN SOURCE",
+    "hint": "Built in public. Star it on GitHub ⭐",
+    "category": "tech"
+  },
+  {
+    "id": 9,
+    "morse": ".-. . .- .-.. / - .. -- .",
+    "decoded": "REAL TIME",
+    "hint": "Every message, every call — delivered in under 50ms.",
+    "category": "tech"
+  },
+  {
+    "id": 10,
+    "morse": "-... .- .- - -.-. .... .- -",
+    "decoded": "BAATCHAT",
+    "hint": "बात करो। सुनो। Connect karo. 🇮🇳",
+    "category": "brand"
+  },
+  {
+    "id": 11,
+    "morse": ".-.. --- --- -.- .. -. --. / ..-. --- .-. / .- / .--- --- -...",
+    "decoded": "LOOKING FOR A JOB",
+    "hint": "If you are a recruiter — let's talk. 🤝",
+    "category": "recruiter"
+  },
+  {
+    "id": 12,
+    "morse": "... -. . .- -.- -.-- / -.. . ...- / --- -. / -.. ..- - -.--",
+    "decoded": "SNEAKY DEV ON DUTY",
+    "hint": "You found the easter egg. 🥚 Respect.",
+    "category": "fun"
+  },
+  {
+    "id": 13,
+    "morse": "-.-- --- ..- / ..-. --- ..- -. -.. / .. -",
+    "decoded": "YOU FOUND IT",
+    "hint": "Most people scroll past. You didn't. That says something. 😎",
+    "category": "fun"
+  },
+  {
+    "id": 14,
+    "morse": ".--- .-- - / .- ..- - .....",
+    "decoded": "JWT AUTH",
+    "hint": "Secure. Stateless. Scalable. Access + refresh token rotation.",
+    "category": "tech"
+  },
+  {
+    "id": 15,
+    "morse": "-.-. --- -.. . / .. ... / .--. --- . - .-. -.--",
+    "decoded": "CODE IS POETRY",
+    "hint": "Every function tells a story. Every component has a soul.",
+    "category": "personal"
+  },
+  {
+    "id": 16,
+    "morse": "-- .- -.. . / .. -. / .. -. -.. .. .-",
+    "decoded": "MADE IN INDIA",
+    "hint": "Built with chai, passion, and 15 years of experience. 🇮🇳☕",
+    "category": "brand"
+  },
+  {
+    "id": 17,
+    "morse": ".... .. .-. . / -- . / -... . ..-. --- .-. . / ... --- -- . --- -. . / . .-.. ... . / -.. --- . ...",
+    "decoded": "HIRE ME BEFORE SOMEONE ELSE DOES",
+    "hint": "Seriously though. Let's build something great together.",
+    "category": "recruiter"
+  },
+  {
+    "id": 18,
+    "morse": ".-. . .- -.-. - / .. ... / .-.. .. ..-. .",
+    "decoded": "REACT IS LIFE",
+    "hint": "useState, useEffect, custom hooks — fluent in all of it.",
+    "category": "tech"
+  },
+  {
+    "id": 19,
+    "morse": "-. --- -.. . .--- ... / -... .- -.-. -.- . -. -...",
+    "decoded": "NODEJS BACKEND",
+    "hint": "REST APIs, WebSockets, middleware — all handled server side.",
+    "category": "tech"
+  },
+  {
+    "id": 20,
+    "morse": "... . -. -.. / -- . / .- -. / --- ..-. ..-. . .-.",
+    "decoded": "SEND ME AN OFFER",
+    "hint": "You decoded morse code on a chat app. You deserve to hire me.",
+    "category": "recruiter"
+  },
+  {
+    "id": 21,
+    "morse": "-... --- .-.. --- / ... ..- -. --- / -.-. --- -. -. . -.-. -",
+    "decoded": "BOLO SUNO CONNECT",
+    "hint": "Speak. Listen. Connect. BaatChat's core philosophy.",
+    "category": "brand"
+  },
+  {
+    "id": 22,
+    "morse": ".---- ..... / -.-- . .- .-. ... / . -..- .--. . .-. .. . -. -.-. .",
+    "decoded": "3 YEARS EXPERIENCE",
+    "hint": "Not a junior. Not a mid. A seasoned full stack engineer.",
+    "category": "recruiter"
+  },
+  {
+    "id": 23,
+    "morse": "-- --- -. --. --- -.. -...",
+    "decoded": "MONGODB",
+    "hint": "Documents, collections, aggregations — no SQL needed here.",
+    "category": "tech"
+  },
+  {
+    "id": 24,
+    "morse": "... -.- .. .-.. .-.. ... / .- .-. . / -. --- - / --- -. / -.-. ...- .-.-.-",
+    "decoded": "SKILLS ARE NOT ON CV.",
+    "hint": "They're in the code. Like this app. Look around. 👀",
+    "category": "recruiter"
+  },
+  {
+    "id": 25,
+    "morse": ".... .- .-.. -.. .. / --. --- .-.. -...",
+    "decoded": "HALDI GOLD",
+    "hint": "#F59E0B — the accent color of BaatChat. Indian and proud. 🌼",
+    "category": "brand"
+  }
+]
