@@ -133,7 +133,7 @@ const TechOrbit = () => {
           Every tool chosen for a reason — fast, reliable, and battle-tested in production.
         </p>
 
-        <div className="bc-tech-orbit" ref={revealRef}>
+        <div className="bc-tech-orbit reveal-on-scroll" ref={revealRef}>
           <div className="orbit-ring ring1"></div>
           <div className="orbit-ring ring2"></div>
           <div className="orbit-ring ring3"></div>

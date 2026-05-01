@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar/Navbar';
 import Stats from '../components/Stats/Stats';
 import TechCarousel from '../components/TechCarousel/TechCarousel';
 import TechOrbit from '../components/TechOrbit/TechOrbit';
+import Testimonials from '../components/Testimonials/Testimonials';
 
 function HomePage() {
   return (
@@ -34,6 +35,11 @@ function HomePage() {
 
       <TechOrbit />
       <div className="section-divider-glow"></div>
+
+      <Testimonials />
+      <div className="section-divider-glow"></div>
+
+      
     </div>
   );
 }

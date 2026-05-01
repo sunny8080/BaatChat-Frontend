@@ -57,7 +57,7 @@ const CallScreen3D = () => {
           P2P WebRTC — no middleman, low latency, completely private. Hover to interact.
         </p>
 
-        <div className="bc-call-screen3D-wrapper" ref={revealRef}>
+        <div className="bc-call-screen3D-wrapper reveal-on-scroll" ref={revealRef}>
           <div className="bc-call-screen3D" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="bc-call-tiles">
               <div className="bc-call-tile">
