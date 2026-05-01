@@ -2,6 +2,10 @@ import { useCallback, useEffect, useRef } from 'react';
 type Props = {
   options?: any;
 };
+
+/**
+ * use this hook to reveal element when scrolled
+ */
 const useRevealOnScroll = ({ options = { threshold: 0.1 } }: Props = {}) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const elementsRef = useRef(new Set<HTMLElement>());
@@ -27,11 +31,11 @@ const useRevealOnScroll = ({ options = { threshold: 0.1 } }: Props = {}) => {
   }, [options]);
 
   // reveal element on scroll
-  // Need to add class 'reveal-on-scroll' on element whose we want to reveal
   // if element has it's own transition then add that property in '--extra-transition' also
   const registerRevealOnScroll = useCallback((el: HTMLElement | null) => {
-    console.log(el);
     if (!el || elementsRef.current.has(el)) return;
+    // Need to add class 'reveal-on-scroll' on element whose we want to reveal
+    el.classList.add('reveal-on-scroll');
     elementsRef.current.add(el);
     if (observerRef.current) {
       observerRef.current.observe(el);

@@ -62,10 +62,10 @@ const Testimonials = () => {
   return (
     <section className="bc-Testimonials bc-section">
       <div className="bc-section-content">
-        <div className="bc-sec-badge reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-badge" ref={revealRef}>
           Why BaatChat
         </div>
-        <div className="bc-sec-title reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-title" ref={revealRef}>
           Built different. For everyone.
         </div>
 
@@ -75,7 +75,7 @@ const Testimonials = () => {
             const av = nm[0].charAt(0) + (nm.length > 1 ? nm[1].charAt(0) : '');
 
             return (
-              <div className="bc-testimonial-card reveal-on-scroll" key={ind} ref={revealRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+              <div className="bc-testimonial-card" key={ind} ref={revealRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                 <div className="testimonial-rating">
                   {Array.from({ length: Math.ceil(review.rating) }).map((_, ind) => (
                     <FaStar size={12} color="var(--gold-color)" key={ind} />

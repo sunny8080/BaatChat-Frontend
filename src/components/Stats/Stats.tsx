@@ -8,13 +8,13 @@ const Stats = () => {
   return (
     <section className="bc-Stats bc-section">
       <div className="bc-section-content">
-        <div className="bc-sec-badge reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-badge" ref={revealRef}>
           By the numbers
         </div>
-        <div className="bc-sec-title reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-title" ref={revealRef}>
           Built for performance
         </div>
-        <p className="bc-sec-sub reveal-on-scroll" ref={revealRef}>
+        <p className="bc-sec-sub" ref={revealRef}>
           Every architectural decision optimized for speed, security and scale.
         </p>
 

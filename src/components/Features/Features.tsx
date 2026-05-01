@@ -38,19 +38,19 @@ const Features = () => {
   return (
     <section className="bc-Features w-full bc-section">
       <div className="bc-section-content">
-        <div className="bc-sec-badge reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-badge" ref={revealRef}>
           Features
         </div>
-        <div className="bc-sec-title reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-title" ref={revealRef}>
           Everything you need <br /> to stay connected
         </div>
-        <p className="bc-sec-sub reveal-on-scroll" ref={revealRef}>
+        <p className="bc-sec-sub" ref={revealRef}>
           Built with love, powered by cutting-edge tech. Real-time, secure, and beautifully designed.
         </p>
 
         <div className="bc-features-grid">
           {/* Hero card: Real-time messaging */}
-          <div ref={revealRef} className="fg-card fg-hero violet reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+          <div ref={revealRef} className="fg-card fg-hero violet" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
               <div className="fg-card-icon lg">
@@ -75,7 +75,7 @@ const Features = () => {
           </div>
 
           {/* Tall Card: Video Calls */}
-          <div ref={revealRef} className="fg-card fg-tall gold reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+          <div ref={revealRef} className="fg-card fg-tall gold" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
               <div className="fg-card-icon lg">
@@ -119,7 +119,7 @@ const Features = () => {
           </div>
 
           {/* Small Card: secure auths */}
-          <div ref={revealRef} className="fg-card fg-small violet reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+          <div ref={revealRef} className="fg-card fg-small violet" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
               <div className="fg-card-icon sm">
@@ -132,7 +132,7 @@ const Features = () => {
           </div>
 
           {/* Small card: voice messages */}
-          <div ref={revealRef} className="fg-card fg-small gold reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+          <div ref={revealRef} className="fg-card fg-small gold" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
               <div className="fg-card-icon sm">
@@ -145,7 +145,7 @@ const Features = () => {
           </div>
 
           {/* Small Card: Group Chats */}
-          <div ref={revealRef} className="fg-card fg-small green reveal-on-scroll" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+          <div ref={revealRef} className="fg-card fg-small green" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="fg-card-glow"></div>
             <div className="fg-card-content">
               <div className="fg-card-icon sm">

@@ -123,17 +123,17 @@ const TechOrbit = () => {
   return (
     <section className="bc-TechOrbit bc-section">
       <div className="bc-section-content">
-        <div className="bc-sec-badge reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-badge" ref={revealRef}>
           Tech Stack
         </div>
-        <div className="bc-sec-title reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-title" ref={revealRef}>
           Powered by the best
         </div>
-        <p className="bc-sec-sub reveal-on-scroll mx-auto!" ref={revealRef}>
+        <p className="bc-sec-sub mx-auto!" ref={revealRef}>
           Every tool chosen for a reason — fast, reliable, and battle-tested in production.
         </p>
 
-        <div className="bc-tech-orbit reveal-on-scroll" ref={revealRef}>
+        <div className="bc-tech-orbit" ref={revealRef}>
           <div className="orbit-ring ring1"></div>
           <div className="orbit-ring ring2"></div>
           <div className="orbit-ring ring3"></div>

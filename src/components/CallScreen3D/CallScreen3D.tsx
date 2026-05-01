@@ -46,18 +46,18 @@ const CallScreen3D = () => {
   return (
     <section className="bc-CallScreen3D bc-section">
       <div className="bc-section-content">
-        <div className="bc-sec-badge reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-badge" ref={revealRef}>
           Calls
         </div>
-        <div className="bc-sec-title reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-title" ref={revealRef}>
           Video calls that just&nbsp;
           <em style={{ color: 'var(--lavender-color)', fontStyle: 'normal' }}>work</em>
         </div>
-        <p className="bc-sec-sub reveal-on-scroll mx-auto!" ref={revealRef}>
+        <p className="bc-sec-sub mx-auto!" ref={revealRef}>
           P2P WebRTC — no middleman, low latency, completely private. Hover to interact.
         </p>
 
-        <div className="bc-call-screen3D-wrapper reveal-on-scroll" ref={revealRef}>
+        <div className="bc-call-screen3D-wrapper" ref={revealRef}>
           <div className="bc-call-screen3D" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <div className="bc-call-tiles">
               <div className="bc-call-tile">

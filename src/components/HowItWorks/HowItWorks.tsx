@@ -8,15 +8,15 @@ const HowItWorks = () => {
   return (
     <section className="bc-HowItWorks bc-section">
       <div className="bc-section-content">
-        <div className="bc-sec-badge reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-badge" ref={revealRef}>
           How it works
         </div>
-        <div className="bc-sec-title reveal-on-scroll" ref={revealRef}>
+        <div className="bc-sec-title" ref={revealRef}>
           Up and running in seconds
         </div>
 
         <div className="bc-steps">
-          <div className="bc-step reveal-on-scroll" ref={revealRef}>
+          <div className="bc-step" ref={revealRef}>
             <div className="bc-step-icon">
               <UserRoundPlus />
             </div>
@@ -24,7 +24,7 @@ const HowItWorks = () => {
             <p>Sign up with email or Google / Facebook in one click</p>
           </div>
 
-          <div className="bc-step reveal-on-scroll" ref={revealRef}>
+          <div className="bc-step" ref={revealRef}>
             <div className="bc-step-icon">
               <UserRoundSearch />
             </div>
@@ -32,7 +32,7 @@ const HowItWorks = () => {
             <p>Search by username or phone and send a message</p>
           </div>
 
-          <div className="bc-step reveal-on-scroll" ref={revealRef}>
+          <div className="bc-step" ref={revealRef}>
             <div className="bc-step-icon">
               <MessageCirclePlus />
             </div>
@@ -40,7 +40,7 @@ const HowItWorks = () => {
             <p>Text, share files, send voice notes in real time</p>
           </div>
 
-          <div className="bc-step reveal-on-scroll" ref={revealRef}>
+          <div className="bc-step" ref={revealRef}>
             <div className="bc-step-icon">
               <Phone />
             </div>
