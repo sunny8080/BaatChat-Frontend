@@ -34,7 +34,7 @@ const RevealOnScroll = ({ children, className = '' }: Props) => {
   }, []);
 
   return (
-    <div ref={ref} className={`${className || ''}`}>
+    <div ref={ref} className={`${className || ''} reveal-on-scroll`}>
       {children}
     </div>
   );
