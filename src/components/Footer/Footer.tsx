@@ -47,7 +47,7 @@ const Footer = () => {
         </div>
 
         <div className="bc-footer-bottom">
-          <p className="bc-copyright-txt">© 2025 BaatChat · baatchat.online · Made with ❤️ in India</p>
+          <p className="bc-copyright-txt">© 2026 BaatChat · baatchat.online · Made with ❤️ in India</p>
           <p className="bc-footer-morse" title={`Decode this - ${randMorse.hint}`}>
             {randMorse.morse}
           </p>

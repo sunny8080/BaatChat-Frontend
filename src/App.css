@@ -1,10 +1,10 @@
 @import 'tailwindcss';
 
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 :root {
   --night-color: #0d0618;
   --surface-color: #130d24;
@@ -17,6 +17,7 @@
   --muted-color: #6b6b8a;
   --green-color: #4ade80;
   --violet-text-color: #ddd6fe;
+  --red-color: #ef4444;
 }
 html {
   scroll-behavior: smooth;
@@ -85,4 +86,5 @@ body::before {
   --muted-color: #6b6b8a;
   --green-color: #4ade80;
   --violet-text-color: #ddd6fe;
+  --red-color: #ef4444;
 }

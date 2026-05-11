@@ -1,0 +1,29 @@
+.bc-nav-logo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  .logo-icon {
+    width: 34px;
+    height: 34px;
+    background: #1a0a2e;
+    border-radius: 9px;
+    border: 0.5px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-txt {
+    font-size: 18px;
+    font-weight: 800;
+    font-family: Georgia, serif;
+    color: var(--white-color);
+    span {
+      color: var(--lavender-color);
+    }
+  }
+}

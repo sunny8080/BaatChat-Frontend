@@ -1,0 +1,71 @@
+.bc-signup-terms {
+  font-size: 11px;
+  color: var(--muted-color);
+  text-align: center;
+  line-height: 1.6;
+  a {
+    color: var(--lavender-color);
+    text-decoration: none;
+  }
+}
+
+.bc-username-check {
+  margin-top: 6px;
+  .bc-username-status {
+    border-radius: 10px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    margin-bottom: 8px;
+    line-height: 1.2;
+
+    &.available {
+      display: flex;
+      background: rgba(74, 222, 128, 0.08);
+      border: 0.5px solid rgba(74, 222, 128, 0.3);
+      color: var(--green-color);
+    }
+    &.not-available {
+      display: flex;
+      background: rgba(239, 68, 68, 0.08);
+      border: 0.5px solid rgba(239, 68, 68, 0.3);
+      color: var(--red-color);
+    }
+  }
+
+  .bc-username-check-btn {
+    margin-left: auto;
+
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: "Inter", sans-serif;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    opacity: 1;
+    cursor: pointer;
+    border: 0.5px solid var(--violet-color);
+    background: rgba(124, 58, 237, 0.15);
+    color: var(--lavender-color);
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      border: 0.5px solid var(--border-color);
+      color: var(--muted-color);
+      background: var(--card-color);
+    }
+
+    &.loading {
+      cursor: progress;
+      color: var(--muted-color);
+    }
+  }
+}

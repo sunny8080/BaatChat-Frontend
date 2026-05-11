@@ -1,0 +1,128 @@
+.bc-SignInForm {
+  animation: tabSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @keyframes tabSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+.bc-SignUpForm {
+  animation: tabSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @keyframes tabSlideUp {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+.bc-social-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+  .bc-social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: "Inter", sans-serif;
+    border: 0.5px solid var(--border-color);
+    background: var(--card-color);
+    color: var(--white-color);
+
+    &:hover {
+      border-color: rgba(124, 58, 237, 0.5);
+      background: rgba(124, 58, 237, 0.08);
+      transform: translateY(-1px);
+    }
+  }
+  .bc-social-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+
+    &.facebook {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.bc-form-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  .bc-divider-txt {
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--muted-color);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .bc-divider-line {
+    flex: 1;
+    height: 0.5px;
+    background: var(--border-color);
+  }
+}
+
+.bc-forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -8px;
+  margin-bottom: 1rem;
+  .bc-forgot-link {
+    font-size: 12px;
+    color: var(--lavender-color);
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+    user-select: none;
+
+    &:hover {
+      color: var(--white-color);
+    }
+  }
+}
+
+.bc-auth-switch-row {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted-color);
+
+  .switch-link {
+    color: var(--lavender-color);
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.2s;
+    &:hover {
+      color: var(--white-color);
+    }
+  }
+}

@@ -1,6 +1,11 @@
 import morseCodes from '../data/morseCodes.json';
 
 /**
+ * Indicates whether the app is running in the development environment.
+ */
+export const isDev = import.meta.env.VITE_NODE_ENV === 'development';
+
+/**
  *
  * @param t time in seconds
  * @returns returns time in MM:SS format
@@ -29,4 +34,16 @@ export type MorseItem = {
  */
 export const getRandomMorse = (): MorseItem => {
   return morseCodes[Math.floor(Math.random() * morseCodes.length)];
+};
+
+/**
+ * Creates a promise that resolves after the provided delay.
+ *
+ * @param delay Delay duration in milliseconds.
+ * @returns A promise that resolves once the delay has elapsed.
+ */
+export const mockApiDelay = (delay: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
 };

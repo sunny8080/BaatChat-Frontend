@@ -117,3 +117,188 @@
 .removeBlueBoxColor {
   -webkit-tap-highlight-color: transparent;
 }
+
+// BC Form
+.bc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .bc-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .bc-form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted-color);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .bc-form-input-wrapper {
+    position: relative;
+  }
+
+  .bc-form-input {
+    width: 100%;
+    background: var(--card-color);
+    border: 0.5px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--white-color);
+    font-family: "Inter", sans-serif;
+    outline: none;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+
+    &:focus,
+    &:hover {
+      border-color: var(--violet-color);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+    }
+
+    &::placeholder {
+      color: var(--muted-color);
+    }
+
+    &.has-icon {
+      padding-left: 42px;
+    }
+    &.has-right-icon {
+      padding-right: 42px;
+    }
+
+    &.valid {
+      border-color: rgba(74, 222, 128, 0.5);
+    }
+    &.error {
+      border-color: var(--red-color);
+    }
+
+    &:-webkit-autofill {
+      -webkit-text-fill-color: var(--white-color);
+      transition:
+        background-color 500s ease-in-out,
+        border-color 0.2s,
+        box-shadow 0.2s;
+    }
+    // &:-webkit-autofill:active
+
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+      transition:
+        background-color 500s ease-in-out,
+        border-color 0.2s,
+        box-shadow 0.2s;
+    }
+  }
+  .bc-form-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 12px;
+    font-size: 14px;
+    color: var(--muted-color);
+    pointer-events: none;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+  .bc-form-right-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 12px;
+    font-size: 15px;
+    color: var(--muted-color);
+    cursor: pointer;
+    transition: color 0.2s;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      color: var(--lavender-color);
+    }
+  }
+  .bc-form-submit-btn {
+    user-select: none;
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    font-family: "Inter", sans-serif;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &.primary {
+      background: var(--violet-color);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+
+      &:hover {
+        background: #6d28d9;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+      }
+    }
+    &.loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .bc-inline-spinner {
+      display: none;
+    }
+    &.loading .bc-inline-spinner {
+      display: block;
+    }
+  }
+  .bc-form-hint {
+    font-size: 11px;
+    margin-top: 5px;
+    &.error {
+      color: var(--red);
+    }
+    &.success {
+      color: var(--green);
+    }
+  }
+}
+
+// BC Inline Spinner
+.bc-inline-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
