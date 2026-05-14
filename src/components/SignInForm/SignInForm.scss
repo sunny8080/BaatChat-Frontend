@@ -1,33 +1,3 @@
-.bc-SignInForm {
-  animation: tabSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-  @keyframes tabSlideIn {
-    from {
-      opacity: 0;
-      transform: translateX(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-}
-
-.bc-SignUpForm {
-  animation: tabSlideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-  @keyframes tabSlideUp {
-    from {
-      opacity: 0;
-      transform: translateX(-40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-}
-
 .bc-social-links {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -123,6 +93,13 @@
     transition: color 0.2s;
     &:hover {
       color: var(--white-color);
+    }
+    &.muted {
+      color: var(--muted-color);
+
+      &:hover {
+        color: var(--white-color);
+      }
     }
   }
 }

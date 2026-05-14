@@ -200,6 +200,22 @@
         box-shadow 0.2s;
     }
   }
+  .bc-form-input-validation-err {
+    margin-top: 6px;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    line-height: 1.2;
+    // background: rgba(239, 68, 68, 0.08);
+    border: 0.5px solid rgba(239, 68, 68, 0.3);
+    color: var(--red-color);
+    width: fit-content;
+  }
   .bc-form-icon {
     position: absolute;
     top: 50%;
@@ -267,13 +283,6 @@
       pointer-events: none;
       opacity: 0.8;
     }
-
-    .bc-inline-spinner {
-      display: none;
-    }
-    &.loading .bc-inline-spinner {
-      display: block;
-    }
   }
   .bc-form-hint {
     font-size: 11px;
@@ -283,6 +292,52 @@
     }
     &.success {
       color: var(--green);
+    }
+  }
+  .bc-form-password-strength {
+    margin-top: 8px;
+    .bc-form-pw-bars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 5px;
+    }
+    .bc-form-pw-bar {
+      flex: 1;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      position: relative;
+      // transition: background 1s;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.5s ease;
+      }
+
+      &.weak::before {
+        background: var(--red-color);
+        transform: scaleX(1);
+      }
+      &.fair::before {
+        background: var(--gold-color);
+        transform: scaleX(1);
+      }
+      &.good::before {
+        background: var(--gold-color);
+        transform: scaleX(1);
+      }
+      &.strong::before {
+        background: var(--green-color);
+        transform: scaleX(1);
+      }
+    }
+    .bc-form-pw-label {
+      font-size: 10px;
+      color: var(--muted-color);
     }
   }
 }
@@ -300,5 +355,33 @@
     to {
       transform: rotate(360deg);
     }
+  }
+}
+
+.bc-slideScreenLeft {
+  animation: slideScreenLeft 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bc-slideScreenRight {
+  animation: slideScreenRight 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideScreenLeft {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slideScreenRight {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
