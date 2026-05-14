@@ -29,6 +29,7 @@ export const loginUser = async (data: any): Promise<ApiResponse> => {
   try {
     const res = await apiClient.post(AUTH_ROUTES.POST_LOGIN, data);
     // TODO - setup auth context and zustand store if needed
+    // TODO - add current login method in localStorage
     response = res.data;
   } catch (error: any) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
@@ -84,6 +85,113 @@ export const verifyEmail = async (data: any): Promise<ApiResponse> => {
   try {
     const res = await apiClient.post(AUTH_ROUTES.POST_VERIFY_EMAIL, data);
     // TODO - setup auth context and zustand store if needed
+    // TODO - add current login method in localStorage
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+/**
+ * Sends a password reset link for the provided account payload.
+ *
+ * @param data - Forgot password request payload.
+ * @returns API response as {@link ApiResponse} containing the password reset request result.
+ */
+export const forgotPassword = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.post(AUTH_ROUTES.POST_FORGOT_PASSWORD, data);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+/**
+ * Resets a user's password with the provided reset payload.
+ *
+ * @param data - Password reset payload.
+ * @returns API response as {@link ApiResponse} containing the password reset result.
+ */
+export const resetPassword = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.post(AUTH_ROUTES.POST_RESET_PASSWORD, data);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+/**
+ * Fetches the currently authenticated user's profile. Uses cookies to get user details
+ *
+ * @returns API response as {@link ApiResponse} containing the current user data.
+ */
+export const getCurrentUser = async (): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.get(AUTH_ROUTES.GET_CURRENT_USER);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+/**
+ * Logs out the currently authenticated user.
+ *
+ * @returns API response as {@link ApiResponse} containing the logout result.
+ */
+export const logOutUser = async (): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.get(AUTH_ROUTES.GET_LOGOUT);
+    // TODO - we have to clear localStorage also, except login method used earlier
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+/**
+ * Changes the currently authenticated user's password and log out after successful change.
+ *
+ * @param data - Password change payload containing the current and new password details.
+ * @returns API response as {@link ApiResponse} containing the password change result.
+ */
+export const changePassword = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.post(AUTH_ROUTES.POST_CHANGE_PASSWORD, data);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+/**
+ * Requests a fresh access token for the current authenticated session, if current access token is expired.
+ *
+ * @returns API response as {@link ApiResponse} containing the access token result.
+ */
+export const getAccessToken = async (): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.get(AUTH_ROUTES.GET_ACCESS_TOKEN);
     response = res.data;
   } catch (error: any) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
