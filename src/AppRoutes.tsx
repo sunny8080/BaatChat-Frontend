@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router';
 import HomePage from './pages/HomePage';
 import Auth from './pages/Auth';
 import ResetPassword from './pages/ResetPassword';
+import ForgotPassword from './pages/ForgotPassword';
 
 const AppRoutes = () => {
   return (
@@ -9,6 +10,7 @@ const AppRoutes = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/auth" element={<Auth />} />
       <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
     </Routes>
   );
 };
