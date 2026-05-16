@@ -28,7 +28,7 @@ export const useAuth = () => useContext(AuthContext);
  * Loads the saved session on mount and provides authentication state to descendants.
  */
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthLoading, setIsAuthLoading] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [user, setUser] = useState<UserInterface | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthLoading(true);
       let accessToken = localStorage.getItem('accessToken');
       const userId = localStorage.getItem('userId');
+
       if (accessToken && userId) {
         // user is logged in, so get current user details
         const res = await getCurrentUser();
@@ -50,12 +51,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(res.data.user);
             setAccessToken(accessToken);
           } catch (error) {
-            console.log(error);
+            setIsAuthLoading(false);
+          } finally {
             setIsAuthLoading(false);
           }
         }
+      } else {
+        setIsAuthLoading(false);
       }
-      setIsAuthLoading(false);
     };
 
     loadUser();
