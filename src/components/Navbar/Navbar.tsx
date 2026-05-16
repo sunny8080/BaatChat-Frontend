@@ -2,9 +2,11 @@ import './Navbar.scss';
 import bcLogo from '../../assets/logo/bc-logo.svg';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="bc-Navbar flex justify-center">
@@ -36,8 +38,12 @@ function Navbar() {
         </ul>
 
         <div className="bc-nav-cta">
-          <button className="bc-btn bc-btn-secondary">Sign in</button>
-          <button className="bc-btn bc-btn-primary">Get Started</button>
+          <button className="bc-btn bc-btn-secondary" onClick={() => navigate('/auth')}>
+            Sign in
+          </button>
+          <button className="bc-btn bc-btn-primary" onClick={() => navigate('/auth?mode=signup')}>
+            Get Started
+          </button>
         </div>
 
         {/* Hamburger Btn */}

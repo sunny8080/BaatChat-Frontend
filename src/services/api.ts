@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { isDev } from '../utils/utils';
+import { getAccessToken } from './authService';
+import toast from 'react-hot-toast';
 
 /**
  * Shared Axios client configured for backend API requests.
@@ -13,12 +15,47 @@ export const apiClient = axios.create({
   timeout: 10000, // timeout in ms
 });
 
-// Log backend error payloads before forwarding the rejection to callers.
+/**
+ * Handles API responses globally.
+ *
+ * Successful responses pass through unchanged. Failed responses log backend
+ * payloads in development, refresh expired access tokens once, retry the
+ * original request after a successful refresh, and clear session state with a
+ * login redirect when refresh fails.
+ */
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    // Log backend error payloads before forwarding the rejection to callers.
     if (isDev) {
       console.error(error.response?.data);
+    }
+
+    const originalRequest = error.config;
+
+    // if access token is expired then silently call for new accessToken
+    // also stop calling get access token api again by using _retry flag
+    if (error.response?.data?.statusCode === 401 && !originalRequest._retry && error.response?.data?.message === 'Invalid access token') {
+      originalRequest._retry = true;
+
+      const res = await getAccessToken();
+
+      if (res && res.success) {
+        // refresh token is valid
+        localStorage.setItem('accessToken', res.data.accessToken);
+
+        // retry same api again
+        return apiClient(originalRequest);
+      } else {
+        // refresh token is expired or Invalid
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userId');
+        toast.error('Session expired, log in again');
+
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1500);
+      }
     }
     return Promise.reject(error);
   },

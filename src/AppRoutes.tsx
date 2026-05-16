@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router';
+import { Routes, Route, Navigate } from 'react-router';
 import HomePage from './pages/HomePage';
 import Auth from './pages/Auth';
 import ResetPassword from './pages/ResetPassword';
@@ -9,6 +9,8 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/auth" element={<Auth />} />
+      <Route path="/login" element={<Navigate to="/auth" replace />} />
+      <Route path="/signup" element={<Navigate to="/auth" replace />} />
       <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
     </Routes>

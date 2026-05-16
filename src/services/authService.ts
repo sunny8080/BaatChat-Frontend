@@ -30,6 +30,12 @@ export const loginUser = async (data: any): Promise<ApiResponse> => {
     const res = await apiClient.post(AUTH_ROUTES.POST_LOGIN, data);
     // TODO - setup auth context and zustand store if needed
     // TODO - add current login method in localStorage
+
+    if (res.data && res.data.success) {
+      localStorage.setItem('accessToken', res.data.data.accessToken);
+      localStorage.setItem('userId', res.data.data.user.id);
+      localStorage.setItem('loginType', res.data.data.user.loginType);
+    }
     response = res.data;
   } catch (error: any) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
