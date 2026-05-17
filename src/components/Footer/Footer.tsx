@@ -33,24 +33,24 @@ const Footer = ({ small = false }: { small: boolean }) => {
             <div className="bc-footer-links">
               <div className="footer-col">
                 <h5>Product</h5>
-                <a href="">Features</a>
-                <a href="">How it works</a>
-                <a href="">Changelog</a>
-                <a href="">Roadmap</a>
+                <a href="/#features">Features</a>
+                <a href="/#howItWorks">How it works</a>
+                <a href="#">Changelog</a>
+                <a href="#">Roadmap</a>
               </div>
               <div className="footer-col">
                 <h5>Tech</h5>
-                <a href="">GitHub</a>
+                <a href="https://github.com/sunny8080/BaatChat">GitHub</a>
                 <a href="">Architecture</a>
                 <a href="">API docs</a>
                 <a href="">Self-host</a>
               </div>
               <div className="footer-col">
                 <h5>Connect</h5>
-                <a href="">Twitter / X</a>
-                <a href="">LinkedIn</a>
-                <a href="">Email</a>
-                <a href="">GitHub</a>
+                <a href="https://x.com/sunny8080_">Twitter / X</a>
+                <a href="https://www.linkedin.com/in/sunny8080">LinkedIn</a>
+                <a href="mailto:sk7522422@gmail.com">Email</a>
+                <a href="https://github.com/sunny8080/BaatChat">GitHub</a>
               </div>
             </div>
           </div>

@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginUser } from '../../services/authService';
+import { useAuth } from '../../context/AuthContext';
 
 type Props = {
   setCurAuthTab: React.Dispatch<React.SetStateAction<string>>;
@@ -17,6 +18,7 @@ const SignInForm = ({ setCurAuthTab }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { setAccessToken, setUser } = useAuth();
 
   // create zod schema
   const SignInSchema = z.object({
@@ -32,12 +34,17 @@ const SignInForm = ({ setCurAuthTab }: Props) => {
 
   const handleSignin = async (data: any) => {
     setLoading(true);
-    const res = await loginUser(data);
-    if (res.success) {
-      // TODO - check if user login properly or not as page won't refresh
-      navigate('/');
+    try {
+      const res = await loginUser(data);
+
+      if (res && res.success) {
+        setUser(res.data.user);
+        setAccessToken(res.data.accessToken);
+        navigate('/chat');
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

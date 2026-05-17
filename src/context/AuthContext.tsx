@@ -12,12 +12,20 @@ type AuthContextType = {
   accessToken: string | null;
   /** Whether the initial authentication check is currently running. */
   isAuthLoading: boolean | null;
+  setUser: React.Dispatch<React.SetStateAction<UserInterface | null>>;
+  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 /**
  * React context containing the current authentication session details.
  */
-export const AuthContext = createContext<AuthContextType>({ user: null, accessToken: null, isAuthLoading: null });
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  accessToken: null,
+  isAuthLoading: null,
+  setUser: () => {},
+  setAccessToken: () => {},
+});
 
 /**
  * Returns the current authentication context value.
@@ -71,6 +79,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         user,
         isAuthLoading,
         accessToken,
+        setUser,
+        setAccessToken,
       }}>
       {children}
     </AuthContext.Provider>

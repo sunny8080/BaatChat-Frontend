@@ -122,9 +122,8 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
     const interval = setInterval(() => {
       setCountDownRedirect((prev) => {
         if (prev === 0) {
-          console.log('first. 000');
           clearInterval(interval);
-          navigate('/');
+          navigate('/chat');
         }
         const circumference = 113; // 2 * pi * 18
         if (cdProgressSVG.current) {
@@ -211,7 +210,7 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
             </div>
           </div>
 
-          <button className="bc-form-submit-btn primary" onClick={() => navigate('/')}>
+          <button className="bc-form-submit-btn primary" onClick={() => navigate('/chat')}>
             Go to Dashboard →
           </button>
         </div>

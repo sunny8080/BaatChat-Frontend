@@ -24,16 +24,16 @@ function Navbar() {
 
         <ul className="bc-nav-links">
           <li>
-            <a href="#">Features</a>
+            <a href="/#features">Features</a>
           </li>
           <li>
-            <a href="#">How it works</a>
+            <a href="/#howItWorks">How it works</a>
           </li>
           <li>
-            <a href="#">Tech stack</a>
+            <a href="/#techOrbit">Tech stack</a>
           </li>
           <li>
-            <a href="#">Open source</a>
+            <a href="/#openSource">Open source</a>
           </li>
         </ul>
 
@@ -75,22 +75,26 @@ function Navbar() {
               <a href="/">Home</a>
             </li>
             <li onClick={() => setIsMobileMenuOpen(false)}>
-              <a href="/features">Features</a>
+              <a href="/#features">Features</a>
             </li>
             <li onClick={() => setIsMobileMenuOpen(false)}>
-              <a href="/how">How it works</a>
+              <a href="/#howItWorks">How it works</a>
             </li>
             <li onClick={() => setIsMobileMenuOpen(false)}>
-              <a href="/tech">Tech stack</a>
+              <a href="/#techOrbit">Tech stack</a>
             </li>
             <li onClick={() => setIsMobileMenuOpen(false)}>
-              <a href="/open-source">Open source</a>
+              <a href="/#openSource">Open source</a>
             </li>
           </ul>
 
           <div className="bc-mobile-nav-cta">
-            <button className="bc-btn bc-btn-secondary">Sign in</button>
-            <button className="bc-btn bc-btn-primary">Get Started</button>
+            <button className="bc-btn bc-btn-secondary" onClick={() => navigate('/auth')}>
+              Sign in
+            </button>
+            <button className="bc-btn bc-btn-primary" onClick={() => navigate('/auth?mode=signup')}>
+              Get Started
+            </button>
           </div>
         </div>,
         document.getElementById('root')!,

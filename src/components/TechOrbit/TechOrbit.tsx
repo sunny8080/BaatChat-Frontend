@@ -121,7 +121,7 @@ const techStacks = [
 const TechOrbit = () => {
   const revealRef = useRevealOnScroll();
   return (
-    <section className="bc-TechOrbit bc-section">
+    <section className="bc-TechOrbit bc-section" id='techOrbit'>
       <div className="bc-section-content">
         <div className="bc-sec-badge" ref={revealRef}>
           Tech Stack

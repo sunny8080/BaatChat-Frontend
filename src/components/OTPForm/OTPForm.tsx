@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import type React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { resendSignUpOtp, verifyEmail } from '../../services/authService';
+import { useAuth } from '../../context/AuthContext';
 
 type Props = {
   setOtpSent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +17,7 @@ const OTPForm = ({ email, setOtpSent, setEmailVerified }: Props) => {
   const [resendOtpTimer, setResendOtpTimer] = useState(60);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [otp, setOtp] = useState<string[]>(Array(6).fill('')); // ['', '', '', '', '', '']
+  const { setAccessToken, setUser } = useAuth();
 
   useEffect(() => {
     if (resendOtpTimer <= 0) return;
@@ -85,11 +87,13 @@ const OTPForm = ({ email, setOtpSent, setEmailVerified }: Props) => {
     setOtpValidating(true);
     const res = await verifyEmail({ email, otp: otp.join('') });
     if (res && res.success) {
+      setUser(res.data.user);
+      setAccessToken(res.data.accessToken);
       setEmailVerified(true);
       toast.success('Email Verified 🎉');
     }
     setOtpValidating(false);
-  }, [otp, email, setEmailVerified]);
+  }, [otp, email, setAccessToken, setEmailVerified, setUser]);
 
   // resend otp and restart resend otp timer
   const handleResendOTP = async () => {

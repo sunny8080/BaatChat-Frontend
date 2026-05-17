@@ -1,7 +1,10 @@
 import { Phone, Video } from 'lucide-react';
 import './HeroSection.scss';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="bc-HeroSection w-full">
       <div className="bc-blob blob1"></div>
@@ -18,8 +21,14 @@ const HeroSection = () => {
       <p className="bc-hero-subheading">BaatChat is a real-time messaging and video calling platform built for everyone. Text, voice, video — all in one place. Made in India 🇮🇳.</p>
 
       <div className="bc-hero-ctas">
-        <button className="bc-btn bc-btn-gold">🚀 Start Chatting Now</button>
-        <button className="bc-btn bc-btn-secondary watch-demo-btn">▶ Watch Demo</button>
+        <button className="bc-btn bc-btn-gold" onClick={() => navigate('/auth')}>
+          🚀 Start Chatting Now
+        </button>
+
+        {/* TODO - see what we can do for demo btn, currently redirecting to auth page */}
+        <button className="bc-btn bc-btn-secondary watch-demo-btn" onClick={() => navigate('/auth')}>
+          ▶ Watch Demo
+        </button>
       </div>
 
       <div className="bc-hero-chat-mockup">

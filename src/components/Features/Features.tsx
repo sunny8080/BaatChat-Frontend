@@ -36,7 +36,7 @@ const Features = () => {
   };
 
   return (
-    <section className="bc-Features w-full bc-section">
+    <section className="bc-Features w-full bc-section" id="features">
       <div className="bc-section-content">
         <div className="bc-sec-badge" ref={revealRef}>
           Features
