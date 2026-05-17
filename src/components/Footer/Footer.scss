@@ -1,7 +1,13 @@
 .bc-Footer {
   padding: 0 24px;
-  border-top: 0.5px solid var(--border-color);
-  background: var(--surface-color);
+  &.main {
+    border-top: 0.5px solid var(--border-color);
+    background: var(--surface-color);
+
+    .bc-footer-bottom {
+      border-top: 0.5px solid var(--border-color);
+    }
+  }
 }
 
 .bc-nav-logo {
@@ -86,7 +92,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 0.5px solid var(--border-color);
+
   padding-top: 32px;
   padding-bottom: 32px;
   flex-wrap: wrap;

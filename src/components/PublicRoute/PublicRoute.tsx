@@ -8,13 +8,15 @@ import { Navigate } from 'react-router-dom';
  * Shows a loading state while authentication is being resolved.
  */
 const PublicRoute = ({ children }: { children: ReactNode }) => {
-  const { accessToken, isAuthLoading, user } = useAuth();
+  const { accessToken } = useAuth();
 
-  if (isAuthLoading) {
-    return <div>Loading...</div>;
-  }
+  // This component will handle only routing things
+  // so if token is present then redirect it to chat page and wont't wait for token to validate
+  // if (isAuthLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (accessToken && user && user.id) {
+  if (accessToken) {
     return <Navigate to={'/chat'} replace />;
   }
 

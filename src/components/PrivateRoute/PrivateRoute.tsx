@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
+import FullPageLoader from '../FullPageLoader/FullPageLoader';
 
 /**
  * Guards protected routes by rendering children only after authentication is
@@ -11,8 +12,9 @@ import { Navigate } from 'react-router-dom';
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { accessToken, isAuthLoading, user } = useAuth();
 
+  // TODO - replace FullPageLoader with CHat UI skeleton
   if (isAuthLoading) {
-    return <div>Loading</div>;
+    return <FullPageLoader />;
   }
 
   if (accessToken && user && user.id) {

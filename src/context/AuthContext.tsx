@@ -30,7 +30,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [user, setUser] = useState<UserInterface | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('accessToken') ?? null);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             // may be during api call token is changed, so this token may be not always latest
             // so don't depend on this context accessToken and use localStorage if req
             // we are using cookies for all api calls so it's not a problem for this project
+
             accessToken = localStorage.getItem('accessToken');
             setUser(res.data.user);
             setAccessToken(accessToken);

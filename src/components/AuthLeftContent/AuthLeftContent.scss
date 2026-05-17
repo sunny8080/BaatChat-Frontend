@@ -29,6 +29,7 @@
   left: -80px;
   filter: blur(80px);
   animation: bcAuthOrbit 10s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .bc-auth-left-bottom-orb {
@@ -42,6 +43,7 @@
   filter: blur(60px);
   animation: bcAuthOrbit 14s ease-in-out infinite;
   animation-delay: -5s;
+  pointer-events: none;
 }
 
 .bc-left-center {
