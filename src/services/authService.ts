@@ -149,6 +149,8 @@ export const getCurrentUser = async (): Promise<ApiResponse> => {
     const res = await apiClient.get(AUTH_ROUTES.GET_CURRENT_USER);
     response = res.data;
   } catch (error: any) {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('userId');
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     response = error?.response?.data;
   }
@@ -164,7 +166,10 @@ export const logOutUser = async (): Promise<ApiResponse> => {
   let response = null;
   try {
     const res = await apiClient.get(AUTH_ROUTES.GET_LOGOUT);
-    // TODO - we have to clear localStorage also, except login method used earlier
+    if (res.data && res.data.success) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userId');
+    }
     response = res.data;
   } catch (error: any) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');

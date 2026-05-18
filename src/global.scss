@@ -7,6 +7,10 @@
   transition: all 0.2s;
   border: none;
   font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 
   &.bc-btn-primary {
     background: var(--violet-color);
@@ -37,6 +41,31 @@
     &:hover {
       background: #d97706;
       transform: translateY(-1px);
+    }
+  }
+
+  &.warning {
+    background: var(--red-color);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25);
+
+    &:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(239, 68, 68, 0.35);
+    }
+  }
+
+  &.warning-outline {
+    background: transparent;
+    border: 0.5px solid rgba(239, 68, 68, 0.25);
+    color: var(--red-color);
+    font-size: 12px;
+    padding: 10px;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.5);
     }
   }
 }

@@ -47,3 +47,18 @@ export const mockApiDelay = (delay: number) => {
     setTimeout(resolve, delay);
   });
 };
+
+/**
+ * Builds initials from the first two words in a display name.
+ *
+ * @param name Display name to convert.
+ * @returns Up to two initials, or an empty string when no name is provided.
+ */
+export const getAvatarTxt = (name: string | undefined) => {
+  if (!name) return '';
+  return name
+    .split(' ')
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join('');
+};

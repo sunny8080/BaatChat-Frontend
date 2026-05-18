@@ -1,0 +1,110 @@
+.bc-ChatSidebar {
+  width: 4rem;
+  min-height: 100vh;
+  background: var(--surface-color);
+  border-right: 0.5px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 0;
+  gap: 2px;
+  flex-shrink: 0;
+  justify-content: space-between;
+
+  .bc-cs-top,
+  .bc-cs-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .bc-cs-logo {
+    width: 38px;
+    height: 38px;
+    background: #1a0a2e;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.5px solid var(--border-color);
+    margin-bottom: 14px;
+    cursor: pointer;
+  }
+
+  .bc-cs-nav-item {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    font-size: 18px;
+    color: var(--muted-color);
+
+    &.active {
+      background: rgba(124, 58, 237, 0.2);
+      color: var(--lavender-color);
+    }
+
+    &:hover {
+      background: rgba(124, 58, 237, 0.15);
+      color: var(--lavender-color);
+    }
+    .bc-cs-nav-badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      min-width: 14px;
+      height: 14px;
+      background: var(--red-color);
+      border-radius: 7px;
+      font-size: 8px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 3px;
+      border: 1.5px solid var(--surface-color);
+    }
+  }
+
+  .bc-cs-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--violet-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+    position: relative;
+    color: var(--white-color);
+    text-transform: uppercase;
+
+    &:hover {
+      background: var(--violet-color);
+      border-color: var(--lavender-color);
+      color: var(--white-color);
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 9px;
+      height: 9px;
+      background: var(--green-color);
+      border-radius: 50%;
+      border: 1.5px solid var(--surface-color);
+    }
+  }
+}

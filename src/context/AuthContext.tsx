@@ -47,11 +47,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userId = localStorage.getItem('userId');
 
       if (accessToken && userId) {
-        // user is logged in, so get current user details
-        const res = await getCurrentUser();
+        try {
+          // user is logged in, so get current user details
+          const res = await getCurrentUser();
 
-        if (res && res.success) {
-          try {
+          if (res && res.success) {
             // may be during api call token is changed, so this token may be not always latest
             // so don't depend on this context accessToken and use localStorage if req
             // we are using cookies for all api calls so it's not a problem for this project
@@ -59,15 +59,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             accessToken = localStorage.getItem('accessToken');
             setUser(res.data.user);
             setAccessToken(accessToken);
-          } catch (error) {
-            setIsAuthLoading(false);
-          } finally {
-            setIsAuthLoading(false);
+          } else {
+            setUser(null);
+            setAccessToken(null);
           }
+        } catch (error) {
+          // setIsAuthLoading(false);
+        } finally {
+          setIsAuthLoading(false);
         }
-      } else {
-        setIsAuthLoading(false);
       }
+      setIsAuthLoading(false);
     };
 
     loadUser();
