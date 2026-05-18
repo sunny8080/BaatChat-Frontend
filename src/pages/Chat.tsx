@@ -3,10 +3,8 @@ import ChatSidebar from '../components/ChatSidebar/ChatSidebar';
 import './Chat.scss';
 import { logOutUser } from '../services/authService';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { BellOff, LogOut, MessageCircleMore, MoveLeft } from 'lucide-react';
 import Modal from '../components/Modal/Modal';
-import { useAuth } from '../context/AuthContext';
 
 export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Users' | 'Settings' | 'Profile';
 
@@ -14,8 +12,6 @@ const Chat = () => {
   const [activeTab, setActiveTab] = useState<ChatActiveTabs>('ChatList');
   const [loading, setLoading] = useState(false);
   const [showLogoutModal, setShowLogOutModal] = useState(false);
-  const navigate = useNavigate();
-  const { setAccessToken, setUser } = useAuth();
 
   const handleLogout = async () => {
     setLoading(true);
@@ -25,9 +21,7 @@ const Chat = () => {
       toast.success('Logout successfully!');
 
       setTimeout(() => {
-        setUser(null);
-        setAccessToken(null);
-        navigate('/chat');
+        window.location.href = '/';
       }, 300);
     }
     setLoading(false);
