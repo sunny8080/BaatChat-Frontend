@@ -5,6 +5,7 @@ import { logOutUser } from '../services/authService';
 import toast from 'react-hot-toast';
 import { BellOff, LogOut, MessageCircleMore, MoveLeft } from 'lucide-react';
 import Modal from '../components/Modal/Modal';
+import { socket } from '../socket/socket';
 
 export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Users' | 'Settings' | 'Profile';
 
@@ -19,6 +20,7 @@ const Chat = () => {
     const res = await logOutUser();
     if (res && res.success) {
       toast.success('Logout successfully!');
+      socket.disconnect();
 
       setTimeout(() => {
         window.location.href = '/';

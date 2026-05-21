@@ -1,6 +1,7 @@
 import type UserInterface from '../interfaces/User';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { getCurrentUser } from '../services/authService';
+import { socket } from '../socket/socket.ts';
 
 /**
  * Authentication state exposed throughout the frontend.
@@ -59,9 +60,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             accessToken = localStorage.getItem('accessToken');
             setUser(res.data.user);
             setAccessToken(accessToken);
+            socket.connect();
           } else {
             setUser(null);
             setAccessToken(null);
+            socket.disconnect();
           }
         } catch (error) {
           // setIsAuthLoading(false);
