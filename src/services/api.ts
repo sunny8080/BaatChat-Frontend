@@ -77,3 +77,17 @@ export const AUTH_ROUTES = {
   GET_CURRENT_USER: '/auth/me',
   GET_CHECK_USERNAME: '/auth/check-username',
 };
+
+/**
+ * Backend user endpoint paths used by user profile and search requests.
+ */
+export const USER_ROUTES = {
+  POST_SEARCH_USERS: '/users/search-users',
+  POST_GET_USER_DETAILS: '/users/get-user-details',
+  POST_SEND_FRIEND_REQUEST: '/users/send-friend-request',
+  POST_ACCEPT_FRIEND_REQUEST: '/users/accept-friend-request',
+  POST_REJECT_FRIEND_REQUEST: '/users/reject-friend-request',
+  POST_CANCEL_FRIEND_REQUEST: '/users/cancel-friend-request',
+  PATCH_UPDATE_USER: '/users/update-user-details',
+  GET_FETCH_RECEIVED_FRIEND_REQUESTS: '/users/fetch-received-friend-requests',
+};

@@ -14,6 +14,8 @@ type Props = {
 const ChatSidebar = ({ activeTab, setActiveTab, setShowLogOutModal }: Props) => {
   const { user } = useAuth();
 
+  if (!user) return;
+
   return (
     <div className="bc-ChatSidebar">
       <div className="bc-cs-top">
@@ -62,7 +64,7 @@ const ChatSidebar = ({ activeTab, setActiveTab, setShowLogOutModal }: Props) => 
         </div>
 
         <div className="bc-cs-nav-item bc-cs-avatar" title="User Profile">
-          {user?.avatarUrl ? <img src={user.avatarUrl} alt={user?.name} /> : getAvatarTxt(user?.name)}
+          <img src={user!.avatarUrl!} alt={user?.name} />
         </div>
       </div>
     </div>

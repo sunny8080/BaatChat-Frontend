@@ -1,18 +1,19 @@
-import type { UserLoginType } from "../utils/constant";
-
+import type { UserLoginType, FriendshipStatusType } from '../utils/constant';
 
 // todo write js docs
 export default interface UserInterface {
   id: string;
   name: string;
-  email: string;
-  username: string;
-  isEmailVerified: boolean;
-  avatarUrl: string;
   bio: string;
-  loginType: UserLoginType;
-  lastSeenAt: string;
-  createdAt: string;
-  updatedAt: string;
+  username: string;
+  avatarUrl: string;
+  email?: string;
+  phone?: string;
+  isEmailVerified?: boolean;
+  loginType?: UserLoginType;
+  lastSeenAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  isOnline?: boolean;
+  status: FriendshipStatusType;
 }
-

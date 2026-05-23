@@ -1,4 +1,8 @@
 import morseCodes from '../data/morseCodes.json';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import type { Dispatch, SetStateAction } from 'react';
+dayjs.extend(relativeTime);
 
 /**
  * Indicates whether the app is running in the development environment.
@@ -61,4 +65,60 @@ export const getAvatarTxt = (name: string | undefined) => {
     .map((w) => w[0])
     .slice(0, 2)
     .join('');
+};
+
+/**
+ * Formats a timestamp into a compact last-seen label.
+ *
+ * @param date Timestamp string to format.
+ * @returns A relative last-seen label, or a date for older timestamps.
+ */
+export const formatLastSeen = (date: string, isOnline: boolean = false) => {
+  const now = dayjs();
+  const target = dayjs(date);
+
+  const minutes = now.diff(target, 'minute');
+  const hours = now.diff(target, 'hour');
+  const days = now.diff(target, 'day');
+
+  if (minutes < 1 || isOnline) {
+    return 'Just now';
+  }
+
+  if (minutes < 60) {
+    return `${minutes}m ago`;
+  }
+
+  if (hours < 24) {
+    return `${hours}h ago`;
+  }
+
+  if (days === 1) {
+    return 'Yesterday';
+  }
+
+  if (days < 7) {
+    return `${days}d ago`;
+  }
+
+  return target.format('DD MMM YYYY');
+};
+
+/**
+ * Copies text to the clipboard and optionally marks an item as copied for 2 seconds.
+ *
+ * @param copyText - Text to write to the user's clipboard.
+ * @param copiedId - Optional identifier to set while the copied state is active.
+ * @param setCopiedId - Optional React state setter used to show and clear copied state.
+ */
+export const copyToClipboard = async (copyText: string, copiedId: string = '', setCopiedId: Dispatch<SetStateAction<string>> | null = null) => {
+  try {
+    await navigator.clipboard.writeText(copyText);
+    if (copiedId && setCopiedId) {
+      setCopiedId(copiedId);
+      setTimeout(() => setCopiedId(''), 2000);
+    }
+  } catch (error) {
+    console.error('Failed to copy text !!');
+  }
 };

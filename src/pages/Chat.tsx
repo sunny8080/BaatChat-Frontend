@@ -6,6 +6,10 @@ import toast from 'react-hot-toast';
 import { BellOff, LogOut, MessageCircleMore, MoveLeft } from 'lucide-react';
 import Modal from '../components/Modal/Modal';
 import { socket } from '../socket/socket';
+import SearchUsers from '../components/SearchUsers/SearchUsers';
+import UserDetails from '../components/UserDetails/UserDetails';
+import type UserInterface from '../interfaces/User';
+import { getUserDetails } from '../services/usersServices';
 
 export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Users' | 'Settings' | 'Profile';
 
@@ -13,6 +17,10 @@ const Chat = () => {
   const [activeTab, setActiveTab] = useState<ChatActiveTabs>('ChatList');
   const [loading, setLoading] = useState(false);
   const [showLogoutModal, setShowLogOutModal] = useState(false);
+
+  // Related to user details
+  const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
+  const [_, setFetchingUserDetails] = useState(false);
 
   const handleLogout = async () => {
     setLoading(true);
@@ -29,10 +37,25 @@ const Chat = () => {
     setLoading(false);
   };
 
+  const handleUserItemClick = async (username: string) => {
+    setFetchingUserDetails(true);
+    const res = await getUserDetails({ username });
+    if (res && res.success) {
+      setSelectedUser(res.data?.user);
+    }
+    setFetchingUserDetails(false);
+  };
+
   return (
     <div className="bc-Chat">
       <div className="bc-chat-content">
-        <ChatSidebar activeTab={activeTab} setActiveTab={setActiveTab} setShowLogOutModal={setShowLogOutModal} />
+        <div className="bc-chat-sidebar-container">
+          <ChatSidebar activeTab={activeTab} setActiveTab={setActiveTab} setShowLogOutModal={setShowLogOutModal} />
+        </div>
+
+        <div className="bc-chat-panel-1">{activeTab === 'Users' && <SearchUsers selectedUser={selectedUser} handleUserItemClick={handleUserItemClick} setSelectedUser={setSelectedUser} />}</div>
+
+        <div className="bc-chat-panel-2">{activeTab === 'Users' && <UserDetails user={selectedUser} />}</div>
       </div>
 
       {showLogoutModal && (

@@ -1,0 +1,206 @@
+.bc-SearchUsers {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bc-panel-header {
+  padding: 14px 14px 10px;
+  border-bottom: 0.5px solid var(--border-color);
+  flex-shrink: 0;
+
+  .bc-panel-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .bc-panel-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .bc-cta-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(124, 58, 237, 0.15);
+      border: 0.5px solid rgba(124, 58, 237, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--lavender-color);
+      transition: all 0.2s;
+      flex-shrink: 0;
+
+      &:hover {
+        background: var(--violet);
+        color: #fff;
+      }
+    }
+  }
+
+  .bc-friend-req-txt {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--violet-text-color);
+    letter-spacing: -0.5px;
+    margin-top: 8px;
+    margin-bottom: -4px;
+  }
+
+  .bc-panel-search {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--card-color);
+    border: 0.5px solid var(--border-color);
+    border-radius: 11px;
+    padding: 8px 11px;
+    transition: border-color 0.2s;
+
+    &:focus-within {
+      border-color: rgba(124, 58, 237, 0.5);
+    }
+
+    span.bc-panel-icon {
+      color: var(--muted-color);
+      cursor: pointer;
+    }
+
+    input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 12px;
+      color: var(--white-color);
+      font-family: "Inter", sans-serif;
+
+      &::placeholder {
+        color: var(--muted-color);
+      }
+    }
+  }
+}
+
+.bc-search-users-list-container {
+  flex: 1;
+  padding: 6px;
+  min-height: 0;
+  color: var(--muted-color);
+
+  .search-users-txt {
+    font-size: 13px;
+    margin-top: 1rem;
+    margin-inline: 8px;
+  }
+  .searching-txt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    margin-top: 1rem;
+    margin-inline: 8px;
+  }
+}
+
+.bc-search-users-list {
+  overflow-y: auto;
+  height: 100%;
+
+  .bc-search-user-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    margin-bottom: 1px;
+
+    &:hover {
+      background: rgba(124, 58, 237, 0.07);
+    }
+
+    &.active {
+      background: rgba(124, 58, 237, 0.14);
+      border: 0.5px solid rgba(124, 58, 237, 0.2);
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 18%;
+        bottom: 18%;
+        width: 3px;
+        background: var(--violet-color);
+        border-radius: 0 3px 3px 0;
+      }
+    }
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    position: relative;
+
+    img {
+      border-radius: 50%;
+    }
+
+    .presence-dot {
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1.5px solid var(--surface-color);
+
+      &.online {
+        background: var(--green-color);
+      }
+      &.offline {
+        background: var(--muted-color);
+      }
+    }
+  }
+  .user-details {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 140px;
+    }
+    .user-username {
+      font-size: 11px;
+      color: var(--muted-color);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

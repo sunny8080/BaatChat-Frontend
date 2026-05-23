@@ -1,5 +1,5 @@
 .bc-ChatSidebar {
-  width: 4rem;
+  width: 100%;
   min-height: 100vh;
   background: var(--surface-color);
   border-right: 0.5px solid var(--border-color);
@@ -8,7 +8,6 @@
   align-items: center;
   padding: 14px 0;
   gap: 2px;
-  flex-shrink: 0;
   justify-content: space-between;
 
   .bc-cs-top,
@@ -88,6 +87,10 @@
     position: relative;
     color: var(--white-color);
     text-transform: uppercase;
+
+    img {
+      border-radius: 50%;
+    }
 
     &:hover {
       background: var(--violet-color);

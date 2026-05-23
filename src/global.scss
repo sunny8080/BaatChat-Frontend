@@ -35,7 +35,8 @@
 
   &.bc-btn-gold {
     background: var(--gold-color);
-    color: #1a0a2e;
+    // color: #1a0a2e;
+    color: var(--white-color);
     font-weight: 700;
 
     &:hover {
