@@ -1,7 +1,7 @@
 import { Search } from 'lucide-react';
 import './SearchUsers.scss';
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
-import type UserInterface from '../../interfaces/User';
+import type UserInterface from '../../interfaces/UserInterface';
 import toast from 'react-hot-toast';
 import { fetchFriends, fetchReceivedFriendRequest, searchUsers } from '../../services/usersServices';
 import type { ChatActiveTabs } from '../../pages/Chat';

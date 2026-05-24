@@ -8,7 +8,7 @@ import Modal from '../components/Modal/Modal';
 import { socket } from '../socket/socket';
 import SearchUsers from '../components/SearchUsers/SearchUsers';
 import UserDetails from '../components/UserDetails/UserDetails';
-import type UserInterface from '../interfaces/User';
+import type UserInterface from '../interfaces/UserInterface';
 import { getUserDetails } from '../services/usersServices';
 import ChatList from '../components/ChatList/ChatList';
 import ChatDetails from '../components/ChatDetails/ChatDetails';

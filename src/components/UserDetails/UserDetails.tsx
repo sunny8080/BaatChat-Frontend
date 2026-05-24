@@ -1,5 +1,5 @@
 import { AtSign, Check, Clock, Copy, CopyCheck, Mail, MessageCircleMore, PenLine, Phone, Send, UserPlus, Video, X } from 'lucide-react';
-import type UserInterface from '../../interfaces/User';
+import type UserInterface from '../../interfaces/UserInterface';
 import './UserDetails.scss';
 import { copyToClipboard, formatLastSeen, getRandomMorse } from '../../utils/utils';
 import { FriendshipStatus } from '../../utils/constant';

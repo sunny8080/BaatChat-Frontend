@@ -1,4 +1,4 @@
-import type UserInterface from './User';
+import type UserInterface from './UserInterface';
 import type { MessageType } from '../utils/constant';
 import type ChatInterface from './ChatInterface';
 

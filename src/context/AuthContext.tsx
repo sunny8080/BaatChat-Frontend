@@ -1,4 +1,4 @@
-import type UserInterface from '../interfaces/User';
+import type UserInterface from '../interfaces/UserInterface.ts';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { getCurrentUser } from '../services/authService';
 import { socket } from '../socket/socket.ts';
