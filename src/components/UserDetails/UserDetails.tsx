@@ -106,14 +106,14 @@ const UserDetails = ({ user }: Props) => {
               {user.status === FriendshipStatus.REQUESTED && (
                 <>
                   {!reqRejected && (
-                    <button className="bc-btn bc-btn-primary" onClick={() => handleAcceptRequest(user.username)}>
+                    <button className="bc-btn bc-btn-primary" onClick={() => handleAcceptRequest(user.username!)}>
                       <Check size={20} />
                       {reqAccepted ? 'Request accepted' : 'Accept request'}
                     </button>
                   )}
 
                   {!reqAccepted && (
-                    <button className="bc-btn warning-outline" onClick={() => handleRejectRequest(user.username)}>
+                    <button className="bc-btn warning-outline" onClick={() => handleRejectRequest(user.username!)}>
                       <X size={20} />
                       {reqRejected ? 'Request rejected' : 'Reject request'}
                     </button>
@@ -122,7 +122,7 @@ const UserDetails = ({ user }: Props) => {
               )}
 
               {!user.status && (
-                <button className="bc-btn bc-btn-primary" onClick={() => handleSendRequest(user.username)}>
+                <button className="bc-btn bc-btn-primary" onClick={() => handleSendRequest(user.username!)}>
                   <Send size={20} />
                   {reqSent ? 'Request sent' : 'Send request'}
                 </button>
@@ -137,7 +137,7 @@ const UserDetails = ({ user }: Props) => {
                     </button>
                   )}
 
-                  <button className="bc-btn warning-outline" onClick={() => handleCancelRequest(user.username)}>
+                  <button className="bc-btn warning-outline" onClick={() => handleCancelRequest(user.username!)}>
                     <X size={20} />
                     {reqCancelled ? 'Request cancelled' : 'Cancel request'}
                   </button>
@@ -233,7 +233,7 @@ const UserDetails = ({ user }: Props) => {
                 </div>
               </div>
 
-              <div className="copy-icon" onClick={() => copyToClipboard(user.username, `${user.id}-username`, setCopiedId)}>
+              <div className="copy-icon" onClick={() => copyToClipboard(user.username!, `${user.id}-username`, setCopiedId)}>
                 {copiedId === `${user.id}-username` ? <CopyCheck /> : <Copy />}
               </div>
             </div>

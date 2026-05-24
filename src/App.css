@@ -88,3 +88,106 @@ body::before {
   --violet-text-color: #ddd6fe;
   --red-color: #ef4444;
 }
+
+/* START - Scrollbar settings for BaatChat app  */
+/* except default, some issue with other scrollbar, check later */
+
+/* ── GLOBAL DEFAULT (thin violet) ── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2d1f4e transparent; /* Firefox */
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px; /* for horizontal scrollbars */
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #2d1f4e;
+    border-radius: 10px;
+    transition: background 0.2s;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+  }
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+/* This scrollbar can be used in sidebar, chat list */
+.thinSubtleScrollbar {
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+}
+
+/* This scrollbar can be used in chat details or large areas like message */
+.thinGhostScrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(45, 31, 78, 0.6) transparent;
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(124, 58, 237, 0.5);
+  }
+}
+
+/* This scrollbar can be used in modal like settings or right panel */
+.mediumScrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #2d1f4e #130d24;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #130d24;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #2d1f4e;
+    border-radius: 10px;
+    border: 1px solid #130d24; /* inset padding trick */
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+  }
+}
+
+/* This scrollbar can be used in filter tabs or marquee */
+.horizontalScrollbar {
+  scrollbar-width: none; /* hide by default — they scroll via overflow */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* This scrollbar can be used in call history of files */
+.gldScrollbar {
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #2d1f4e;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #f59e0b; /* Haldi Gold on hover */
+  }
+}
+
+/* This scrollbar can be used in text area input element */
+textarea {
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+}
+
+/* END - Scrollbar settings for BaatChat app */

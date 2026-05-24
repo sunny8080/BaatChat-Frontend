@@ -10,8 +10,10 @@ import SearchUsers from '../components/SearchUsers/SearchUsers';
 import UserDetails from '../components/UserDetails/UserDetails';
 import type UserInterface from '../interfaces/User';
 import { getUserDetails } from '../services/usersServices';
+import ChatList from '../components/ChatList/ChatList';
+import ChatDetails from '../components/ChatDetails/ChatDetails';
 
-export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Users' | 'Settings' | 'Profile';
+export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Friends' | 'Users' | 'Settings' | 'Profile';
 
 const Chat = () => {
   const [activeTab, setActiveTab] = useState<ChatActiveTabs>('ChatList');
@@ -53,9 +55,16 @@ const Chat = () => {
           <ChatSidebar activeTab={activeTab} setActiveTab={setActiveTab} setShowLogOutModal={setShowLogOutModal} />
         </div>
 
-        <div className="bc-chat-panel-1">{activeTab === 'Users' && <SearchUsers selectedUser={selectedUser} handleUserItemClick={handleUserItemClick} setSelectedUser={setSelectedUser} />}</div>
+        <div className="bc-chat-panel-1">
+          {(activeTab === 'Users' || activeTab === 'Friends') && <SearchUsers selectedUser={selectedUser} handleUserItemClick={handleUserItemClick} setSelectedUser={setSelectedUser} activeTab={activeTab} key={activeTab} />}
 
-        <div className="bc-chat-panel-2">{activeTab === 'Users' && <UserDetails user={selectedUser} />}</div>
+          {activeTab === 'ChatList' && <ChatList setActiveTab={setActiveTab} key={activeTab} />}
+        </div>
+
+        <div className="bc-chat-panel-2">
+          {(activeTab === 'Users' || activeTab === 'Friends') && <UserDetails user={selectedUser} key={selectedUser?.id} />}
+          {activeTab === 'ChatList' && <ChatDetails />}
+        </div>
       </div>
 
       {showLogoutModal && (

@@ -1,6 +1,6 @@
 import './ChatSidebar.scss';
 import bcLogo from '../../assets/logo/bc-logo.svg';
-import { FolderOpen, LogOut, MessageCircleMore, Phone, Settings, UserRoundSearch } from 'lucide-react';
+import { ContactRound, FolderOpen, LogOut, MessageCircleMore, Phone, Settings, UserRoundSearch } from 'lucide-react';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import { useAuth } from '../../context/AuthContext';
 import { getAvatarTxt } from '../../utils/utils';
@@ -44,6 +44,13 @@ const ChatSidebar = ({ activeTab, setActiveTab, setShowLogOutModal }: Props) => 
           onClick={() => setActiveTab('Files')}
           title="Files">
           <FolderOpen />
+        </div>
+        <div
+          className={`bc-cs-nav-item 
+          ${activeTab === 'Friends' ? 'active' : ''}`}
+          onClick={() => setActiveTab('Friends')}
+          title="Friends">
+          <ContactRound />
         </div>
         <div
           className={`bc-cs-nav-item 

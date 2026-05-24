@@ -1,5 +1,5 @@
 .bc-SearchUsers {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -43,13 +43,40 @@
     }
   }
 
+  .bc-panel-header-ctas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    button {
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0.9;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .btn1 {
+      color: var(--gold-color);
+    }
+    .btn2 {
+      color: var(--green-color);
+    }
+  }
+
   .bc-friend-req-txt {
     font-size: 16px;
     font-weight: 600;
     color: var(--violet-text-color);
     letter-spacing: -0.5px;
-    margin-top: 8px;
-    margin-bottom: -4px;
+    margin-top: 10px;
+    margin-inline: -14px;
+    padding: 10px 14px;
+    padding-bottom: 0;
+    border-top: 0.5px solid var(--border-color);
   }
 
   .bc-panel-search {
@@ -85,11 +112,41 @@
       }
     }
   }
+
+  .bc-panel-filters {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    padding: 10px 14px;
+    padding-bottom: 0;
+    margin-top: 10px;
+    margin-inline: -14px;
+    border-top: 0.5px solid var(--border-color);
+    flex-shrink: 0;
+
+    .bc-panel-filter {
+      padding: 4px 11px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 0.5px solid var(--border-color);
+      color: var(--muted-color);
+      background: transparent;
+      transition: all 0.2s;
+
+      &.active {
+        background: rgba(124, 58, 237, 0.2);
+        border-color: rgba(124, 58, 237, 0.5);
+        color: var(--lavender-color);
+      }
+    }
+  }
 }
 
 .bc-search-users-list-container {
   flex: 1;
-  padding: 6px;
   min-height: 0;
   color: var(--muted-color);
 
@@ -112,6 +169,7 @@
 .bc-search-users-list {
   overflow-y: auto;
   height: 100%;
+  padding: 6px;
 
   .bc-search-user-item {
     display: flex;
@@ -123,6 +181,7 @@
     transition: all 0.2s;
     position: relative;
     margin-bottom: 1px;
+    border: 0.5px solid transparent;
 
     &:hover {
       background: rgba(124, 58, 237, 0.07);
@@ -130,7 +189,7 @@
 
     &.active {
       background: rgba(124, 58, 237, 0.14);
-      border: 0.5px solid rgba(124, 58, 237, 0.2);
+      border-color: rgba(124, 58, 237, 0.2);
 
       &::before {
         content: "";
@@ -194,6 +253,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 140px;
+      text-transform: capitalize;
     }
     .user-username {
       font-size: 11px;

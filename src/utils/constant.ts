@@ -34,3 +34,38 @@ export const FriendshipStatus = {
  * Union type of all supported friendship status values.
  */
 export type FriendshipStatusType = (typeof FriendshipStatus)[keyof typeof FriendshipStatus];
+
+/**
+ * Supported chat conversation types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export const ChatTypes = {
+  PERSONAL: 'personal',
+  GROUP: 'group',
+} as const;
+
+/**
+ * Union type of all supported chat conversation type values.
+ */
+export type ChatType = (typeof ChatTypes)[keyof typeof ChatTypes];
+
+/**
+ * Supported message content types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export const MessageTypes = {
+  TEXT: 'text',
+  IMAGE: 'image',
+  VIDEO: 'video',
+  AUDIO: 'audio',
+  FILE: 'file',
+} as const;
+
+/**
+ * Union type of all supported message content type values.
+ */
+export type MessageType = (typeof MessageTypes)[keyof typeof MessageTypes];

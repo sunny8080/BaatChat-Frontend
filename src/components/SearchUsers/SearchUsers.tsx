@@ -3,20 +3,23 @@ import './SearchUsers.scss';
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import type UserInterface from '../../interfaces/User';
 import toast from 'react-hot-toast';
-import { fetchReceivedFriendRequest, searchUsers } from '../../services/usersServices';
+import { fetchFriends, fetchReceivedFriendRequest, searchUsers } from '../../services/usersServices';
+import type { ChatActiveTabs } from '../../pages/Chat';
 
 type Props = {
   selectedUser: UserInterface | null;
   handleUserItemClick: (userId: string) => void;
   setSelectedUser: Dispatch<SetStateAction<UserInterface | null>>;
+  activeTab: ChatActiveTabs;
 };
 
-const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser }: Props) => {
+const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser, activeTab }: Props) => {
   const [users, setUsers] = useState<UserInterface[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [receivedFriendReq, setReceivedFriendReq] = useState([]);
   const [showFriendReq, setShowFriendReq] = useState(true);
+  const isFriendTab = activeTab === 'Friends';
 
   const handleSearchUsers = async () => {
     if (searchText.length < 3) {
@@ -45,6 +48,7 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser }: Pro
   };
 
   useEffect(() => {
+    // TOD - optimize it using zustand store
     const fetchReq = async () => {
       setLoading(true);
       const res = await fetchReceivedFriendRequest();
@@ -55,14 +59,29 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser }: Pro
       setLoading(false);
     };
 
-    fetchReq();
-  }, []);
+    const loadFriends = async () => {
+      setLoading(true);
+      const res = await fetchFriends();
+      if (res && res.success) {
+        setUsers(res.data?.friends || []);
+      }
+      setLoading(false);
+    };
+
+    console.log(isFriendTab);
+
+    if (isFriendTab) {
+      loadFriends();
+    } else {
+      fetchReq();
+    }
+  }, [isFriendTab]);
 
   return (
     <div className="bc-SearchUsers">
       <div className="bc-panel-header">
         <div className="bc-panel-title-row">
-          <h3 className="bc-panel-title">Search Users</h3>
+          <h3 className="bc-panel-title">{isFriendTab ? 'Search Friends' : 'Search Users'}</h3>
         </div>
 
         <div className="bc-panel-search">
@@ -79,10 +98,8 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser }: Pro
           />
         </div>
 
-        {showFriendReq && receivedFriendReq.length ? <p className="bc-friend-req-txt">Received Friend Request</p> : null}
+        {isFriendTab && showFriendReq && receivedFriendReq.length ? <p className="bc-friend-req-txt">Received Friend Request</p> : null}
       </div>
-
-      {/* TODO - add list of friends request sent and received */}
 
       <div className="bc-search-users-list-container">
         {!users && !loading && <div className="search-users-txt">Connect with BaatChat users by searching with their name, username, or email.</div>}
@@ -98,7 +115,7 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser }: Pro
         {!loading && users && users.length ? (
           <ul className="bc-search-users-list">
             {users.map((usr, ind) => (
-              <li className={`bc-search-user-item ${selectedUser && selectedUser.id === usr.id ? 'active' : ''}`} key={ind} onClick={() => handleUserItemClick(usr.username)}>
+              <li className={`bc-search-user-item ${selectedUser && selectedUser.id === usr.id ? 'active' : ''}`} key={ind} onClick={() => handleUserItemClick(usr.username!)}>
                 <div className="user-avatar">
                   <img src={usr.avatarUrl} alt={usr.name} />
                   {/* <div className={`presence-dot ${usr.isOnline ? 'online' : 'offline'}`}></div> */}

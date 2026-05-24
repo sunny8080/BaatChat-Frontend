@@ -105,6 +105,35 @@ export const formatLastSeen = (date: string, isOnline: boolean = false) => {
 };
 
 /**
+ * Formats a message timestamp for chat list previews.
+ *
+ * @param date Timestamp string to format.
+ * @returns A time for today, weekday for recent messages, date for older messages, or an empty string for missing/invalid input.
+ */
+export const formatLastMessageAt = (date: string | undefined) => {
+  if (!date) return '';
+
+  const target = dayjs(date);
+  if (!target.isValid()) return '';
+
+  const days = dayjs().startOf('day').diff(target.startOf('day'), 'day');
+
+  if (days === 0) {
+    return target.format('h:mm A'); // 4:12 AM
+  }
+
+  if (days === 1) {
+    return 'yesterday'; // yesterday
+  }
+
+  if (days > 1 && days < 7) {
+    return target.format('dddd'); // Monday, Friday
+  }
+
+  return target.format('DD/MM/YYYY'); // 24/04/2026
+};
+
+/**
  * Copies text to the clipboard and optionally marks an item as copied for 2 seconds.
  *
  * @param copyText - Text to write to the user's clipboard.

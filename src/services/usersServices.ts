@@ -126,3 +126,20 @@ export const fetchReceivedFriendRequest = async (): Promise<ApiResponse> => {
   }
   return response;
 };
+
+/**
+ * Fetches accepted friends for the current user.
+ *
+ * @returns API response data from the friends request, or the error response data when the request fails.
+ */
+export const fetchFriends = async (): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.get(USER_ROUTES.GET_FETCH_FRIENDS);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
