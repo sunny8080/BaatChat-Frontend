@@ -7,6 +7,7 @@ import { ChatTypes, type ChatType } from '../../utils/constant';
 import { formatLastMessageAt } from '../../utils/utils';
 import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
+import chatListData from '../../../../backend/src/data/chatItem.json';
 
 type Props = {
   setActiveTab: Dispatch<SetStateAction<ChatActiveTabs>>;
@@ -19,7 +20,7 @@ const ChatList = ({ setActiveTab }: Props) => {
   const [searchTxt, setSearchText] = useState('');
   const [currentChatFilter, setCurrentChatFilter] = useState<'all' | 'unread' | 'groups'>('all');
   const [selectedChatId, setSelectedChatId] = useState('');
-  const chats: ChatInterface[] = [];
+  const chats: ChatInterface[] = chatListData as ChatInterface[];
 
   // TODO - remove this
   if (chats.length === 0) return;
