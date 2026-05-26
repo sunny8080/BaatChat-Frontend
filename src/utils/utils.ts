@@ -81,7 +81,7 @@ export const formatLastSeen = (date: string, isOnline: boolean = false) => {
   const hours = now.diff(target, 'hour');
   const days = now.diff(target, 'day');
 
-  if (minutes < 1 || isOnline) {
+  if (isOnline) {
     return 'Just now';
   }
 
