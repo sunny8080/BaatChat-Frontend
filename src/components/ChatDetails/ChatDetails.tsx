@@ -1,28 +1,46 @@
 import './ChatDetails.scss';
-import { CirclePlus, MessageCircleMore, Mic, MoveLeft, Phone, Search, SendHorizontal, Smile, Video } from 'lucide-react';
+import {
+  CirclePlus,
+  MessageCircleMore,
+  Mic,
+  MoveLeft,
+  Phone,
+  Search,
+  SendHorizontal,
+  Smile,
+  Video,
+} from 'lucide-react';
 import type { ChatDetailsInterface } from '../../interfaces/ChatDetailsInterface';
 import { ChatTypes } from '../../utils/constant';
 import { formatLastSeen, getRandomMorse } from '../../utils/utils';
 import React, { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
 
 const randMorse = getRandomMorse();
 
 // TODO - add emoji picker
 
 const ChatDetails = () => {
-  const chat: ChatDetailsInterface = undefined;
+  const chatDetails: ChatDetailsInterface | null = useChatDetailsStore(
+    (state) => state.chatDetails,
+  );
   const [msgTxt, setMsgTxt] = useState('');
   const msgInputRef = useRef<HTMLTextAreaElement>(null);
 
-  if (!chat) return;
-
   const generateSubName = () => {
-    if (chat.type === 'personal') {
-      if (chat?.isOnline) return 'Online now';
-      else return 'Last seen ' + formatLastSeen(chat.lastSeenAt!, chat.isOnline);
+    if (!chatDetails) return;
+    if (chatDetails.type === 'personal') {
+      if (chatDetails?.isOnline) return 'Online now';
+      else
+        return (
+          'Last seen ' +
+          formatLastSeen(chatDetails.lastSeenAt!, chatDetails.isOnline)
+        );
     } else {
-      const name = chat.activeMembers?.map((mem) => mem.name?.split(' ')[0]).join(', ');
+      const name = chatDetails.activeMembers
+        ?.map((mem) => mem.name?.split(' ')[0])
+        .join(', ');
       return name;
     }
   };
@@ -36,7 +54,8 @@ const ChatDetails = () => {
     textArea.style.height = 'auto';
     const maxHeight = 5 * 24; // 5 lines max
     textArea.style.height = `${Math.min(textArea.scrollHeight, maxHeight)}px`;
-    textArea.style.overflowY = textArea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+    textArea.style.overflowY =
+      textArea.scrollHeight > maxHeight ? 'auto' : 'hidden';
   };
 
   const handleSendMessage = () => {
@@ -54,20 +73,25 @@ const ChatDetails = () => {
 
   return (
     <div className="bc-ChatDetails">
-      {!chat && (
+      {!chatDetails && (
         <div className="bc-no-item">
           <div className="bc-ni-icon">
             <MessageCircleMore />
           </div>
           <div className="bc-ni-title">Select chat to start</div>
-          <div className="bc-ni-sub">Choose a conversation or search for someone to message</div>
-          <div className="bc-ni-morse" title={`Decode this - ${randMorse.hint}`}>
+          <div className="bc-ni-sub">
+            Choose a conversation or search for someone to message
+          </div>
+          <div
+            className="bc-ni-morse"
+            title={`Decode this - ${randMorse.hint}`}
+          >
             {randMorse.morse}
           </div>
         </div>
       )}
 
-      {chat && (
+      {chatDetails && (
         <div className="bc-chat-details-wrap">
           {/* Header */}
           <div className="bc-cd-header">
@@ -75,12 +99,18 @@ const ChatDetails = () => {
               <div className="bc-cd-mobile-back-btn">
                 <MoveLeft size={16} />
               </div>
-              <div className={`bc-cd-avatar ${chat.type === ChatTypes.PERSONAL ? (chat.isOnline ? 'online' : 'offline') : ''}`}>
-                <img src={chat.avatarUrl} alt={chat.name} />
+              <div
+                className={`bc-cd-avatar ${chatDetails.type === ChatTypes.PERSONAL ? (chatDetails.isOnline ? 'online' : 'offline') : ''}`}
+              >
+                <img src={chatDetails.avatarUrl} alt={chatDetails.name} />
               </div>
               <div className="bc-cd-name-wrap">
-                <p className="bc-cd-name">{chat.name}</p>
-                <p className={`bc-cd-sub ${chat.isOnline ? 'online' : ''}`}>{generateSubName()}</p>
+                <p className="bc-cd-name">{chatDetails.name}</p>
+                <p
+                  className={`bc-cd-sub ${chatDetails.isOnline ? 'online' : ''}`}
+                >
+                  {generateSubName()}
+                </p>
               </div>
             </div>
 
@@ -102,12 +132,24 @@ const ChatDetails = () => {
 
           {/* input area */}
           <div className="bc-cd-input-container">
-            <button className="bc-cd-tool-btn bc-cd-file-input-btn" title="Attach a file">
+            <button
+              className="bc-cd-tool-btn bc-cd-file-input-btn"
+              title="Attach a file"
+            >
               <CirclePlus />
             </button>
 
             <div className="bc-cd-input-row">
-              <textarea className="bc-cd-msg-input" rows={1} ref={msgInputRef} name="msg-input" id="msg-input" placeholder="Type a message" onChange={handleMsgInput} onKeyDown={handleKeyDown}></textarea>
+              <textarea
+                className="bc-cd-msg-input"
+                rows={1}
+                ref={msgInputRef}
+                name="msg-input"
+                id="msg-input"
+                placeholder="Type a message"
+                onChange={handleMsgInput}
+                onKeyDown={handleKeyDown}
+              ></textarea>
 
               <div className="bc-cd-tool-btn bc-cd-emoji-picker">
                 <Smile />

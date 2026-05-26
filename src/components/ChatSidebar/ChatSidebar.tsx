@@ -3,7 +3,6 @@ import bcLogo from '../../assets/logo/bc-logo.svg';
 import { ContactRound, FolderOpen, LogOut, MessageCircleMore, Phone, Settings, UserRoundSearch } from 'lucide-react';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import { useAuth } from '../../context/AuthContext';
-import { getAvatarTxt } from '../../utils/utils';
 
 type Props = {
   activeTab: ChatActiveTabs;

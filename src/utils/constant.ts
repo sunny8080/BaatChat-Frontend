@@ -69,3 +69,20 @@ export const MessageTypes = {
  * Union type of all supported message content type values.
  */
 export type MessageType = (typeof MessageTypes)[keyof typeof MessageTypes];
+
+/**
+ * Supported filters for the chat list view.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export const ChatListFilterTypes = {
+  ALL: 'all',
+  UNREAD: 'unread',
+  GROUPS: 'groups',
+} as const;
+
+/**
+ * Union type of all supported chat list filter values.
+ */
+export type ChatListFilterType = (typeof ChatListFilterTypes)[keyof typeof ChatListFilterTypes];

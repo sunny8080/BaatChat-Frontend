@@ -1,23 +1,47 @@
-import { AtSign, Check, Clock, Copy, CopyCheck, Mail, MessageCircleMore, PenLine, Phone, Send, UserPlus, Video, X } from 'lucide-react';
+import {
+  AtSign,
+  Check,
+  Clock,
+  Copy,
+  CopyCheck,
+  Mail,
+  MessageCircleMore,
+  PenLine,
+  Phone,
+  Send,
+  UserPlus,
+  Video,
+  X,
+} from 'lucide-react';
 import type UserInterface from '../../interfaces/UserInterface';
 import './UserDetails.scss';
 import { copyToClipboard, formatLastSeen, getRandomMorse } from '../../utils/utils';
 import { FriendshipStatus } from '../../utils/constant';
-import { useState } from 'react';
-import { acceptFriendRequest, cancelFriendRequest, rejectFriendRequest, sendFriendRequest } from '../../services/usersServices';
+import { useState, type Dispatch, type SetStateAction } from 'react';
+import {
+  acceptFriendRequest,
+  cancelFriendRequest,
+  rejectFriendRequest,
+  sendFriendRequest,
+} from '../../services/usersServices';
+import { useChatListStore } from '../../zustand/ChatListStore';
+import type { ChatActiveTabs } from '../../pages/Chat';
 
 type Props = {
   user: UserInterface | null;
+  setActiveTab: Dispatch<SetStateAction<ChatActiveTabs>>;
 };
 
 const randMorse = getRandomMorse();
 
-const UserDetails = ({ user }: Props) => {
+const UserDetails = ({ user, setActiveTab }: Props) => {
   const [copiedId, setCopiedId] = useState('');
   const [reqSent, setReqSent] = useState(false);
   const [reqAccepted, setReqAccepted] = useState(false);
   const [reqRejected, setReqRejected] = useState(false);
   const [reqCancelled, setReqCancelled] = useState(false);
+
+  const startChat = useChatListStore((state) => state.startChat);
 
   const handleAcceptRequest = async (username: string) => {
     // optimistic UI, later if fails then change it back
@@ -54,6 +78,11 @@ const UserDetails = ({ user }: Props) => {
     if (!(res && res.success)) {
       setReqCancelled(false);
     }
+  };
+
+  const handleStartMessage = () => {
+    if (user) startChat(user);
+    setActiveTab('ChatList');
   };
 
   return (
@@ -106,14 +135,20 @@ const UserDetails = ({ user }: Props) => {
               {user.status === FriendshipStatus.REQUESTED && (
                 <>
                   {!reqRejected && (
-                    <button className="bc-btn bc-btn-primary" onClick={() => handleAcceptRequest(user.username!)}>
+                    <button
+                      className="bc-btn bc-btn-primary"
+                      onClick={() => handleAcceptRequest(user.username!)}
+                    >
                       <Check size={20} />
                       {reqAccepted ? 'Request accepted' : 'Accept request'}
                     </button>
                   )}
 
                   {!reqAccepted && (
-                    <button className="bc-btn warning-outline" onClick={() => handleRejectRequest(user.username!)}>
+                    <button
+                      className="bc-btn warning-outline"
+                      onClick={() => handleRejectRequest(user.username!)}
+                    >
                       <X size={20} />
                       {reqRejected ? 'Request rejected' : 'Reject request'}
                     </button>
@@ -122,7 +157,10 @@ const UserDetails = ({ user }: Props) => {
               )}
 
               {!user.status && (
-                <button className="bc-btn bc-btn-primary" onClick={() => handleSendRequest(user.username!)}>
+                <button
+                  className="bc-btn bc-btn-primary"
+                  onClick={() => handleSendRequest(user.username!)}
+                >
                   <Send size={20} />
                   {reqSent ? 'Request sent' : 'Send request'}
                 </button>
@@ -137,7 +175,10 @@ const UserDetails = ({ user }: Props) => {
                     </button>
                   )}
 
-                  <button className="bc-btn warning-outline" onClick={() => handleCancelRequest(user.username!)}>
+                  <button
+                    className="bc-btn warning-outline"
+                    onClick={() => handleCancelRequest(user.username!)}
+                  >
                     <X size={20} />
                     {reqCancelled ? 'Request cancelled' : 'Cancel request'}
                   </button>
@@ -149,8 +190,12 @@ const UserDetails = ({ user }: Props) => {
           {/* TODO - if it's working for offline users */}
           {user.lastSeenAt && (
             <div className="bc-user-status">
-              <div className={`bc-user-online-status ${user.isOnline ? 'online' : 'offline'} `}>{user.isOnline ? 'Online' : 'Offline'}</div>
-              <div className="bc-user-last-seen">Last seen {formatLastSeen(user.lastSeenAt, user.isOnline)} </div>
+              <div className={`bc-user-online-status ${user.isOnline ? 'online' : 'offline'} `}>
+                {user.isOnline ? 'Online' : 'Offline'}
+              </div>
+              <div className="bc-user-last-seen">
+                Last seen {formatLastSeen(user.lastSeenAt, user.isOnline)}{' '}
+              </div>
             </div>
           )}
 
@@ -158,21 +203,21 @@ const UserDetails = ({ user }: Props) => {
             // if status is accepted then both users are friends
             user.status === 'accepted' && (
               <div className="bc-users-quick-actions">
-                <div className="quick-action primary">
+                <div className="quick-action primary" onClick={handleStartMessage}>
                   <span>
                     <MessageCircleMore />
                   </span>
                   Message
                 </div>
 
-                <div className="quick-action">
+                <div className="quick-action" onClick={handleStartMessage}>
                   <span>
                     <Phone />
                   </span>
                   Audio Call Message
                 </div>
 
-                <div className="quick-action">
+                <div className="quick-action" onClick={handleStartMessage}>
                   <span>
                     <Video />
                   </span>
@@ -199,7 +244,10 @@ const UserDetails = ({ user }: Props) => {
                     </div>
                   </div>
 
-                  <div className="copy-icon" onClick={() => copyToClipboard(user.email!, `${user.id}-email`, setCopiedId)}>
+                  <div
+                    className="copy-icon"
+                    onClick={() => copyToClipboard(user.email!, `${user.id}-email`, setCopiedId)}
+                  >
                     {copiedId === `${user.id}-email` ? <CopyCheck /> : <Copy />}
                   </div>
                 </div>
@@ -215,7 +263,10 @@ const UserDetails = ({ user }: Props) => {
                     </div>
                   </div>
 
-                  <div className="copy-icon" onClick={() => copyToClipboard(user.phone!, `${user.id}-phone`, setCopiedId)}>
+                  <div
+                    className="copy-icon"
+                    onClick={() => copyToClipboard(user.phone!, `${user.id}-phone`, setCopiedId)}
+                  >
                     {copiedId === `${user.id}-phone` ? <CopyCheck /> : <Copy />}
                   </div>
                 </div>
@@ -233,7 +284,10 @@ const UserDetails = ({ user }: Props) => {
                 </div>
               </div>
 
-              <div className="copy-icon" onClick={() => copyToClipboard(user.username!, `${user.id}-username`, setCopiedId)}>
+              <div
+                className="copy-icon"
+                onClick={() => copyToClipboard(user.username!, `${user.id}-username`, setCopiedId)}
+              >
                 {copiedId === `${user.id}-username` ? <CopyCheck /> : <Copy />}
               </div>
             </div>

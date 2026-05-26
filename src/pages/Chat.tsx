@@ -13,7 +13,14 @@ import { getUserDetails } from '../services/usersServices';
 import ChatList from '../components/ChatList/ChatList';
 import ChatDetails from '../components/ChatDetails/ChatDetails';
 
-export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Friends' | 'Users' | 'Settings' | 'Profile';
+export type ChatActiveTabs =
+  | 'ChatList'
+  | 'Calls'
+  | 'Files'
+  | 'Friends'
+  | 'Users'
+  | 'Settings'
+  | 'Profile';
 
 const Chat = () => {
   const [activeTab, setActiveTab] = useState<ChatActiveTabs>('ChatList');
@@ -22,6 +29,7 @@ const Chat = () => {
 
   // Related to user details
   const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
+  const [selectedFriend, setSelectedFriend] = useState<UserInterface | null>(null);
   const [_, setFetchingUserDetails] = useState(false);
 
   const handleLogout = async () => {
@@ -43,7 +51,11 @@ const Chat = () => {
     setFetchingUserDetails(true);
     const res = await getUserDetails({ username });
     if (res && res.success) {
-      setSelectedUser(res.data?.user);
+      if (activeTab === 'Users') {
+        setSelectedUser(res.data?.user);
+      } else {
+        setSelectedFriend(res.data?.user);
+      }
     }
     setFetchingUserDetails(false);
   };
@@ -52,17 +64,35 @@ const Chat = () => {
     <div className="bc-Chat">
       <div className="bc-chat-content">
         <div className="bc-chat-sidebar-container">
-          <ChatSidebar activeTab={activeTab} setActiveTab={setActiveTab} setShowLogOutModal={setShowLogOutModal} />
+          <ChatSidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            setShowLogOutModal={setShowLogOutModal}
+          />
         </div>
 
         <div className="bc-chat-panel-1">
-          {(activeTab === 'Users' || activeTab === 'Friends') && <SearchUsers selectedUser={selectedUser} handleUserItemClick={handleUserItemClick} setSelectedUser={setSelectedUser} activeTab={activeTab} key={activeTab} />}
+          {(activeTab === 'Users' || activeTab === 'Friends') && (
+            <SearchUsers
+              selectedUser={activeTab === 'Users' ? selectedUser : selectedFriend}
+              handleUserItemClick={handleUserItemClick}
+              setSelectedUser={activeTab === 'Users' ? setSelectedUser : setSelectedFriend}
+              activeTab={activeTab}
+              key={activeTab}
+            />
+          )}
 
           {activeTab === 'ChatList' && <ChatList setActiveTab={setActiveTab} key={activeTab} />}
         </div>
 
         <div className="bc-chat-panel-2">
-          {(activeTab === 'Users' || activeTab === 'Friends') && <UserDetails user={selectedUser} key={selectedUser?.id} />}
+          {(activeTab === 'Users' || activeTab === 'Friends') && (
+            <UserDetails
+              user={activeTab === 'Users' ? selectedUser : selectedFriend}
+              setActiveTab={setActiveTab}
+              key={selectedUser?.id}
+            />
+          )}
           {activeTab === 'ChatList' && <ChatDetails />}
         </div>
       </div>
@@ -76,7 +106,9 @@ const Chat = () => {
             </div>
 
             <div className="bc-logout-txt">Sign out?</div>
-            <p className="bc-logout-sub">You'll be signed out of your BaatChat account on this device.</p>
+            <p className="bc-logout-sub">
+              You'll be signed out of your BaatChat account on this device.
+            </p>
 
             <div className="bc-logout-info-rows">
               <div className="bc-logout-info">

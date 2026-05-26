@@ -1,13 +1,13 @@
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import { useMemo, useState, type Dispatch, type SetStateAction } from 'react';
 import './ChatList.scss';
 import type ChatInterface from '../../interfaces/ChatInterface';
 import { MessageCirclePlus, Search, UsersRound } from 'lucide-react';
 import type { ChatActiveTabs } from '../../pages/Chat';
-import { ChatTypes, type ChatType } from '../../utils/constant';
+import { ChatListFilterTypes, ChatTypes, type ChatListFilterType, type ChatType } from '../../utils/constant';
 import { formatLastMessageAt } from '../../utils/utils';
 import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
-import chatListData from '../../../../backend/src/data/chatItem.json';
+import { useChatListStore } from '../../zustand/ChatListStore';
 
 type Props = {
   setActiveTab: Dispatch<SetStateAction<ChatActiveTabs>>;
@@ -17,13 +17,27 @@ type Props = {
 
 const ChatList = ({ setActiveTab }: Props) => {
   const { user } = useAuth();
-  const [searchTxt, setSearchText] = useState('');
-  const [currentChatFilter, setCurrentChatFilter] = useState<'all' | 'unread' | 'groups'>('all');
-  const [selectedChatId, setSelectedChatId] = useState('');
-  const chats: ChatInterface[] = chatListData as ChatInterface[];
+  const chats: ChatInterface[] = useChatListStore((state) => state.chats);
+  const selectedChatId = useChatListStore((state) => state.selectedChatId);
+  const setSelectedChatId = useChatListStore((state) => state.setSelectedChatId);
 
-  // TODO - remove this
-  if (chats.length === 0) return;
+  const [searchTxt, setSearchText] = useState('');
+  const [currentChatFilter, setCurrentChatFilter] = useState<ChatListFilterType>(ChatListFilterTypes.ALL);
+
+  // we will be showing filtered chats to UI
+  const filteredChats = useMemo(() => {
+    const normalizedSearch = searchTxt.trim().toLowerCase();
+    if (currentChatFilter === ChatListFilterTypes.ALL && !normalizedSearch) return chats;
+
+    return chats.filter((chat) => {
+      if (currentChatFilter === ChatListFilterTypes.UNREAD && !chat.activeNotification) return false;
+      if (currentChatFilter === ChatListFilterTypes.GROUPS && chat.type !== ChatTypes.GROUP) return false;
+      if (!normalizedSearch) return true;
+
+      // search text can be either user/group name or it can be last sent message
+      return chat.name.toLowerCase().includes(normalizedSearch) || chat.lastMessage?.text?.toLowerCase().includes(normalizedSearch);
+    });
+  }, [chats, searchTxt, currentChatFilter]);
 
   const handleSearchChats = () => {};
 
@@ -88,15 +102,15 @@ const ChatList = ({ setActiveTab }: Props) => {
 
       <div className="bc-chat-list-container">
         {/* TODO - see how loading works here */}
-        {!chats || chats.length === 0 ? (
+        {!filteredChats || filteredChats.length === 0 ? (
           <div className="bc-cl-no-chat">
-            <p>Connect with your BaatChat friends and share you smiley stories with them </p>
+            <p>{chats.length === 0 ? 'Start chatting with your BaatChat friends and share your stories with them.' : "Couldn't find any matching chats."}</p>
           </div>
         ) : null}
 
-        {chats && chats.length ? (
+        {filteredChats && filteredChats.length ? (
           <ul className="bc-chat-list">
-            {chats.map((chat, ind) => (
+            {filteredChats.map((chat, ind) => (
               <li
                 className={`bc-chat-list-item ${selectedChatId === chat.id ? 'active' : ''}
                 `}
