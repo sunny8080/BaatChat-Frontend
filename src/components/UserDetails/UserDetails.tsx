@@ -231,6 +231,25 @@ const UserDetails = ({ user, setActiveTab }: Props) => {
             {/* TODO - future scope we can have different tabs like Media, Groups, Links specific to both users */}
             <div className="info-txt active">Info</div>
 
+            <div className="bc-user-info-row">
+              <div className="details">
+                <div className="icon">
+                  <AtSign />
+                </div>
+                <div className="info">
+                  <p className="info-title">Username</p>
+                  <p className="info-value">{user.username}</p>
+                </div>
+              </div>
+
+              <div
+                className="copy-icon"
+                onClick={() => copyToClipboard(user.username!, `${user.id}-username`, setCopiedId)}
+              >
+                {copiedId === `${user.id}-username` ? <CopyCheck /> : <Copy />}
+              </div>
+            </div>
+
             {user.status === 'accepted' && (
               <>
                 <div className="bc-user-info-row">
@@ -272,25 +291,6 @@ const UserDetails = ({ user, setActiveTab }: Props) => {
                 </div>
               </>
             )}
-
-            <div className="bc-user-info-row">
-              <div className="details">
-                <div className="icon">
-                  <AtSign />
-                </div>
-                <div className="info">
-                  <p className="info-title">Username</p>
-                  <p className="info-value">{user.username}</p>
-                </div>
-              </div>
-
-              <div
-                className="copy-icon"
-                onClick={() => copyToClipboard(user.username!, `${user.id}-username`, setCopiedId)}
-              >
-                {copiedId === `${user.id}-username` ? <CopyCheck /> : <Copy />}
-              </div>
-            </div>
           </div>
         </div>
       )}
