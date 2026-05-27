@@ -5,7 +5,7 @@ import type React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { resendSignUpOtp, verifyEmail } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
-import { socket } from '../../socket/socket';
+import socket from '../../socket/socket';
 
 type Props = {
   setOtpSent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -180,7 +180,8 @@ const OTPForm = ({ email, setOtpSent, setEmailVerified }: Props) => {
             behavior: 'smooth',
           });
           setOtpSent(false);
-        }}>
+        }}
+      >
         <span className="switch-link muted">← Change email or details</span>
       </button>
     </div>

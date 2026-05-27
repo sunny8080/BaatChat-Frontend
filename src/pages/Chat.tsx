@@ -5,7 +5,7 @@ import { logOutUser } from '../services/authService';
 import toast from 'react-hot-toast';
 import { BellOff, LogOut, MessageCircleMore, MoveLeft } from 'lucide-react';
 import Modal from '../components/Modal/Modal';
-import { socket } from '../socket/socket';
+import socket from '../socket/socket';
 import SearchUsers from '../components/SearchUsers/SearchUsers';
 import UserDetails from '../components/UserDetails/UserDetails';
 import type UserInterface from '../interfaces/UserInterface';

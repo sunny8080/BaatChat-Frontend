@@ -1,7 +1,7 @@
 import type UserInterface from '../interfaces/UserInterface.ts';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { getCurrentUser } from '../services/authService';
-import { socket } from '../socket/socket.ts';
+import socket from '../socket/socket.ts';
 
 /**
  * Authentication state exposed throughout the frontend.
@@ -39,7 +39,9 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [user, setUser] = useState<UserInterface | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('accessToken') ?? null);
+  const [accessToken, setAccessToken] = useState<string | null>(
+    localStorage.getItem('accessToken') ?? null,
+  );
 
   useEffect(() => {
     const loadUser = async () => {
@@ -86,7 +88,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         accessToken,
         setUser,
         setAccessToken,
-      }}>
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

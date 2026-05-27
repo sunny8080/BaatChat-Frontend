@@ -1,5 +1,5 @@
 import type SocketError from '../interfaces/SocketError';
-import { socket } from './socket';
+import socket from './socket';
 
 export const registerSocketListeners = () => {
   // TODO - check do we really need this function

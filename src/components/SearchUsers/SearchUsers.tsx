@@ -3,7 +3,11 @@ import './SearchUsers.scss';
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import type UserInterface from '../../interfaces/UserInterface';
 import toast from 'react-hot-toast';
-import { fetchFriends, fetchReceivedFriendRequest, searchUsers } from '../../services/usersServices';
+import {
+  fetchFriends,
+  fetchReceivedFriendRequest,
+  searchUsers,
+} from '../../services/usersServices';
 import type { ChatActiveTabs } from '../../pages/Chat';
 
 type Props = {
@@ -68,8 +72,6 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser, activ
       setLoading(false);
     };
 
-    console.log(isFriendTab);
-
     if (isFriendTab) {
       loadFriends();
     } else {
@@ -98,11 +100,17 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser, activ
           />
         </div>
 
-        {isFriendTab && showFriendReq && receivedFriendReq.length ? <p className="bc-friend-req-txt">Received Friend Request</p> : null}
+        {isFriendTab && showFriendReq && receivedFriendReq.length ? (
+          <p className="bc-friend-req-txt">Received Friend Request</p>
+        ) : null}
       </div>
 
       <div className="bc-search-users-list-container">
-        {!users && !loading && <div className="search-users-txt">Connect with BaatChat users by searching with their name, username, or email.</div>}
+        {!users && !loading && (
+          <div className="search-users-txt">
+            Connect with BaatChat users by searching with their name, username, or email.
+          </div>
+        )}
 
         {loading && (
           <div className="searching-txt">
@@ -110,12 +118,20 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser, activ
           </div>
         )}
 
-        {!loading && users && users.length === 0 && <div className="search-users-txt">No BattChat users found, search with username or email !!</div>}
+        {!loading && users && users.length === 0 && (
+          <div className="search-users-txt">
+            No BattChat users found, search with username or email !!
+          </div>
+        )}
 
         {!loading && users && users.length ? (
           <ul className="bc-search-users-list">
             {users.map((usr, ind) => (
-              <li className={`bc-search-user-item ${selectedUser && selectedUser.id === usr.id ? 'active' : ''}`} key={ind} onClick={() => handleUserItemClick(usr.username!)}>
+              <li
+                className={`bc-search-user-item ${selectedUser && selectedUser.id === usr.id ? 'active' : ''}`}
+                key={ind}
+                onClick={() => handleUserItemClick(usr.username!)}
+              >
                 <div className="user-avatar">
                   <img src={usr.avatarUrl} alt={usr.name} />
                   {/* <div className={`presence-dot ${usr.isOnline ? 'online' : 'offline'}`}></div> */}

@@ -9,7 +9,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginUser } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
-import { socket } from '../../socket/socket';
+import socket from '../../socket/socket';
 
 type Props = {
   setCurAuthTab: React.Dispatch<React.SetStateAction<string>>;
@@ -23,8 +23,14 @@ const SignInForm = ({ setCurAuthTab }: Props) => {
 
   // create zod schema
   const SignInSchema = z.object({
-    emailOrUsername: z.string().min(1, 'Email or username is required!').min(3, 'Invalid email or username'),
-    password: z.string().min(1, 'Password is required!').min(6, 'Password must be of at least 6 characters!'),
+    emailOrUsername: z
+      .string()
+      .min(1, 'Email or username is required!')
+      .min(3, 'Invalid email or username'),
+    password: z
+      .string()
+      .min(1, 'Password is required!')
+      .min(6, 'Password must be of at least 6 characters!'),
   });
 
   const {
@@ -88,7 +94,9 @@ const SignInForm = ({ setCurAuthTab }: Props) => {
             />
           </div>
 
-          {errors.emailOrUsername?.message && <div className="bc-form-input-validation-err">{errors.emailOrUsername?.message}</div>}
+          {errors.emailOrUsername?.message && (
+            <div className="bc-form-input-validation-err">{errors.emailOrUsername?.message}</div>
+          )}
         </div>
 
         <div className="bc-form-field">
@@ -113,7 +121,9 @@ const SignInForm = ({ setCurAuthTab }: Props) => {
             </span>
           </div>
 
-          {errors.password?.message && <div className="bc-form-input-validation-err">{errors.password?.message}</div>}
+          {errors.password?.message && (
+            <div className="bc-form-input-validation-err">{errors.password?.message}</div>
+          )}
         </div>
 
         <div className="bc-forgot-row">
@@ -137,7 +147,8 @@ const SignInForm = ({ setCurAuthTab }: Props) => {
                 behavior: 'smooth',
               });
               setCurAuthTab('signup');
-            }}>
+            }}
+          >
             Create one now →
           </span>
         </div>

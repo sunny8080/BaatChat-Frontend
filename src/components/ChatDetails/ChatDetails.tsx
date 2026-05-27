@@ -16,6 +16,7 @@ import { formatLastSeen, getRandomMorse } from '../../utils/utils';
 import React, { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
+import socket from '../../socket/socket';
 
 const randMorse = getRandomMorse();
 
@@ -28,19 +29,15 @@ const ChatDetails = () => {
   const [msgTxt, setMsgTxt] = useState('');
   const msgInputRef = useRef<HTMLTextAreaElement>(null);
 
+  console.log(socket.id);
+
   const generateSubName = () => {
     if (!chatDetails) return;
     if (chatDetails.type === 'personal') {
       if (chatDetails?.isOnline) return 'Online now';
-      else
-        return (
-          'Last seen ' +
-          formatLastSeen(chatDetails.lastSeenAt!, chatDetails.isOnline)
-        );
+      else return 'Last seen ' + formatLastSeen(chatDetails.lastSeenAt!, chatDetails.isOnline);
     } else {
-      const name = chatDetails.activeMembers
-        ?.map((mem) => mem.name?.split(' ')[0])
-        .join(', ');
+      const name = chatDetails.activeMembers?.map((mem) => mem.name?.split(' ')[0]).join(', ');
       return name;
     }
   };
@@ -54,8 +51,7 @@ const ChatDetails = () => {
     textArea.style.height = 'auto';
     const maxHeight = 5 * 24; // 5 lines max
     textArea.style.height = `${Math.min(textArea.scrollHeight, maxHeight)}px`;
-    textArea.style.overflowY =
-      textArea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+    textArea.style.overflowY = textArea.scrollHeight > maxHeight ? 'auto' : 'hidden';
   };
 
   const handleSendMessage = () => {
@@ -79,13 +75,8 @@ const ChatDetails = () => {
             <MessageCircleMore />
           </div>
           <div className="bc-ni-title">Select chat to start</div>
-          <div className="bc-ni-sub">
-            Choose a conversation or search for someone to message
-          </div>
-          <div
-            className="bc-ni-morse"
-            title={`Decode this - ${randMorse.hint}`}
-          >
+          <div className="bc-ni-sub">Choose a conversation or search for someone to message</div>
+          <div className="bc-ni-morse" title={`Decode this - ${randMorse.hint}`}>
             {randMorse.morse}
           </div>
         </div>
@@ -106,9 +97,7 @@ const ChatDetails = () => {
               </div>
               <div className="bc-cd-name-wrap">
                 <p className="bc-cd-name">{chatDetails.name}</p>
-                <p
-                  className={`bc-cd-sub ${chatDetails.isOnline ? 'online' : ''}`}
-                >
+                <p className={`bc-cd-sub ${chatDetails.isOnline ? 'online' : ''}`}>
                   {generateSubName()}
                 </p>
               </div>
@@ -132,10 +121,7 @@ const ChatDetails = () => {
 
           {/* input area */}
           <div className="bc-cd-input-container">
-            <button
-              className="bc-cd-tool-btn bc-cd-file-input-btn"
-              title="Attach a file"
-            >
+            <button className="bc-cd-tool-btn bc-cd-file-input-btn" title="Attach a file">
               <CirclePlus />
             </button>
 
