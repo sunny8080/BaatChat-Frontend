@@ -5,7 +5,7 @@ import type React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { resendSignUpOtp, verifyEmail } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
-import socket from '../../socket/socket';
+import { connectSocket } from '../../socket/socket';
 
 type Props = {
   setOtpSent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -90,7 +90,7 @@ const OTPForm = ({ email, setOtpSent, setEmailVerified }: Props) => {
     if (res && res.success) {
       setUser(res.data.user);
       setAccessToken(res.data.accessToken);
-      socket.connect();
+      connectSocket(res.data.user);
       setEmailVerified(true);
       toast.success('Email Verified 🎉');
     }

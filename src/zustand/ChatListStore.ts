@@ -4,14 +4,17 @@ import { ChatTypes } from '../utils/constant';
 import type UserInterface from '../interfaces/UserInterface';
 import type { ChatDetailsInterface } from '../interfaces/ChatDetailsInterface';
 import { useChatDetailsStore } from './ChatDetailsStore';
+import type MessageInterface from '../interfaces/MessageInterface';
 
 type ChatLIstState = {
   chats: ChatInterface[];
   selectedChatId: string;
   isLoading: boolean;
   error: string | null;
+  chatFetched: boolean;
 
   // actions
+  setChatFetched: (chatFetched: boolean) => void;
   setChats: (newChats: ChatInterface[]) => void;
   addChat: (newChat: ChatInterface) => void;
   upsertChat: (newChat: ChatInterface) => void;
@@ -21,6 +24,9 @@ type ChatLIstState = {
   setError: (error: string | null) => void;
   clearChatLIst: () => void;
   startChat: (user: UserInterface) => void;
+  updateUnreadCount: (chatId: string, unreadCount: number) => void;
+  updateLastMessage: (chatId: string, lastMessage: MessageInterface) => void;
+  updateOnlinePresence: (userId: string, isOnline: boolean) => void;
 };
 
 /**
@@ -37,11 +43,12 @@ export const useChatListStore = create<ChatLIstState>()((set) => ({
   currentChatFilter: 'all',
   isLoading: false,
   error: null,
+  chatFetched: false,
 
   // actions
+  setChatFetched: (chatFetched: boolean) => set({ chatFetched }),
   setChats: (newChats) => set({ chats: sortChats(newChats), error: null }),
-  addChat: (newChat) =>
-    set((state) => ({ chats: sortChats([...state.chats, newChat]) })),
+  addChat: (newChat) => set((state) => ({ chats: sortChats([...state.chats, newChat]) })),
 
   upsertChat: (newChat) => {
     return set((state) => {
@@ -59,8 +66,7 @@ export const useChatListStore = create<ChatLIstState>()((set) => ({
   removeChat: (chatId) => {
     return set((state) => ({
       chats: state.chats.filter(({ id }) => id !== chatId),
-      selectedChatId:
-        state.selectedChatId === chatId ? '' : state.selectedChatId,
+      selectedChatId: state.selectedChatId === chatId ? '' : state.selectedChatId,
     }));
   },
 
@@ -99,7 +105,7 @@ export const useChatListStore = create<ChatLIstState>()((set) => ({
         name: user.name!,
         avatarUrl: user.avatarUrl!,
         isOnline: user.isOnline,
-        activeNotification: 0,
+        unreadCount: 0,
       };
 
       const tempChatDetails: ChatDetailsInterface = {
@@ -115,6 +121,40 @@ export const useChatListStore = create<ChatLIstState>()((set) => ({
       return {
         chats: [newChat, ...state.chats],
         selectedChatId: tempChatId,
+      };
+    });
+  },
+
+  updateUnreadCount: (chatId, unreadCount) => {
+    if (!chatId || unreadCount === undefined) return;
+    return set((state) => {
+      return {
+        chats: state.chats.map((chat) => (chat.id === chatId ? { ...chat, unreadCount } : chat)),
+      };
+    });
+  },
+
+  updateLastMessage: (chatId, lastMessage) => {
+    return set((state) => {
+      return {
+        chats: state.chats.map((chat) =>
+          chat.id === chatId
+            ? { ...chat, lastMessage, lastMessageAt: lastMessage.createdAt }
+            : chat,
+        ),
+      };
+    });
+  },
+
+  updateOnlinePresence: (userId, isOnline) => {
+    return set((state) => {
+      return {
+        chats: state.chats.map((chat) =>
+          chat.type === ChatTypes.PERSONAL &&
+          (chat.activeMembers![0].id === userId || chat.activeMembers![1].id === userId)
+            ? { ...chat, isOnline }
+            : chat,
+        ),
       };
     });
   },

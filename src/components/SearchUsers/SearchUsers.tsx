@@ -106,7 +106,7 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser, activ
       </div>
 
       <div className="bc-search-users-list-container">
-        {!users && !loading && (
+        {!loading && !users && (
           <div className="search-users-txt">
             Connect with BaatChat users by searching with their name, username, or email.
           </div>

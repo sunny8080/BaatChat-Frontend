@@ -1,4 +1,10 @@
 import { io } from 'socket.io-client';
+import {
+  registerChatSocketListeners,
+  registerMessageSocketListeners,
+  registerSocketListeners,
+} from './socketListeners';
+import type UserInterface from '../interfaces/UserInterface';
 // import type SocketError from '../interfaces/SocketError';
 
 /**
@@ -14,5 +20,19 @@ const socket = io(import.meta.env.VITE_BED_URL, {
     // TODO - do we need to send token
   },
 });
+
+/**
+ * Registers the frontend socket listeners, attaches the authenticated user to
+ * the Socket.IO client instance, and opens the connection.
+ *
+ * @param user - Currently authenticated user associated with the socket.
+ */
+export const connectSocket = (user: UserInterface) => {
+  registerSocketListeners();
+  registerMessageSocketListeners();
+  registerChatSocketListeners();
+  socket.user = user;
+  socket.connect();
+};
 
 export default socket;

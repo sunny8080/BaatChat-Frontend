@@ -35,7 +35,11 @@ apiClient.interceptors.response.use(
 
     // if access token is expired then silently call for new accessToken
     // also stop calling get access token api again by using _retry flag
-    if (error.response?.data?.statusCode === 401 && !originalRequest._retry && error.response?.data?.message === 'Invalid access token') {
+    if (
+      error.response?.data?.statusCode === 401 &&
+      !originalRequest._retry &&
+      error.response?.data?.message === 'Invalid access token'
+    ) {
       originalRequest._retry = true;
 
       const res = await getAccessToken();
@@ -91,4 +95,12 @@ export const USER_ROUTES = {
   PATCH_UPDATE_USER: '/users/update-user-details',
   GET_FETCH_RECEIVED_FRIEND_REQUESTS: '/users/fetch-received-friend-requests',
   GET_FETCH_FRIENDS: '/users/fetch-friends',
+};
+
+/**
+ * Backend chat endpoint paths used by chat list and chat detail requests.
+ */
+export const CHAT_ROUTES = {
+  GET_GET_CHATS: '/chats/get-chats',
+  POST_GET_CHAT_DETAILS: '/chats/get-chat-details',
 };

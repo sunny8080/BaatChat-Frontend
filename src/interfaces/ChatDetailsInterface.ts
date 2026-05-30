@@ -22,7 +22,6 @@ import type MessageInterface from './MessageInterface';
  * @property isOnline - Whether the personal chat participant is currently online.
  * @property lastSeenAt - Timestamp for when the personal chat participant was last active.
  * @property messages - Messages loaded for the chat.
- * @property activeNotification - Number of unread notifications for the chat.
  */
 export interface ChatDetailsInterface {
   id: string;
@@ -40,5 +39,4 @@ export interface ChatDetailsInterface {
   isOnline?: boolean;
   lastSeenAt?: string;
   messages: MessageInterface[];
-  activeNotification?: number;
 }

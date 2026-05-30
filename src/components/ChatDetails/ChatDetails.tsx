@@ -11,12 +11,18 @@ import {
   Video,
 } from 'lucide-react';
 import type { ChatDetailsInterface } from '../../interfaces/ChatDetailsInterface';
-import { ChatTypes } from '../../utils/constant';
+import { ChatTypes, MessageTypes } from '../../utils/constant';
 import { formatLastSeen, getRandomMorse } from '../../utils/utils';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
 import socket from '../../socket/socket';
+import { CHAT_EVENTS, MESSAGE_EVENTS, TYPING_EVENTS } from '../../socket/socketEvents';
+import { useChatListStore } from '../../zustand/ChatListStore';
+import { getChatDetails } from '../../services/chatServices';
+import MessageItem from '../MessageItem/MessageItem';
+import { useAuth } from '../../context/AuthContext';
+import type MessageInterface from '../../interfaces/MessageInterface';
 
 const randMorse = getRandomMorse();
 
@@ -28,8 +34,19 @@ const ChatDetails = () => {
   );
   const [msgTxt, setMsgTxt] = useState('');
   const msgInputRef = useRef<HTMLTextAreaElement>(null);
-
-  console.log(socket.id);
+  const selectedChatId = useChatListStore((state) => state.selectedChatId);
+  const updateUnreadCount = useChatListStore((state) => state.updateUnreadCount);
+  const [loading, setLoading] = useState(false);
+  const setChatDetails = useChatDetailsStore((state) => state.setChatDetails);
+  const addMessage = useChatDetailsStore((state) => state.addMessage);
+  const updateTempMessage = useChatDetailsStore((state) => state.updateTempMessage);
+  const newMsgAdded = useChatDetailsStore((state) => state.newMsgAdded);
+  const setNewMsgAdded = useChatDetailsStore((state) => state.setNewMsgAdded);
+  const typingUsers = useChatDetailsStore((state) => state.typingUsers);
+  const dummyRef = useRef<HTMLDivElement>(null);
+  const messageContainerRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
+  const [lastTypingEmit, setLastTypingEmit] = useState(0);
 
   const generateSubName = () => {
     if (!chatDetails) return;
@@ -45,6 +62,11 @@ const ChatDetails = () => {
   const handleMsgInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMsgTxt(e.target.value);
 
+    if (Date.now() - lastTypingEmit > 2000) {
+      socket.emit(TYPING_EVENTS.START, { chatId: chatDetails?.id });
+      setLastTypingEmit(Date.now());
+    }
+
     const textArea = msgInputRef.current;
     if (!textArea) return;
 
@@ -55,8 +77,48 @@ const ChatDetails = () => {
   };
 
   const handleSendMessage = () => {
-    // TODO - complete send message
-    toast.success('message sent');
+    // TODO handle sending files
+
+    // show optimistic UI that message has been sent
+    const tempId = crypto.randomUUID();
+
+    const optimisticMessage: MessageInterface = {
+      id: tempId,
+      chat: chatDetails?.id,
+      type: MessageTypes.TEXT,
+      text: msgTxt,
+      sender: user!,
+      createdAt: new Date().toISOString(),
+    };
+
+    addMessage(optimisticMessage);
+    setNewMsgAdded(true);
+    setMsgTxt('');
+
+    // emit message send event
+    const socketData = {
+      chatId: chatDetails?.id,
+      text: msgTxt,
+      receiverId: '',
+    };
+
+    if (chatDetails?.id?.includes('personal')) {
+      socketData.chatId = '';
+      socketData.receiverId = chatDetails?.id.replace('personal-', '');
+    }
+
+    socket.emit(MESSAGE_EVENTS.SEND, socketData, (response: any) => {
+      console.log(response);
+      if (response.ok) {
+        updateTempMessage(response.message, tempId);
+      } else {
+        // TODO - handle error scenario
+        toast.error('Something went wrong during sending message');
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
+      }
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -67,9 +129,47 @@ const ChatDetails = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchChat = async () => {
+      setLoading(true);
+      const res = await getChatDetails({ chatId: selectedChatId });
+      if (res && res.data) {
+        if (chatDetails?.id) socket.emit(CHAT_EVENTS.LEAVE, { chatId: chatDetails.id });
+        setChatDetails(res.data.chat);
+        setNewMsgAdded(true);
+        updateUnreadCount(res.data.chat?.id, 0);
+        socket.emit(CHAT_EVENTS.JOIN, { chatId: res.data.chat?.id });
+      }
+      setLoading(false);
+    };
+
+    if (selectedChatId && chatDetails?.id !== selectedChatId) {
+      fetchChat();
+    }
+  }, [selectedChatId, setChatDetails]);
+
+  useEffect(() => {
+    // dummyRef.current?.scrollIntoView({
+    //   behavior: 'smooth',
+    // });
+
+    if (newMsgAdded) {
+      if (!messageContainerRef.current) return;
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+      setNewMsgAdded(false);
+    }
+  }, [newMsgAdded]);
+
   return (
     <div className="bc-ChatDetails">
-      {!chatDetails && (
+      {loading && (
+        // TODO - implement chat details skeleton in case of loading
+        <div className="bc-loading-chat-details">
+          <div className="bc-inline-spinner"></div> Loading conversation...
+        </div>
+      )}
+
+      {!loading && !chatDetails && (
         <div className="bc-no-item">
           <div className="bc-ni-icon">
             <MessageCircleMore />
@@ -82,7 +182,7 @@ const ChatDetails = () => {
         </div>
       )}
 
-      {chatDetails && (
+      {!loading && chatDetails && (
         <div className="bc-chat-details-wrap">
           {/* Header */}
           <div className="bc-cd-header">
@@ -117,7 +217,22 @@ const ChatDetails = () => {
           </div>
 
           {/* Message area */}
-          <div className="bc-cd-messages"></div>
+          <div className="bc-cd-messages" ref={messageContainerRef}>
+            {chatDetails.messages?.map((msg, _) => (
+              <MessageItem msg={msg} key={msg.id} />
+            ))}
+
+            {/* Typing indicator */}
+            {/* TODO - show users first name in case of group chats */}
+            <div className={`bc-cd-typing-indicator ${typingUsers.length ? 'typing' : ''}`}>
+              <div className="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <div className="bc-cd-dummy-msg" ref={dummyRef}></div>
+          </div>
 
           {/* input area */}
           <div className="bc-cd-input-container">
@@ -133,6 +248,7 @@ const ChatDetails = () => {
                 name="msg-input"
                 id="msg-input"
                 placeholder="Type a message"
+                value={msgTxt}
                 onChange={handleMsgInput}
                 onKeyDown={handleKeyDown}
               ></textarea>

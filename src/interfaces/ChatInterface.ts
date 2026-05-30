@@ -1,5 +1,6 @@
 import type { ChatType } from '../utils/constant';
 import type MessageInterface from './MessageInterface';
+import type UserInterface from './UserInterface';
 
 /**
  * Represents a chat preview displayed in the chat list.
@@ -11,7 +12,8 @@ import type MessageInterface from './MessageInterface';
  * @property lastMessage - Most recent message in the chat, when available.
  * @property lastMessageAt - Timestamp for the most recent message, when available.
  * @property isOnline - Whether the chat participant is currently online.
- * @property activeNotification - Number of unread notifications for the chat.
+ * @property unreadCount - Number of unread notifications for the chat.
+ * @property activeMembers - Members currently active in the chat.
  */
 export default interface ChatInterface {
   id: string;
@@ -21,5 +23,6 @@ export default interface ChatInterface {
   lastMessage?: MessageInterface;
   lastMessageAt?: string;
   isOnline?: boolean;
-  activeNotification?: number;
+  unreadCount?: number;
+  activeMembers?: UserInterface[];
 }

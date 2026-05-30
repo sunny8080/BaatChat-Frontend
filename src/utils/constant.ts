@@ -63,6 +63,7 @@ export const MessageTypes = {
   VIDEO: 'video',
   AUDIO: 'audio',
   FILE: 'file',
+  NOTIFICATION: 'notification',
 } as const;
 
 /**

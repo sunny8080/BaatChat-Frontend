@@ -134,13 +134,45 @@ export const formatLastMessageAt = (date: string | undefined) => {
 };
 
 /**
+ * Formats a message timestamp for compact chat display.
+ *
+ * @param date - ISO-compatible date string to format.
+ * @returns Time for today, "yesterday" for one day ago, weekday for recent dates, or DD/MM/YYYY.
+ */
+export const formatMsgTime = (date: string) => {
+  if (!date) return '';
+  const target = dayjs(date);
+  if (!target.isValid()) return '';
+
+  const days = dayjs().startOf('day').diff(target.startOf('day'), 'day');
+
+  if (days === 0) {
+    return target.format('h:mm A'); // 4:12 AM
+  }
+
+  if (days === 1) {
+    return 'yesterday'; // yesterday
+  }
+
+  if (days > 1 && days < 7) {
+    return target.format('dddd'); // Monday, Friday
+  }
+
+  return target.format('DD/MM/YYYY'); // 24/04/2026
+};
+
+/**
  * Copies text to the clipboard and optionally marks an item as copied for 2 seconds.
  *
  * @param copyText - Text to write to the user's clipboard.
  * @param copiedId - Optional identifier to set while the copied state is active.
  * @param setCopiedId - Optional React state setter used to show and clear copied state.
  */
-export const copyToClipboard = async (copyText: string, copiedId: string = '', setCopiedId: Dispatch<SetStateAction<string>> | null = null) => {
+export const copyToClipboard = async (
+  copyText: string,
+  copiedId: string = '',
+  setCopiedId: Dispatch<SetStateAction<string>> | null = null,
+) => {
   try {
     await navigator.clipboard.writeText(copyText);
     if (copiedId && setCopiedId) {

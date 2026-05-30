@@ -1,0 +1,132 @@
+.bc-MessageItem {
+  width: 100%;
+  max-width: 70%;
+  position: relative;
+
+  &.msgOut {
+    margin-left: auto;
+  }
+}
+
+.bc-msg-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  width: 100%;
+
+  &:hover .bc-msg-reaction-trigger {
+    opacity: 1;
+  }
+}
+.bc-MessageItem.msgOut .bc-msg-content-wrapper {
+  flex-direction: row-reverse;
+}
+
+.bc-msg-avatar {
+  align-self: flex-end;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  flex-shrink: 0;
+  overflow: hidden;
+  img {
+    border-radius: 50%;
+  }
+}
+
+.bc-msg-content {
+  padding: 8px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  word-break: break-word;
+}
+.bc-MessageItem.msgOut .bc-msg-content {
+  background: var(--violet-color);
+  border-bottom-right-radius: 4px;
+}
+.bc-MessageItem.msgIn .bc-msg-content {
+  background: var(--card-color);
+  border: 0.5px solid var(--border-color);
+  border-bottom-left-radius: 4px;
+}
+
+.bc-msg-time {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 4px;
+  font-size: 9px;
+  color: rgba(248, 247, 255, 0.45);
+  width: fit-content;
+  .msg-sent-check {
+    font-size: 10px;
+    color: rgba(248, 247, 255, 0.4);
+
+    &.read {
+      color: var(--lavender-color);
+    }
+  }
+}
+
+.bc-MessageItem.msgOut .bc-msg-time {
+  margin-left: auto;
+}
+
+.bc-msg-reactions-container {
+  display: flex;
+  gap: 3px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+
+  .reaction-emoji {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--card-color);
+    border: 0.5px solid var(--border-color);
+    border-radius: 100px;
+    padding: 2px 7px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+
+    :hover,
+    &.mine {
+      border-color: rgba(124, 58, 237, 0.5);
+      background: rgba(124, 58, 237, 0.12);
+    }
+  }
+}
+
+.bc-msg-reaction-trigger {
+  opacity: 0;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 3px 5px;
+  border-radius: 8px;
+  background: var(--card-color);
+  border: 0.5px solid var(--border-color);
+  color: var(--muted-color);
+  transition: all 0.2s;
+  white-space: nowrap;
+  align-self: center;
+
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: var(--surface-color);
+    color: var(--white-color);
+  }
+}
+
+.bc-msg-reaction-picker {
+}

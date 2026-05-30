@@ -20,6 +20,15 @@
     overflow-y: auto;
     height: 100%;
   }
+  .bc-searching-chats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    margin-top: 1rem;
+    margin-inline: 8px;
+  }
 }
 
 .bc-chat-list-item {

@@ -9,7 +9,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginUser } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
-import socket from '../../socket/socket';
+import { connectSocket } from '../../socket/socket';
 
 type Props = {
   setCurAuthTab: React.Dispatch<React.SetStateAction<string>>;
@@ -47,7 +47,7 @@ const SignInForm = ({ setCurAuthTab }: Props) => {
       if (res && res.success) {
         setUser(res.data.user);
         setAccessToken(res.data.accessToken);
-        socket.connect();
+        connectSocket(res.data.user);
         navigate('/chat');
       }
     } finally {

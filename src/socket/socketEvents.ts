@@ -19,6 +19,13 @@ export const SOCKET_EVENTS = {
   RECONNECT_ATTEMPT: 'reconnect_attempt',
 } as const;
 
+// todo add js docs
+export const CHAT_EVENTS = {
+  JOIN: 'chat:join',
+  LEAVE: 'chat:leave',
+  UPDATED: 'chat:updated',
+} as const;
+
 // Message Events
 /**
  * Message domain socket events.
@@ -46,6 +53,7 @@ export const MESSAGE_EVENTS = {
   UNPINNED: 'message:unpinned',
 
   FORWARD: 'message:forward',
+  ERROR: 'message:error',
 } as const;
 
 /**
@@ -97,10 +105,7 @@ export const PRESENCE_EVENTS = {
  */
 export const TYPING_EVENTS = {
   START: 'typing:start',
-  STOP: 'typing:stop',
-
   USER_STARTED: 'typing:user-started',
-  USER_STOPPED: 'typing:user-stopped',
 } as const;
 
 // Call Events

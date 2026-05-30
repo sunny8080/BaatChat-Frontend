@@ -85,6 +85,7 @@
     .bc-user-avatar {
       width: 80px;
       aspect-ratio: 1/1;
+      overflow: hidden;
 
       img {
         border-radius: 50%;

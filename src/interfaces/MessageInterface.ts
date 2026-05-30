@@ -1,8 +1,5 @@
 import type UserInterface from './UserInterface';
 import type { MessageType } from '../utils/constant';
-import type ChatInterface from './ChatInterface';
-
-type Ref<T> = string | T;
 
 /**
  * Represents a chat message returned by the application.
@@ -23,14 +20,14 @@ type Ref<T> = string | T;
  */
 export default interface MessageInterface {
   id: string;
-  chat?: Ref<ChatInterface>;
+  chat?: string;
   sender?: UserInterface;
   type: MessageType;
   text?: string;
   attachments?: unknown[];
   reactions?: unknown[];
-  seenBy?: Ref<UserInterface>;
-  deliveredTo?: Ref<UserInterface>;
+  seenBy?: { user: UserInterface; seenAt: string }[];
+  deliveredTo?: { user: UserInterface; deliveredAt: string }[];
   editedAt?: string;
   createdAt?: string;
   updatedAt?: string;
