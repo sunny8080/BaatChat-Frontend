@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { ChatDetailsInterface } from '../interfaces/ChatDetailsInterface';
 import type MessageInterface from '../interfaces/MessageInterface';
 import type UserInterface from '../interfaces/UserInterface';
+import { ChatTypes } from '../utils/constant';
 
 type ChatDetailsState = {
   chatDetails: ChatDetailsInterface | null;
@@ -31,6 +32,7 @@ type ChatDetailsState = {
   ) => void;
   updateTypingUsers: (user: UserInterface, isTyping: boolean) => void;
   setTypingTimeouts: (timeout: number | null, userId: string) => void;
+  updateChatOnlinePresence: (userId: string, isOnline: boolean) => void;
 };
 
 /**
@@ -40,7 +42,7 @@ type ChatDetailsState = {
  * replacing, appending, upserting, and removing messages while keeping
  * last-message metadata in sync.
  */
-export const useChatDetailsStore = create<ChatDetailsState>()((set) => ({
+export const useChatDetailsStore = create<ChatDetailsState>()((set, get) => ({
   chatDetails: null,
   isLoading: false,
   error: null,
@@ -235,5 +237,19 @@ export const useChatDetailsStore = create<ChatDetailsState>()((set) => ({
       }
       return { typingTimeouts: updatedTypingTimeout };
     });
+  },
+
+  updateChatOnlinePresence: (userId, isOnline) => {
+    const chatDetails = get().chatDetails;
+    if (
+      chatDetails &&
+      chatDetails?.type === ChatTypes.PERSONAL &&
+      (chatDetails.activeMembers![0].id === userId || chatDetails.activeMembers![1].id === userId)
+    ) {
+      return set((state) => {
+        if (!state.chatDetails) return { chatDetails: null };
+        return { chatDetails: { ...state.chatDetails, isOnline } };
+      });
+    }
   },
 }));

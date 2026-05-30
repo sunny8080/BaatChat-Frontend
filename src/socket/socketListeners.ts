@@ -36,14 +36,20 @@ export const registerSocketListeners = () => {
 export const registerMessageSocketListeners = () => {
   socket.on(PRESENCE_EVENTS.ONLINE, (data) => {
     const { updateOnlinePresence } = useChatListStore.getState();
+    const { updateChatOnlinePresence } = useChatDetailsStore.getState();
+
     const { userId } = data;
     updateOnlinePresence(userId, true);
+    updateChatOnlinePresence(userId, true);
   });
 
   socket.on(PRESENCE_EVENTS.OFFLINE, (data) => {
     const { updateOnlinePresence } = useChatListStore.getState();
+    const { updateChatOnlinePresence } = useChatDetailsStore.getState();
+
     const { userId } = data;
     updateOnlinePresence(userId, false);
+    updateChatOnlinePresence(userId, false);
   });
 
   socket.on(MESSAGE_EVENTS.RECEIVED, (data) => {
