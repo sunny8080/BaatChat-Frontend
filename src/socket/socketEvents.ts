@@ -19,7 +19,9 @@ export const SOCKET_EVENTS = {
   RECONNECT_ATTEMPT: 'reconnect_attempt',
 } as const;
 
-// todo add js docs
+/**
+ * Chat room membership and update socket events.
+ */
 export const CHAT_EVENTS = {
   JOIN: 'chat:join',
   LEAVE: 'chat:leave',
