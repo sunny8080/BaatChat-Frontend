@@ -49,7 +49,7 @@ const ChatDetails = () => {
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const [lastTypingEmit, setLastTypingEmit] = useState(0);
-  const [showChatInfo, setShowChatInfo] = useState(true);
+  const [showChatInfo, setShowChatInfo] = useState(false);
 
   const generateSubName = () => {
     if (!chatDetails) return '';
