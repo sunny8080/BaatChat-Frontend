@@ -30,13 +30,12 @@ export interface ChatDetailsInterface {
   avatarUrl: string;
   description?: string;
   activeMembers?: UserInterface[];
-  admins?: UserInterface[];
-  createdBy: UserInterface;
+  admins?: string[];
+  createdBy: string;
   lastMessage?: MessageInterface;
   lastMessageAt?: string;
   createdAt?: string;
   updatedAt?: string;
-  isOnline?: boolean;
-  lastSeenAt?: string;
+  friend?: UserInterface;
   messages: MessageInterface[];
 }

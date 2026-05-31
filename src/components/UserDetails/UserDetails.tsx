@@ -214,7 +214,7 @@ const UserDetails = ({ user, setActiveTab }: Props) => {
                   <span>
                     <Phone />
                   </span>
-                  Audio Call Message
+                  Audio Call
                 </div>
 
                 <div className="quick-action" onClick={handleStartMessage}>
@@ -243,7 +243,7 @@ const UserDetails = ({ user, setActiveTab }: Props) => {
               </div>
 
               <div
-                className="copy-icon"
+                className={`copy-icon ${copiedId === `${user.id}-username` ? 'active' : ''}`}
                 onClick={() => copyToClipboard(user.username!, `${user.id}-username`, setCopiedId)}
               >
                 {copiedId === `${user.id}-username` ? <CopyCheck /> : <Copy />}
@@ -264,7 +264,7 @@ const UserDetails = ({ user, setActiveTab }: Props) => {
                   </div>
 
                   <div
-                    className="copy-icon"
+                    className={`copy-icon ${copiedId === `${user.id}-email` ? 'active' : ''}`}
                     onClick={() => copyToClipboard(user.email!, `${user.id}-email`, setCopiedId)}
                   >
                     {copiedId === `${user.id}-email` ? <CopyCheck /> : <Copy />}
@@ -283,7 +283,7 @@ const UserDetails = ({ user, setActiveTab }: Props) => {
                   </div>
 
                   <div
-                    className="copy-icon"
+                    className={`copy-icon ${copiedId === `${user.id}-phone` ? 'active' : ''}`}
                     onClick={() => copyToClipboard(user.phone!, `${user.id}-phone`, setCopiedId)}
                   >
                     {copiedId === `${user.id}-phone` ? <CopyCheck /> : <Copy />}

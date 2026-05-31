@@ -52,12 +52,12 @@
   flex-shrink: 0;
 
   .bc-cd-info {
-    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
+    cursor: pointer;
   }
   .bc-cd-mobile-back-btn {
     display: none;
@@ -135,6 +135,7 @@
   .bc-cd-actions {
     display: flex;
     gap: 5px;
+    margin-left: auto;
 
     .bc-cd-action {
       width: 32px;

@@ -2,6 +2,7 @@ import morseCodes from '../data/morseCodes.json';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { Dispatch, SetStateAction } from 'react';
+import type UserInterface from '../interfaces/UserInterface';
 dayjs.extend(relativeTime);
 
 /**
@@ -182,4 +183,14 @@ export const copyToClipboard = async (
   } catch (error) {
     console.error('Failed to copy text !!');
   }
+};
+
+/**
+ * Counts the number of online users in a members list.
+ *
+ * @param members - Members to inspect. Defaults to an empty list.
+ * @returns The total number of members whose `isOnline` flag is true.
+ */
+export const countOnlineMembers = (members: UserInterface[] = []) => {
+  return members.reduce((curOnline, mem) => curOnline + (mem.isOnline ? 1 : 0), 0);
 };

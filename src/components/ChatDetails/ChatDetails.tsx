@@ -23,6 +23,8 @@ import { getChatDetails } from '../../services/chatServices';
 import MessageItem from '../MessageItem/MessageItem';
 import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
+import ChatInfo from '../ChatInfo/ChatInfo';
+import Modal from '../Modal/Modal';
 
 const randMorse = getRandomMorse();
 
@@ -47,12 +49,14 @@ const ChatDetails = () => {
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const [lastTypingEmit, setLastTypingEmit] = useState(0);
+  const [showChatInfo, setShowChatInfo] = useState(true);
 
   const generateSubName = () => {
-    if (!chatDetails) return;
+    if (!chatDetails) return '';
     if (chatDetails.type === 'personal') {
-      if (chatDetails?.isOnline) return 'Online now';
-      else return 'Last seen ' + formatLastSeen(chatDetails.lastSeenAt!, chatDetails.isOnline);
+      const friend = chatDetails.friend;
+      if (friend?.isOnline) return 'Online now';
+      else return 'Last seen ' + formatLastSeen(friend!.lastSeenAt!, friend!.isOnline);
     } else {
       const name = chatDetails.activeMembers?.map((mem) => mem.name?.split(' ')[0]).join(', ');
       return name;
@@ -185,19 +189,19 @@ const ChatDetails = () => {
       {!loading && chatDetails && (
         <div className="bc-chat-details-wrap">
           {/* Header */}
-          <div className="bc-cd-header">
+          <div className="bc-cd-header" onClick={() => setShowChatInfo(true)}>
             <div className="bc-cd-info">
               <div className="bc-cd-mobile-back-btn">
                 <MoveLeft size={16} />
               </div>
               <div
-                className={`bc-cd-avatar ${chatDetails.type === ChatTypes.PERSONAL ? (chatDetails.isOnline ? 'online' : 'offline') : ''}`}
+                className={`bc-cd-avatar ${chatDetails.type === ChatTypes.PERSONAL ? (chatDetails.friend!.isOnline ? 'online' : 'offline') : ''}`}
               >
                 <img src={chatDetails.avatarUrl} alt={chatDetails.name} />
               </div>
               <div className="bc-cd-name-wrap">
                 <p className="bc-cd-name">{chatDetails.name}</p>
-                <p className={`bc-cd-sub ${chatDetails.isOnline ? 'online' : ''}`}>
+                <p className={`bc-cd-sub ${chatDetails.friend!.isOnline ? 'online' : ''}`}>
                   {generateSubName()}
                 </p>
               </div>
@@ -261,6 +265,15 @@ const ChatDetails = () => {
               {msgTxt ? <SendHorizontal size={20} /> : <Mic size={20} />}
             </div>
           </div>
+
+          {showChatInfo && (
+            <Modal
+              handleOverlayClick={() => setShowChatInfo(false)}
+              modalContentStyles={{ width: '100%', maxWidth: '440px' }}
+            >
+              <ChatInfo setShowChatInfo={setShowChatInfo} />
+            </Modal>
+          )}
         </div>
       )}
     </div>

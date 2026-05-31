@@ -240,16 +240,20 @@ export const useChatDetailsStore = create<ChatDetailsState>()((set, get) => ({
   },
 
   updateChatOnlinePresence: (userId, isOnline) => {
-    const chatDetails = get().chatDetails;
-    if (
-      chatDetails &&
-      chatDetails?.type === ChatTypes.PERSONAL &&
-      (chatDetails.activeMembers![0].id === userId || chatDetails.activeMembers![1].id === userId)
-    ) {
-      return set((state) => {
-        if (!state.chatDetails) return { chatDetails: null };
-        return { chatDetails: { ...state.chatDetails, isOnline } };
-      });
-    }
+    return set((state) => {
+      return {
+        chatDetails: state.chatDetails
+          ? {
+              ...state.chatDetails,
+              activeMembers: state.chatDetails.activeMembers?.map((mem) =>
+                mem.id === userId ? { ...mem, isOnline } : mem,
+              ),
+              friend: state.chatDetails.friend
+                ? { ...state.chatDetails.friend, isOnline }
+                : undefined,
+            }
+          : null,
+      };
+    });
   },
 }));

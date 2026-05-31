@@ -17,7 +17,10 @@
   }
 
   .bc-modal-content {
-    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
     animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
