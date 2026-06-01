@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
  * @param data - Search request payload sent to the users search endpoint.
  * @returns API response data from the search request, or the error response data when the request fails.
  */
-export const searchUsers = async (data: any): Promise<ApiResponse> => {
+export const searchUsersByTxt = async (data: any): Promise<ApiResponse> => {
   let response = null;
   try {
     const res = await apiClient.post(USER_ROUTES.POST_SEARCH_USERS, data);

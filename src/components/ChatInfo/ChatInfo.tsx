@@ -47,8 +47,6 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
 
   if (!chatDetails) return;
 
-  console.log(chatDetails);
-
   return (
     <div className="bc-ChatInfo">
       <div className="bc-chat-info-header">

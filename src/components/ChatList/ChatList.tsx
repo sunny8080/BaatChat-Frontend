@@ -174,7 +174,9 @@ const ChatList = ({ setActiveTab }: Props) => {
                     )}
                   </div>
                   <div className="bc-chat-info">
-                    <p className="bc-chat-name">{chat.name}</p>
+                    <p className={`bc-chat-name ${chat.id.includes('personal-') ? 'tmpChat' : ''}`}>
+                      {chat.name}
+                    </p>
                     <p className="bc-chat-last-message">
                       {genLastMsg(chat.lastMessage, chat.type)}
                     </p>

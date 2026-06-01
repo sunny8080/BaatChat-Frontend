@@ -1,73 +1,142 @@
 import { Search } from 'lucide-react';
 import './SearchUsers.scss';
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useState } from 'react';
 import type UserInterface from '../../interfaces/UserInterface';
 import toast from 'react-hot-toast';
 import {
   fetchFriends,
   fetchReceivedFriendRequest,
-  searchUsers,
+  getUserDetails,
+  searchUsersByTxt,
 } from '../../services/usersServices';
 import type { ChatActiveTabs } from '../../pages/Chat';
+import { useUsersStore } from '../../zustand/UsersStore';
 
 type Props = {
-  selectedUser: UserInterface | null;
-  handleUserItemClick: (userId: string) => void;
-  setSelectedUser: Dispatch<SetStateAction<UserInterface | null>>;
   activeTab: ChatActiveTabs;
 };
 
-const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser, activeTab }: Props) => {
+const SearchUsers = ({ activeTab }: Props) => {
+  const {
+    friends,
+    selectedFriend,
+    setFriends,
+    setSelectedFriend,
+    setFetchingUserDetails,
+    receivedFriendReq,
+    selectedSearchUser,
+    setReceivedFriendReq,
+    setSelectedSearchUser,
+  } = useUsersStore();
+
+  const isFriendTab = activeTab === 'Friends';
+  const selectedUser: UserInterface | null =
+    activeTab === 'Friends' ? selectedFriend : selectedSearchUser;
   const [users, setUsers] = useState<UserInterface[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [receivedFriendReq, setReceivedFriendReq] = useState([]);
   const [showFriendReq, setShowFriendReq] = useState(true);
-  const isFriendTab = activeTab === 'Friends';
+
+  const handleSearchFriends = () => {
+    if (searchText.length === 0) {
+      setUsers(friends);
+      setSelectedFriend(null);
+    } else {
+      const filteredFriends = friends?.filter(
+        ({ name, username, phone }) =>
+          name?.includes(searchText) ||
+          username?.includes(searchText) ||
+          phone?.includes(searchText),
+      );
+      setUsers(filteredFriends ?? []);
+      setSelectedFriend(null);
+    }
+  };
 
   const handleSearchUsers = async () => {
-    if (searchText.length < 3) {
-      if (searchText.length !== 0) {
-        toast.error('Provide at least 3 chars');
-      }
-
-      if (receivedFriendReq.length > 0) {
-        setUsers(receivedFriendReq.map((freq: any) => freq.sender));
+    if (searchText.length === 0) {
+      if (receivedFriendReq?.length) {
+        setUsers(receivedFriendReq.map((fReq: any) => fReq.sender));
         setShowFriendReq(true);
       } else {
         setUsers(null);
       }
-      setSelectedUser(null);
+      setSelectedSearchUser(null);
+      return;
+    }
+
+    if (searchText.length < 3) {
+      toast.error('Provide at least 3 chars');
       return;
     }
 
     setLoading(true);
-    const res = await searchUsers({ searchText });
+    const res = await searchUsersByTxt({ searchText });
     if (res && res.success) {
       setUsers(res.data.users);
-      setSelectedUser(null);
+      setSelectedSearchUser(null);
       setShowFriendReq(false);
     }
     setLoading(false);
   };
 
+  const handleSearching = async () => {
+    if (activeTab === 'Friends') {
+      handleSearchFriends();
+    } else {
+      await handleSearchUsers();
+    }
+  };
+
+  const handleUserItemClick = async (username: string) => {
+    if (selectedUser?.username === username) return;
+    setFetchingUserDetails(true);
+    const res = await getUserDetails({ username });
+    if (res && res.success) {
+      if (activeTab === 'Users') {
+        setSelectedSearchUser(res.data?.user);
+      } else {
+        setSelectedFriend(res.data?.user);
+      }
+    }
+    setFetchingUserDetails(false);
+  };
+
+  // setup users list for friends or users tab
   useEffect(() => {
-    // TOD - optimize it using zustand store
-    const fetchReq = async () => {
+    const fetchFriendReq = async () => {
+      if (receivedFriendReq) {
+        let isSelectedFrndReq = false;
+        setUsers(
+          receivedFriendReq.map((fReq: any) => {
+            if (selectedSearchUser && fReq.sender.id === selectedSearchUser)
+              isSelectedFrndReq = true;
+            return fReq.sender;
+          }),
+        );
+
+        if (!isSelectedFrndReq) setSelectedSearchUser(null);
+        return;
+      }
+
       setLoading(true);
       const res = await fetchReceivedFriendRequest();
-      if (res && res.success && res.data?.friendRequests?.length > 0) {
+      if (res && res.success && res.data?.friendRequests) {
         setReceivedFriendReq(res.data.friendRequests);
-        setUsers(res.data.friendRequests.map((freq: any) => freq.sender));
       }
       setLoading(false);
     };
 
     const loadFriends = async () => {
+      if (friends) {
+        setUsers(friends);
+        return;
+      }
+
       setLoading(true);
       const res = await fetchFriends();
       if (res && res.success) {
-        setUsers(res.data?.friends || []);
+        setFriends(res.data?.friends || []);
       }
       setLoading(false);
     };
@@ -75,9 +144,9 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser, activ
     if (isFriendTab) {
       loadFriends();
     } else {
-      fetchReq();
+      fetchFriendReq();
     }
-  }, [isFriendTab]);
+  }, [isFriendTab, friends, receivedFriendReq]);
 
   return (
     <div className="bc-SearchUsers">
@@ -87,20 +156,22 @@ const SearchUsers = ({ selectedUser, handleUserItemClick, setSelectedUser, activ
         </div>
 
         <div className="bc-panel-search">
-          <span className="bc-panel-icon" onClick={handleSearchUsers}>
+          <span className="bc-panel-icon" onClick={handleSearching}>
             <Search size={16} />
           </span>
           <input
             type="text"
             onKeyDown={(e) => {
-              if (e.key === 'Enter') void handleSearchUsers();
+              if (e.key === 'Enter') {
+                handleSearching();
+              }
             }}
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Search by name or @username..."
           />
         </div>
 
-        {isFriendTab && showFriendReq && receivedFriendReq.length ? (
+        {!isFriendTab && showFriendReq && receivedFriendReq?.length ? (
           <p className="bc-friend-req-txt">Received Friend Request</p>
         ) : null}
       </div>

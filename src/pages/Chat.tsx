@@ -8,8 +8,6 @@ import Modal from '../components/Modal/Modal';
 import socket from '../socket/socket';
 import SearchUsers from '../components/SearchUsers/SearchUsers';
 import UserDetails from '../components/UserDetails/UserDetails';
-import type UserInterface from '../interfaces/UserInterface';
-import { getUserDetails } from '../services/usersServices';
 import ChatList from '../components/ChatList/ChatList';
 import ChatDetails from '../components/ChatDetails/ChatDetails';
 
@@ -27,11 +25,6 @@ const Chat = () => {
   const [loading, setLoading] = useState(false);
   const [showLogoutModal, setShowLogOutModal] = useState(false);
 
-  // Related to user details
-  const [selectedUser, setSelectedUser] = useState<UserInterface | null>(null);
-  const [selectedFriend, setSelectedFriend] = useState<UserInterface | null>(null);
-  const [_, setFetchingUserDetails] = useState(false);
-
   const handleLogout = async () => {
     setLoading(true);
 
@@ -47,19 +40,6 @@ const Chat = () => {
     setLoading(false);
   };
 
-  const handleUserItemClick = async (username: string) => {
-    setFetchingUserDetails(true);
-    const res = await getUserDetails({ username });
-    if (res && res.success) {
-      if (activeTab === 'Users') {
-        setSelectedUser(res.data?.user);
-      } else {
-        setSelectedFriend(res.data?.user);
-      }
-    }
-    setFetchingUserDetails(false);
-  };
-
   return (
     <div className="bc-Chat">
       <div className="bc-chat-content">
@@ -73,13 +53,7 @@ const Chat = () => {
 
         <div className="bc-chat-panel-1">
           {(activeTab === 'Users' || activeTab === 'Friends') && (
-            <SearchUsers
-              selectedUser={activeTab === 'Users' ? selectedUser : selectedFriend}
-              handleUserItemClick={handleUserItemClick}
-              setSelectedUser={activeTab === 'Users' ? setSelectedUser : setSelectedFriend}
-              activeTab={activeTab}
-              key={activeTab}
-            />
+            <SearchUsers activeTab={activeTab} key={activeTab} />
           )}
 
           {activeTab === 'ChatList' && <ChatList setActiveTab={setActiveTab} key={activeTab} />}
@@ -87,11 +61,7 @@ const Chat = () => {
 
         <div className="bc-chat-panel-2">
           {(activeTab === 'Users' || activeTab === 'Friends') && (
-            <UserDetails
-              user={activeTab === 'Users' ? selectedUser : selectedFriend}
-              setActiveTab={setActiveTab}
-              key={selectedUser?.id}
-            />
+            <UserDetails setActiveTab={setActiveTab} activeTab={activeTab} key={activeTab} />
           )}
           {activeTab === 'ChatList' && <ChatDetails />}
         </div>

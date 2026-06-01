@@ -26,15 +26,20 @@ import {
 } from '../../services/usersServices';
 import { useChatListStore } from '../../zustand/ChatListStore';
 import type { ChatActiveTabs } from '../../pages/Chat';
+import { useUsersStore } from '../../zustand/UsersStore';
 
 type Props = {
-  user: UserInterface | null;
+  activeTab: ChatActiveTabs;
   setActiveTab: Dispatch<SetStateAction<ChatActiveTabs>>;
 };
 
 const randMorse = getRandomMorse();
 
-const UserDetails = ({ user, setActiveTab }: Props) => {
+const UserDetails = ({ activeTab, setActiveTab }: Props) => {
+  const selectedFriend = useUsersStore((state) => state.selectedFriend);
+  const selectedSearchUser = useUsersStore((state) => state.selectedSearchUser);
+  const user: UserInterface | null = activeTab === 'Friends' ? selectedFriend : selectedSearchUser;
+
   const [copiedId, setCopiedId] = useState('');
   const [reqSent, setReqSent] = useState(false);
   const [reqAccepted, setReqAccepted] = useState(false);
@@ -187,7 +192,6 @@ const UserDetails = ({ user, setActiveTab }: Props) => {
             </div>
           ) : null}
 
-          {/* TODO - if it's working for offline users */}
           {user.lastSeenAt && (
             <div className="bc-user-status">
               <div className={`bc-user-online-status ${user.isOnline ? 'online' : 'offline'} `}>

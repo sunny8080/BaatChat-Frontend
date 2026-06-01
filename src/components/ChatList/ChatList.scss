@@ -123,6 +123,10 @@
     width: 100%;
     color: var(--white-color);
     text-transform: capitalize;
+
+    &.tmpChat {
+      font-style: italic;
+    }
   }
   .bc-chat-last-message {
     font-size: 11px;

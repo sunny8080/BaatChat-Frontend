@@ -110,9 +110,9 @@ export const useChatListStore = create<ChatLIstState>()((set) => ({
 
       const tempChatDetails: ChatDetailsInterface = {
         ...newChat,
-        createdBy: user,
-        lastSeenAt: user.lastSeenAt,
+        createdBy: user.id,
         messages: [],
+        friend: user,
       };
 
       // create new chat details
