@@ -1,39 +1,26 @@
 import { create } from 'zustand';
-import type UserInterface from '../interfaces/UserInterface';
 
 type UsersState = {
-  // friends details
-  friends: UserInterface[] | null;
-  selectedFriend: UserInterface | null;
-  fetchingUserDetails: boolean;
-
-  // friend request details
-  receivedFriendReq: any[] | null;
-  selectedSearchUser: UserInterface | null;
+  selectedFriendUsername: string;
+  selectedSearchUserUsername: string;
 
   // actions
-  setFriends: (friends: UserInterface[]) => void;
-  setSelectedFriend: (selectedFriend: UserInterface | null) => void;
-  setFetchingUserDetails: (fetchingUserDetails: boolean) => void;
-  setReceivedFriendReq: (receivedFriendReq: any) => void;
-  setSelectedSearchUser: (selectedSearchUser: UserInterface | null) => void;
+  setSelectedFriendUsername: (selectedFriendUsername: string) => void;
+  setSelectedSearchUserUsername: (selectedSearchUserUsername: string) => void;
 };
 
-// todo add js docs
+/**
+ * Zustand store for tracking the user currently selected in friend and search contexts.
+ *
+ * Exposes the selected friend username, selected search result username, and setters for
+ * updating each value.
+ */
 export const useUsersStore = create<UsersState>((set) => ({
-  // friends details
-  friends: null,
-  selectedFriend: null,
-  fetchingUserDetails: false,
-
-  // friend request details
-  receivedFriendReq: null,
-  selectedSearchUser: null,
+  selectedFriendUsername: '',
+  selectedSearchUserUsername: '',
 
   // actions
-  setFriends: (friends) => set({ friends }),
-  setSelectedFriend: (selectedFriend) => set({ selectedFriend }),
-  setFetchingUserDetails: (fetchingUserDetails) => set({ fetchingUserDetails }),
-  setReceivedFriendReq: (receivedFriendReq) => set({ receivedFriendReq }),
-  setSelectedSearchUser: (selectedSearchUser) => set({ selectedSearchUser }),
+  setSelectedFriendUsername: (selectedFriendUsername) => set({ selectedFriendUsername }),
+  setSelectedSearchUserUsername: (selectedSearchUserUsername) =>
+    set({ selectedSearchUserUsername }),
 }));

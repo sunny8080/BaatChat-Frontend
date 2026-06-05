@@ -21,12 +21,14 @@ import { useState, type Dispatch, type SetStateAction } from 'react';
 import {
   acceptFriendRequest,
   cancelFriendRequest,
+  getUserDetails,
   rejectFriendRequest,
   sendFriendRequest,
 } from '../../services/usersServices';
 import { useChatListStore } from '../../zustand/ChatListStore';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import { useUsersStore } from '../../zustand/UsersStore';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 type Props = {
   activeTab: ChatActiveTabs;
@@ -36,33 +38,73 @@ type Props = {
 const randMorse = getRandomMorse();
 
 const UserDetails = ({ activeTab, setActiveTab }: Props) => {
-  const selectedFriend = useUsersStore((state) => state.selectedFriend);
-  const selectedSearchUser = useUsersStore((state) => state.selectedSearchUser);
-  const user: UserInterface | null = activeTab === 'Friends' ? selectedFriend : selectedSearchUser;
-
+  const startChat = useChatListStore((state) => state.startChat);
   const [copiedId, setCopiedId] = useState('');
   const [reqSent, setReqSent] = useState(false);
   const [reqAccepted, setReqAccepted] = useState(false);
   const [reqRejected, setReqRejected] = useState(false);
   const [reqCancelled, setReqCancelled] = useState(false);
 
-  const startChat = useChatListStore((state) => state.startChat);
+  const isFriendTab = activeTab === 'Friends';
+  const selectedFriendUsername = useUsersStore((state) => state.selectedFriendUsername);
+  const selectedSearchUserUsername = useUsersStore((state) => state.selectedSearchUserUsername);
+  const setSelectedSearchUserUsername = useUsersStore(
+    (state) => state.setSelectedSearchUserUsername,
+  );
+  const selectedUserUsername = isFriendTab ? selectedFriendUsername : selectedSearchUserUsername;
+  const queryClient = useQueryClient();
+
+  // react query to load user details
+  const { data: user, isLoading } = useQuery<UserInterface | null>({
+    queryKey: ['user', selectedUserUsername],
+    queryFn: async () => {
+      const res = await getUserDetails({ username: selectedUserUsername });
+      return res && res.success ? res.data?.user : null;
+    },
+    enabled: !!selectedUserUsername,
+    staleTime: 60 * 60 * 1000,
+  });
+
+  // tanstack mutation to accept friend request
+  const acceptFriendRequestMutation = useMutation({
+    mutationFn: acceptFriendRequest,
+    onMutate: () => {
+      // optimistic UI, later if fails then change it back
+      setReqAccepted(true);
+    },
+    onSuccess: (res, arg) => {
+      if (res && res.success) {
+        queryClient.invalidateQueries({
+          queryKey: ['user', arg.username],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['friends'],
+        });
+        queryClient.removeQueries({
+          queryKey: ['friendRequests'],
+        });
+      }
+    },
+    onError: () => {
+      // rollback changes
+      setReqAccepted(false);
+    },
+  });
 
   const handleAcceptRequest = async (username: string) => {
-    // optimistic UI, later if fails then change it back
     if (reqAccepted) return;
-    setReqAccepted(true);
-    const res = await acceptFriendRequest({ username });
-    if (!(res && res.success)) {
-      setReqAccepted(false);
-    }
+    acceptFriendRequestMutation.mutate({ username });
   };
 
   const handleRejectRequest = async (username: string) => {
     if (reqRejected) return;
     setReqRejected(true);
     const res = await rejectFriendRequest({ username });
-    if (!(res && res.success)) {
+    if (res && res.success) {
+      queryClient.removeQueries({
+        queryKey: ['friendRequests'],
+      });
+    } else {
       setReqRejected(false);
     }
   };
@@ -80,19 +122,32 @@ const UserDetails = ({ activeTab, setActiveTab }: Props) => {
     if (reqCancelled) return;
     setReqCancelled(true);
     const res = await cancelFriendRequest({ username });
-    if (!(res && res.success)) {
+    if (res && res.success) {
+      queryClient.removeQueries({
+        queryKey: ['friendRequests'],
+      });
+    } else {
       setReqCancelled(false);
     }
   };
 
   const handleStartMessage = () => {
     if (user) startChat(user);
+    if (reqAccepted) {
+      setSelectedSearchUserUsername('');
+    }
     setActiveTab('ChatList');
   };
 
   return (
     <div className="bc-UserDetails">
-      {!user && (
+      {isLoading && (
+        <div className="bc-loading-user-details">
+          <div className="bc-inline-spinner"></div> Loading user info...
+        </div>
+      )}
+
+      {!isLoading && !user && (
         <div className="bc-no-item">
           <div className="bc-ni-icon">
             <UserPlus />
@@ -105,7 +160,7 @@ const UserDetails = ({ activeTab, setActiveTab }: Props) => {
         </div>
       )}
 
-      {user && (
+      {!isLoading && user && (
         <div className="bc-user-details-wrap">
           <div className="bc-user-cover"></div>
 

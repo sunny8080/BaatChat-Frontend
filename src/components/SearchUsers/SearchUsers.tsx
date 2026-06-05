@@ -1,16 +1,12 @@
 import { Search } from 'lucide-react';
 import './SearchUsers.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type UserInterface from '../../interfaces/UserInterface';
 import toast from 'react-hot-toast';
-import {
-  fetchFriends,
-  fetchReceivedFriendRequest,
-  getUserDetails,
-  searchUsersByTxt,
-} from '../../services/usersServices';
+import { fetchFriends, fetchFriendRequests, searchUsersByTxt } from '../../services/usersServices';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import { useUsersStore } from '../../zustand/UsersStore';
+import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   activeTab: ChatActiveTabs;
@@ -18,29 +14,51 @@ type Props = {
 
 const SearchUsers = ({ activeTab }: Props) => {
   const {
-    friends,
-    selectedFriend,
-    setFriends,
-    setSelectedFriend,
-    setFetchingUserDetails,
-    receivedFriendReq,
-    selectedSearchUser,
-    setReceivedFriendReq,
-    setSelectedSearchUser,
+    selectedFriendUsername,
+    selectedSearchUserUsername,
+    setSelectedFriendUsername,
+    setSelectedSearchUserUsername,
   } = useUsersStore();
 
   const isFriendTab = activeTab === 'Friends';
-  const selectedUser: UserInterface | null =
-    activeTab === 'Friends' ? selectedFriend : selectedSearchUser;
-  const [users, setUsers] = useState<UserInterface[] | null>(null);
-  const [loading, setLoading] = useState(false);
+  const selectedUserUsername = isFriendTab ? selectedFriendUsername : selectedSearchUserUsername;
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState<UserInterface[] | null>(null);
   const [searchText, setSearchText] = useState('');
   const [showFriendReq, setShowFriendReq] = useState(true);
 
+  // friendQuery
+  const { data: friends = [], isLoading: friendsLoading } = useQuery<UserInterface[]>({
+    queryKey: ['friends'],
+    queryFn: async () => {
+      const res = await fetchFriends();
+      return res.data?.friends || [];
+    },
+    enabled: isFriendTab,
+    staleTime: 5 * 60 * 1000, // 5 min, data will be assumed to be fresh for 5 min, if data used again after this time then it will be fetched again
+  });
+
+  const { data: friendRequests = [], isLoading: requestsLoading } = useQuery<any[] | undefined>({
+    queryKey: ['friendRequests'],
+    queryFn: async () => {
+      const res = await fetchFriendRequests();
+      return res.data?.friendRequests ?? [];
+    },
+    enabled: !isFriendTab,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const loading = friendsLoading || requestsLoading || searchLoading;
+  const users: UserInterface[] | null = searchResults
+    ? searchResults
+    : isFriendTab
+      ? friends
+      : friendRequests?.map((fReq) => fReq.sender);
+
   const handleSearchFriends = () => {
     if (searchText.length === 0) {
-      setUsers(friends);
-      setSelectedFriend(null);
+      setSearchResults(null);
+      setSelectedFriendUsername('');
     } else {
       const filteredFriends = friends?.filter(
         ({ name, username, phone }) =>
@@ -48,36 +66,35 @@ const SearchUsers = ({ activeTab }: Props) => {
           username?.includes(searchText) ||
           phone?.includes(searchText),
       );
-      setUsers(filteredFriends ?? []);
-      setSelectedFriend(null);
+      setSearchResults(filteredFriends ?? []);
+      setSelectedFriendUsername('');
     }
   };
 
   const handleSearchUsers = async () => {
     if (searchText.length === 0) {
-      if (receivedFriendReq?.length) {
-        setUsers(receivedFriendReq.map((fReq: any) => fReq.sender));
+      if (friendRequests?.length) {
+        setSearchResults(null);
         setShowFriendReq(true);
       } else {
-        setUsers(null);
+        setSearchResults(null);
       }
-      setSelectedSearchUser(null);
+      setSelectedSearchUserUsername('');
       return;
     }
-
     if (searchText.length < 3) {
       toast.error('Provide at least 3 chars');
       return;
     }
 
-    setLoading(true);
+    setSearchLoading(true);
     const res = await searchUsersByTxt({ searchText });
     if (res && res.success) {
-      setUsers(res.data.users);
-      setSelectedSearchUser(null);
+      setSearchResults(res.data.users);
+      setSelectedSearchUserUsername('');
       setShowFriendReq(false);
     }
-    setLoading(false);
+    setSearchLoading(false);
   };
 
   const handleSearching = async () => {
@@ -89,64 +106,13 @@ const SearchUsers = ({ activeTab }: Props) => {
   };
 
   const handleUserItemClick = async (username: string) => {
-    if (selectedUser?.username === username) return;
-    setFetchingUserDetails(true);
-    const res = await getUserDetails({ username });
-    if (res && res.success) {
-      if (activeTab === 'Users') {
-        setSelectedSearchUser(res.data?.user);
-      } else {
-        setSelectedFriend(res.data?.user);
-      }
-    }
-    setFetchingUserDetails(false);
-  };
-
-  // setup users list for friends or users tab
-  useEffect(() => {
-    const fetchFriendReq = async () => {
-      if (receivedFriendReq) {
-        let isSelectedFrndReq = false;
-        setUsers(
-          receivedFriendReq.map((fReq: any) => {
-            if (selectedSearchUser && fReq.sender.id === selectedSearchUser)
-              isSelectedFrndReq = true;
-            return fReq.sender;
-          }),
-        );
-
-        if (!isSelectedFrndReq) setSelectedSearchUser(null);
-        return;
-      }
-
-      setLoading(true);
-      const res = await fetchReceivedFriendRequest();
-      if (res && res.success && res.data?.friendRequests) {
-        setReceivedFriendReq(res.data.friendRequests);
-      }
-      setLoading(false);
-    };
-
-    const loadFriends = async () => {
-      if (friends) {
-        setUsers(friends);
-        return;
-      }
-
-      setLoading(true);
-      const res = await fetchFriends();
-      if (res && res.success) {
-        setFriends(res.data?.friends || []);
-      }
-      setLoading(false);
-    };
-
+    if (username === selectedUserUsername) return;
     if (isFriendTab) {
-      loadFriends();
+      setSelectedFriendUsername(username);
     } else {
-      fetchFriendReq();
+      setSelectedSearchUserUsername(username);
     }
-  }, [isFriendTab, friends, receivedFriendReq]);
+  };
 
   return (
     <div className="bc-SearchUsers">
@@ -171,8 +137,8 @@ const SearchUsers = ({ activeTab }: Props) => {
           />
         </div>
 
-        {!isFriendTab && showFriendReq && receivedFriendReq?.length ? (
-          <p className="bc-friend-req-txt">Received Friend Request</p>
+        {!isFriendTab && showFriendReq && friendRequests?.length ? (
+          <p className="bc-friend-req-txt">Friend Requests</p>
         ) : null}
       </div>
 
@@ -185,7 +151,8 @@ const SearchUsers = ({ activeTab }: Props) => {
 
         {loading && (
           <div className="searching-txt">
-            <div className="bc-inline-spinner"></div> Searching BaatChat users...
+            <div className="bc-inline-spinner"></div>
+            {isFriendTab ? 'Loading your BaatChat friends...' : 'Searching BaatChat users...'}
           </div>
         )}
 
@@ -199,7 +166,7 @@ const SearchUsers = ({ activeTab }: Props) => {
           <ul className="bc-search-users-list">
             {users.map((usr, ind) => (
               <li
-                className={`bc-search-user-item ${selectedUser && selectedUser.id === usr.id ? 'active' : ''}`}
+                className={`bc-search-user-item ${selectedUserUsername === usr.username ? 'active' : ''}`}
                 key={ind}
                 onClick={() => handleUserItemClick(usr.username!)}
               >

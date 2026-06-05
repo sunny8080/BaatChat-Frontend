@@ -2,6 +2,17 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  .bc-loading-user-details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    margin-top: 1rem;
+    margin-inline: 8px;
+    height: 100%;
+  }
 }
 
 .bc-no-item {
@@ -193,7 +204,7 @@
     margin-top: 8px;
     margin-bottom: 16px;
 
-    button{
+    button {
       padding: 6px 20px;
     }
   }

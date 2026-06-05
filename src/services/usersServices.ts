@@ -115,7 +115,7 @@ export const cancelFriendRequest = async (data: { username: string }): Promise<A
  *
  * @returns API response data from the received friend requests request, or the error response data when the request fails.
  */
-export const fetchReceivedFriendRequest = async (): Promise<ApiResponse> => {
+export const fetchFriendRequests = async (): Promise<ApiResponse> => {
   let response = null;
   try {
     const res = await apiClient.get(USER_ROUTES.GET_FETCH_RECEIVED_FRIEND_REQUESTS);
