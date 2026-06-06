@@ -38,4 +38,5 @@ export interface ChatDetailsInterface {
   updatedAt?: string;
   friend?: UserInterface;
   messages: MessageInterface[];
+  nextCursor?: string;
 }

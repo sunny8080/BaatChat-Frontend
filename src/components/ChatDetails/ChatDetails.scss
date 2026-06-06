@@ -13,6 +13,15 @@
     margin-inline: 8px;
     height: 100%;
   }
+  .bc-previous-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    margin: 16px;
+    margin-bottom: 10px;
+  }
 }
 
 .bc-chat-details-wrap {

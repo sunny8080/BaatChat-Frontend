@@ -13,7 +13,7 @@ import {
 import type { ChatDetailsInterface } from '../../interfaces/ChatDetailsInterface';
 import { ChatTypes, MessageTypes } from '../../utils/constant';
 import { formatLastSeen, getRandomMorse } from '../../utils/utils';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
 import socket from '../../socket/socket';
@@ -46,12 +46,15 @@ const ChatDetails = () => {
   const newMsgAdded = useChatDetailsStore((state) => state.newMsgAdded);
   const setNewMsgAdded = useChatDetailsStore((state) => state.setNewMsgAdded);
   const typingUsers = useChatDetailsStore((state) => state.typingUsers);
+  const addPreviousMessage = useChatDetailsStore((state) => state.addPreviousMessage);
   const dummyRef = useRef<HTMLDivElement>(null);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const [lastTypingEmit, setLastTypingEmit] = useState(0);
   const [showChatInfo, setShowChatInfo] = useState(false);
   const updateLastMessage = useChatListStore((state) => state.updateLastMessage);
+  const [loadingPreviousMessage, setLoadingPreviousMessage] = useState(false);
+  const previousMsgHeightRef = useRef<number | null>(null);
 
   const { data: chatData, isLoading } = useQuery({
     queryKey: ['chatDetails', selectedChatId],
@@ -159,16 +162,43 @@ const ChatDetails = () => {
   };
 
   useEffect(() => {
-    // dummyRef.current?.scrollIntoView({
-    //   behavior: 'smooth',
-    // });
-
     if (newMsgAdded) {
+      // move to bottom if new message added
       if (!messageContainerRef.current) return;
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
       setNewMsgAdded(false);
     }
   }, [newMsgAdded, setNewMsgAdded]);
+
+  const handleMessageScroll = async () => {
+    const el = messageContainerRef.current;
+    if (!el) return;
+
+    if (el.scrollTop < 250 && chatDetails?.nextCursor && !loadingPreviousMessage) {
+      // load previous message
+      setLoadingPreviousMessage(true);
+      const res = await getChatDetails({
+        chatId: chatDetails.id,
+        nextCursor: chatDetails.nextCursor,
+      });
+      if (res && res.data) {
+        previousMsgHeightRef.current = el.scrollHeight - el.scrollTop;
+        addPreviousMessage(res.data?.chat.messages, res.data?.chat.nextCursor);
+      }
+      setLoadingPreviousMessage(false);
+    }
+  };
+
+  useLayoutEffect(() => {
+    const el = messageContainerRef.current;
+    const previousMsgHeight = previousMsgHeightRef.current;
+
+    if (!el || !previousMsgHeight) {
+      return;
+    }
+    el.scrollTop = el.scrollHeight - previousMsgHeight;
+    previousMsgHeightRef.current = null;
+  }, [chatDetails?.messages]);
 
   return (
     <div className="bc-ChatDetails">
@@ -227,7 +257,13 @@ const ChatDetails = () => {
           </div>
 
           {/* Message area */}
-          <div className="bc-cd-messages" ref={messageContainerRef}>
+          <div className="bc-cd-messages" ref={messageContainerRef} onScroll={handleMessageScroll}>
+            {loadingPreviousMessage && (
+              <div className="bc-previous-loading">
+                <div className="bc-inline-spinner"></div>
+              </div>
+            )}
+
             {chatDetails.messages?.map((msg, _) => (
               <MessageItem msg={msg} key={msg.id} />
             ))}

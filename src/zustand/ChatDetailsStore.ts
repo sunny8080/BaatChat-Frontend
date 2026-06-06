@@ -16,6 +16,7 @@ type ChatDetailsState = {
   updateChatDetails: (chatDetails: Partial<ChatDetailsInterface>) => void;
   setMessages: (messages: MessageInterface[]) => void;
   addMessage: (message: MessageInterface) => void;
+  addPreviousMessage: (messages: MessageInterface[], nextCursor: string) => void;
   upsertMessage: (message: MessageInterface) => void;
   updateTempMessage: (message: MessageInterface, tempMsgId: string) => void;
   removeMessage: (messageId: string) => void;
@@ -82,6 +83,18 @@ export const useChatDetailsStore = create<ChatDetailsState>()((set, get) => ({
             messages: [...state.chatDetails.messages, message],
             lastMessage: message,
             lastMessageAt: message.createdAt ?? state.chatDetails.lastMessageAt,
+          }
+        : null,
+    }));
+  },
+
+  addPreviousMessage: (messages, nextCursor) => {
+    return set((state) => ({
+      chatDetails: state.chatDetails
+        ? {
+            ...state.chatDetails,
+            messages: [...messages, ...state.chatDetails.messages],
+            nextCursor,
           }
         : null,
     }));

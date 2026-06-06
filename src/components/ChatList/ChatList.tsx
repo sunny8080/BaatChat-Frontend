@@ -92,12 +92,20 @@ const ChatList = ({ setActiveTab }: Props) => {
           <h3 className="bc-panel-title">Chats</h3>
 
           <div className="bc-panel-header-ctas">
-            <button className="btn1" title="Create new chat" onClick={() => setActiveTab('Users')}>
+            <button
+              className="btn1"
+              title="Create new chat"
+              onClick={() => setActiveTab('Friends')}
+            >
               <MessageCirclePlus size={20} />
             </button>
 
             {/* TODO - create new group feature */}
-            <button className="btn2" title="Create new group" onClick={() => setActiveTab('Users')}>
+            <button
+              className="btn2"
+              title="Create new group"
+              onClick={() => setActiveTab('Friends')}
+            >
               <UsersRound size={20} />
             </button>
           </div>

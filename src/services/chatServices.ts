@@ -25,7 +25,10 @@ export const getChatList = async (): Promise<ApiResponse> => {
  * @param data - Payload containing the chat ID to fetch details for.
  * @returns API response as {@link ApiResponse} containing the chat details.
  */
-export const getChatDetails = async (data: { chatId: string }): Promise<ApiResponse> => {
+export const getChatDetails = async (data: {
+  chatId: string;
+  nextCursor?: string;
+}): Promise<ApiResponse> => {
   let response = null;
   try {
     const res = await apiClient.post(CHAT_ROUTES.POST_GET_CHAT_DETAILS, data);
