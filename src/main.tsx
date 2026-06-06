@@ -5,10 +5,8 @@ import App from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext.tsx';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-// create a tanstack query client
-const queryClient = new QueryClient();
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './tanstack/queryClient.ts';
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>

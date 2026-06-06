@@ -25,6 +25,8 @@ import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
 import ChatInfo from '../ChatInfo/ChatInfo';
 import Modal from '../Modal/Modal';
+import { useQuery } from '@tanstack/react-query';
+import { addMessageInCache } from '../../tanstack/queryClient';
 
 const randMorse = getRandomMorse();
 
@@ -38,7 +40,6 @@ const ChatDetails = () => {
   const msgInputRef = useRef<HTMLTextAreaElement>(null);
   const selectedChatId = useChatListStore((state) => state.selectedChatId);
   const updateUnreadCount = useChatListStore((state) => state.updateUnreadCount);
-  const [loading, setLoading] = useState(false);
   const setChatDetails = useChatDetailsStore((state) => state.setChatDetails);
   const addMessage = useChatDetailsStore((state) => state.addMessage);
   const updateTempMessage = useChatDetailsStore((state) => state.updateTempMessage);
@@ -50,6 +51,27 @@ const ChatDetails = () => {
   const { user } = useAuth();
   const [lastTypingEmit, setLastTypingEmit] = useState(0);
   const [showChatInfo, setShowChatInfo] = useState(false);
+  const updateLastMessage = useChatListStore((state) => state.updateLastMessage);
+
+  const { data: chatData, isLoading } = useQuery({
+    queryKey: ['chatDetails', selectedChatId],
+    queryFn: async () => {
+      const res = await getChatDetails({ chatId: selectedChatId });
+      return res && res.success ? res.data.chat : null;
+    },
+    enabled: !!selectedChatId,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    if (chatData) {
+      if (chatDetails?.id) socket.emit(CHAT_EVENTS.LEAVE, { chatId: chatDetails?.id });
+      setChatDetails(chatData);
+      setNewMsgAdded(true); // scroll to bottom
+      updateUnreadCount(chatData?.id, 0);
+      socket.emit(CHAT_EVENTS.JOIN, { chatId: chatData?.id });
+    }
+  }, [chatData, setChatDetails, updateUnreadCount, chatDetails?.id, setNewMsgAdded]);
 
   const generateSubName = () => {
     if (!chatDetails) return '';
@@ -112,9 +134,12 @@ const ChatDetails = () => {
     }
 
     socket.emit(MESSAGE_EVENTS.SEND, socketData, (response: any) => {
-      console.log(response);
       if (response.ok) {
         updateTempMessage(response.message, tempId);
+        updateLastMessage(chatDetails!.id, response.message);
+
+        // add new msg in query cache
+        addMessageInCache(chatDetails!.id, response.message);
       } else {
         // TODO - handle error scenario
         toast.error('Something went wrong during sending message');
@@ -134,25 +159,6 @@ const ChatDetails = () => {
   };
 
   useEffect(() => {
-    const fetchChat = async () => {
-      setLoading(true);
-      const res = await getChatDetails({ chatId: selectedChatId });
-      if (res && res.data) {
-        if (chatDetails?.id) socket.emit(CHAT_EVENTS.LEAVE, { chatId: chatDetails.id });
-        setChatDetails(res.data.chat);
-        setNewMsgAdded(true);
-        updateUnreadCount(res.data.chat?.id, 0);
-        socket.emit(CHAT_EVENTS.JOIN, { chatId: res.data.chat?.id });
-      }
-      setLoading(false);
-    };
-
-    if (selectedChatId && chatDetails?.id !== selectedChatId) {
-      fetchChat();
-    }
-  }, [selectedChatId, setChatDetails]);
-
-  useEffect(() => {
     // dummyRef.current?.scrollIntoView({
     //   behavior: 'smooth',
     // });
@@ -162,18 +168,18 @@ const ChatDetails = () => {
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
       setNewMsgAdded(false);
     }
-  }, [newMsgAdded]);
+  }, [newMsgAdded, setNewMsgAdded]);
 
   return (
     <div className="bc-ChatDetails">
-      {loading && (
+      {isLoading && (
         // TODO - implement chat details skeleton in case of loading
         <div className="bc-loading-chat-details">
           <div className="bc-inline-spinner"></div> Loading conversation...
         </div>
       )}
 
-      {!loading && !chatDetails && (
+      {!isLoading && !chatDetails && (
         <div className="bc-no-item">
           <div className="bc-ni-icon">
             <MessageCircleMore />
@@ -186,7 +192,7 @@ const ChatDetails = () => {
         </div>
       )}
 
-      {!loading && chatDetails && (
+      {!isLoading && chatDetails && (
         <div className="bc-chat-details-wrap">
           {/* Header */}
           <div className="bc-cd-header" onClick={() => setShowChatInfo(true)}>

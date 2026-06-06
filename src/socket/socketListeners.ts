@@ -4,6 +4,7 @@ import { useChatDetailsStore } from '../zustand/ChatDetailsStore';
 import { useChatListStore } from '../zustand/ChatListStore';
 import socket from './socket';
 import { CHAT_EVENTS, MESSAGE_EVENTS, PRESENCE_EVENTS, TYPING_EVENTS } from './socketEvents';
+import { addMessageInCache } from '../tanstack/queryClient';
 
 /**
  * Registers connection-level socket listeners.
@@ -60,6 +61,9 @@ export const registerMessageSocketListeners = () => {
       addMessage(msg);
       setNewMsgAdded(true);
       socket.emit(MESSAGE_EVENTS.SEEN, { chatId: msg.chat, msgId: msg.id });
+
+      // add new msg in query cache
+      addMessageInCache(msg.chat, msg);
     }
   });
 
@@ -93,9 +97,10 @@ export const registerChatSocketListeners = () => {
     const { id, type, name, avatarUrl, lastMessage, lastMessageAt, unreadCount } = data;
     const { chatDetails } = useChatDetailsStore.getState();
     const { updateUnreadCount, updateLastMessage, chats, addChat } = useChatListStore.getState();
+    const chatId = id;
 
-    // add new chat list item if it doesn't exist
     if (!chats.some((chat) => chat.id === id)) {
+      // add new chat list item if it doesn't exist
       const newChat = {
         id,
         type,
@@ -107,10 +112,20 @@ export const registerChatSocketListeners = () => {
       };
       addChat(newChat);
     } else {
-      updateLastMessage(id, lastMessage);
-      if (id !== chatDetails?.id) {
+      updateLastMessage(chatId, lastMessage);
+      if (chatId !== chatDetails?.id) {
         // user is not on the current chat
-        updateUnreadCount(id, unreadCount);
+        updateUnreadCount(chatId, unreadCount);
+
+        /** 
+        // invalidate chat details, so when this chat opened then again api call will happen for chat details
+        queryClient.invalidateQueries({
+          queryKey: ['chatDetails', chatId],
+        });
+        */
+
+        // update tanstack cache so that it will remain fresh every time new message arrive, so no need of extra api call
+        addMessageInCache(chatId, lastMessage);
       }
     }
 

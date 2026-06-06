@@ -137,10 +137,12 @@ export const useChatListStore = create<ChatLIstState>()((set) => ({
   updateLastMessage: (chatId, lastMessage) => {
     return set((state) => {
       return {
-        chats: state.chats.map((chat) =>
-          chat.id === chatId
-            ? { ...chat, lastMessage, lastMessageAt: lastMessage.createdAt }
-            : chat,
+        chats: sortChats(
+          state.chats.map((chat) =>
+            chat.id === chatId
+              ? { ...chat, lastMessage, lastMessageAt: lastMessage.createdAt }
+              : chat,
+          ),
         ),
       };
     });
