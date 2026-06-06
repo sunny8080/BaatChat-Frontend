@@ -90,17 +90,31 @@ export const registerMessageSocketListeners = () => {
  */
 export const registerChatSocketListeners = () => {
   socket.on(CHAT_EVENTS.UPDATED, (data) => {
-    const { chatId, lastMessage, unreadCount } = data;
+    const { id, type, name, avatarUrl, lastMessage, lastMessageAt, unreadCount } = data;
     const { chatDetails } = useChatDetailsStore.getState();
-    const { updateUnreadCount, updateLastMessage } = useChatListStore.getState();
+    const { updateUnreadCount, updateLastMessage, chats, addChat } = useChatListStore.getState();
 
-    socket.emit(MESSAGE_EVENTS.DELIVERED, { chatId, msgId: lastMessage.id });
-    updateLastMessage(chatId, lastMessage);
-
-    if (chatId !== chatDetails?.id) {
-      // user is not on the current chat
-      updateUnreadCount(chatId, unreadCount);
+    // add new chat list item if it doesn't exist
+    if (!chats.some((chat) => chat.id === id)) {
+      const newChat = {
+        id,
+        type,
+        name,
+        avatarUrl,
+        lastMessage,
+        lastMessageAt,
+        unreadCount,
+      };
+      addChat(newChat);
+    } else {
+      updateLastMessage(id, lastMessage);
+      if (id !== chatDetails?.id) {
+        // user is not on the current chat
+        updateUnreadCount(id, unreadCount);
+      }
     }
+
+    socket.emit(MESSAGE_EVENTS.DELIVERED, { chatId: id, msgId: lastMessage.id });
   });
 
   socket.on(TYPING_EVENTS.USER_STARTED, (data) => {
