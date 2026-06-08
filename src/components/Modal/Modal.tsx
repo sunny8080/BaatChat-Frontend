@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 type Props = {
   handleOverlayClick: () => void;
   children: ReactNode;
-  modalContentStyles?: any;
+  modalContentStyles?: React.CSSProperties;
 };
 
 const Modal = ({ handleOverlayClick, modalContentStyles = {}, children }: Props) => {

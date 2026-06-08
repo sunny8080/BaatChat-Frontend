@@ -39,3 +39,16 @@ export const getChatDetails = async (data: {
   }
   return response;
 };
+
+// todo add js docs
+export const createGroup = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.post(CHAT_ROUTES.POST_CREATE_GROUP, data);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};

@@ -12,6 +12,13 @@
   align-items: center;
   gap: 4px;
 
+  &.disabled,
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
   &.bc-btn-primary {
     background: var(--violet-color);
     color: var(--white-color);
@@ -161,13 +168,29 @@
   }
 
   .bc-form-label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 12px;
     font-weight: 600;
     color: var(--muted-color);
     margin-bottom: 6px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+
+    .bc-form-label-note {
+      color: rgba(107, 107, 138, 0.6);
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .bc-form-label-required {
+      color: var(--violet-color);
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 700;
+    }
   }
 
   .bc-form-input-wrapper {
@@ -229,6 +252,9 @@
         border-color 0.2s,
         box-shadow 0.2s;
     }
+  }
+  textarea.bc-form-input {
+    resize: none;
   }
   .bc-form-input-validation-err {
     margin-top: 6px;

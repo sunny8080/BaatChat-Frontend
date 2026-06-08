@@ -237,9 +237,12 @@ const ChatDetails = () => {
               </div>
               <div className="bc-cd-name-wrap">
                 <p className="bc-cd-name">{chatDetails.name}</p>
-                <p className={`bc-cd-sub ${chatDetails.friend!.isOnline ? 'online' : ''}`}>
-                  {generateSubName()}
-                </p>
+
+                {chatDetails.type === ChatTypes.PERSONAL && chatDetails.friend && (
+                  <p className={`bc-cd-sub ${chatDetails.friend.isOnline ? 'online' : ''}`}>
+                    {generateSubName()}
+                  </p>
+                )}
               </div>
             </div>
 

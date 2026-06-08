@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import type { ChatDetailsInterface } from '../interfaces/ChatDetailsInterface';
 import type MessageInterface from '../interfaces/MessageInterface';
 import type UserInterface from '../interfaces/UserInterface';
-import { ChatTypes } from '../utils/constant';
 
 type ChatDetailsState = {
   chatDetails: ChatDetailsInterface | null;

@@ -158,7 +158,7 @@ const SearchUsers = ({ activeTab }: Props) => {
 
         {!loading && users && users.length === 0 && (
           <div className="search-users-txt">
-            No BattChat users found, search with username or email !!
+            No BaatChat users found, search with username or email !!
           </div>
         )}
 

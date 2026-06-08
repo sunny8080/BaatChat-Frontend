@@ -14,6 +14,8 @@ import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
 import { useChatListStore } from '../../zustand/ChatListStore';
 import { getChatList } from '../../services/chatServices';
+import Modal from '../Modal/Modal';
+import CreateGroup from '../CreateGroup/CreateGroup';
 
 type Props = {
   setActiveTab: Dispatch<SetStateAction<ChatActiveTabs>>;
@@ -28,6 +30,7 @@ const ChatList = ({ setActiveTab }: Props) => {
   const chatFetched = useChatListStore((state) => state.chatFetched);
   const setChatFetched = useChatListStore((state) => state.setChatFetched);
   const [loading, setLoading] = useState(false);
+  const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
 
   const [searchTxt, setSearchText] = useState('');
   const [currentChatFilter, setCurrentChatFilter] = useState<ChatListFilterType>(
@@ -104,7 +107,7 @@ const ChatList = ({ setActiveTab }: Props) => {
             <button
               className="btn2"
               title="Create new group"
-              onClick={() => setActiveTab('Friends')}
+              onClick={() => setShowCreateGroupModal(true)}
             >
               <UsersRound size={20} />
             </button>
@@ -204,6 +207,23 @@ const ChatList = ({ setActiveTab }: Props) => {
           </ul>
         ) : null}
       </div>
+
+      {showCreateGroupModal && (
+        <Modal
+          handleOverlayClick={() => setShowCreateGroupModal(false)}
+          modalContentStyles={{
+            width: '100%',
+            maxWidth: '560px',
+            height: '100%',
+            maxHeight: 'min(92vh, 800px)',
+          }}
+        >
+          <CreateGroup
+            setShowCreateGroupModal={setShowCreateGroupModal}
+            setActiveTab={setActiveTab}
+          />
+        </Modal>
+      )}
     </div>
   );
 };
