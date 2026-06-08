@@ -42,6 +42,7 @@ const CreateGroup = ({ setShowCreateGroupModal, setActiveTab }: Props) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isCreatingGroup, setIsCreatingGroup] = useState(false);
   const addChat = useChatListStore((state) => state.addChat);
+  const setSelectedChatId = useChatListStore((state) => state.setSelectedChatId);
   const setChatDetails = useChatDetailsStore((state) => state.setChatDetails);
 
   const nextButtonEnabled =
@@ -161,8 +162,10 @@ const CreateGroup = ({ setShowCreateGroupModal, setActiveTab }: Props) => {
     setIsCreatingGroup(true);
     const res = await createGroup(formData);
     if (res && res.data) {
+      // on success select and open this group chat
       const chat = res.data.group;
       addChat(chat);
+      setSelectedChatId(chat.id);
       setChatDetails(chat);
       setActiveTab('ChatList');
       setShowCreateGroupModal(false);
