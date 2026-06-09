@@ -83,8 +83,11 @@ const ChatDetails = () => {
       if (friend?.isOnline) return 'Online now';
       else return 'Last seen ' + formatLastSeen(friend!.lastSeenAt!, friend!.isOnline);
     } else {
-      const name = chatDetails.activeMembers?.map((mem) => mem.name?.split(' ')[0]).join(', ');
-      return name;
+      let name = '';
+      chatDetails.activeMembers?.forEach((mem) => {
+        if (mem.id !== user?.id) name += mem.name?.split(' ')[0] + ', ';
+      });
+      return name + 'You';
     }
   };
 
@@ -238,11 +241,9 @@ const ChatDetails = () => {
               <div className="bc-cd-name-wrap">
                 <p className="bc-cd-name">{chatDetails.name}</p>
 
-                {chatDetails.type === ChatTypes.PERSONAL && chatDetails.friend && (
-                  <p className={`bc-cd-sub ${chatDetails.friend.isOnline ? 'online' : ''}`}>
-                    {generateSubName()}
-                  </p>
-                )}
+                <p className={`bc-cd-sub ${chatDetails?.friend?.isOnline ? 'online' : ''}`}>
+                  {generateSubName()}
+                </p>
               </div>
             </div>
 

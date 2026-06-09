@@ -166,7 +166,9 @@
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
-
+  .bc-form-field {
+    width: 100%;
+  }
   .bc-form-label {
     display: flex;
     align-items: center;

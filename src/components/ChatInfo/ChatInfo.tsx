@@ -2,6 +2,7 @@ import {
   AtSign,
   Ban,
   CalendarDays,
+  Check,
   Copy,
   CopyCheck,
   FlagTriangleRight,
@@ -19,11 +20,13 @@ import './ChatInfo.scss';
 import type React from 'react';
 import { ChatTypes } from '../../utils/constant';
 import { copyToClipboard, countOnlineMembers, formatLastSeen } from '../../utils/utils';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import toast from 'react-hot-toast';
+import { updateGroupDetails } from '../../services/chatServices';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -38,6 +41,14 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
   const isPersonal = chatDetails?.type === ChatTypes.PERSONAL;
   const friend = chatDetails?.friend;
   const [copiedId, setCopiedId] = useState('');
+  const [editGroupName, setEditGroupName] = useState(false);
+  const [editGroupDesc, setEditGroupDesc] = useState(false);
+  const [editGroupAvatar, setEditGroupAvatar] = useState(false);
+  const [groupName, setGroupName] = useState(isPersonal ? '' : chatDetails?.name);
+  const [groupDesc, setGroupDesc] = useState(isPersonal ? '' : chatDetails?.description);
+  const [previewAvatarUrl, setPreviewAvatarUrl] = useState(chatDetails?.avatarUrl);
+  const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // TODO sort members, admins must be at the top
   const sortedMembers = chatDetails?.activeMembers;
@@ -46,6 +57,89 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
     .at(0);
 
   if (!chatDetails) return;
+
+  const handleEditNameBtnClick = async () => {
+    if (editGroupName) {
+      setEditGroupName(false);
+
+      if (groupName !== chatDetails.name) {
+        // update group name
+        if (!groupName!.length) {
+          toast.error('Group name is required');
+          return;
+        }
+        if (groupName!.length > 50) {
+          toast.error('Group name can have at most 50 chars');
+          return;
+        }
+        const formData = new FormData();
+        formData.append('chatId', chatDetails.id!);
+        formData.append('name', groupName!);
+        const res = await updateGroupDetails(formData);
+        if (res && res.data) {
+          toast.success('Group name updated successfully!');
+        }
+      }
+    } else {
+      setEditGroupName(true);
+    }
+  };
+
+  const handleEditDescBtnClick = async () => {
+    if (editGroupDesc) {
+      setEditGroupDesc(false);
+
+      if (groupDesc !== chatDetails.description) {
+        // update group desc
+        if (groupDesc!.length > 250) {
+          toast.error('Group description can have at most 250 chars');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('chatId', chatDetails.id!);
+        formData.append('description', groupDesc!);
+        const res = await updateGroupDetails(formData);
+        if (res && res.data) {
+          toast.success('Group description updated successfully!');
+        }
+      }
+    } else {
+      setEditGroupDesc(true);
+    }
+  };
+
+  const handleEditAvatarBtnClick = async () => {
+    if (editGroupAvatar) {
+      setEditGroupAvatar(false);
+      if (selectedAvatar) {
+        // update group avatar
+        const formData = new FormData();
+        formData.append('chatId', chatDetails.id!);
+        formData.append('avatar', selectedAvatar);
+
+        const res = await updateGroupDetails(formData);
+        if (res && res.data) {
+          toast.success('Group description updated successfully!');
+        }
+      }
+    } else {
+      fileInputRef.current?.click();
+      setEditGroupAvatar(true);
+    }
+  };
+
+  const handleFilePick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) {
+      return;
+    }
+    const file = files[0];
+    setSelectedAvatar(file);
+
+    const url = URL.createObjectURL(file);
+    setPreviewAvatarUrl(url);
+  };
 
   return (
     <div className="bc-ChatInfo">
@@ -62,16 +156,67 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
         </div>
       </div>
 
-      <div className="bc-chat-info-body">
+      <div className="bc-chat-info-body bc-form">
         <div className="bc-ci-cover"></div>
         <div className="bc-ci-profile">
           <div
             className={`bc-ci-avatar ${isPersonal ? (friend?.isOnline ? 'online' : 'offline') : ''}`}
           >
-            <img src={chatDetails?.avatarUrl} alt={chatDetails?.name} />
+            <img src={previewAvatarUrl} alt={chatDetails?.name} />
+
+            {!isPersonal && (
+              <>
+                <span className="bc-ci-avatar-edit-btn" onClick={handleEditAvatarBtnClick}>
+                  {editGroupAvatar ? (
+                    <Check size={16} color="var(--white-color)" />
+                  ) : (
+                    <Pencil size={12} color="var(--white-color)" />
+                  )}
+                </span>
+
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/jpeg,image/png,image/webp"
+                  ref={fileInputRef}
+                  onChange={handleFilePick}
+                />
+              </>
+            )}
           </div>
 
-          <div className="bc-ci-name">{chatDetails?.name}</div>
+          <div className="bc-ci-name">
+            {isPersonal ? chatDetails.name : editGroupName ? '' : groupName}
+
+            {editGroupName && (
+              <div className="bc-form-field">
+                <div className="bc-form-input-wrapper">
+                  <input
+                    type="text"
+                    className="bc-form-input"
+                    id="groupName"
+                    placeholder="e.g. College Gang 🎓, Work Buddies 💼"
+                    maxLength={50}
+                    required
+                    value={groupName}
+                    onChange={(e) => setGroupName(e.target.value)}
+                    autoFocus
+                  />
+                </div>
+              </div>
+            )}
+
+            {!isPersonal && (
+              <div
+                className="bc-ci-edit-btn"
+                title="edit group name"
+                onClick={handleEditNameBtnClick}
+              >
+                {editGroupName ? <Check size={18} /> : <Pencil size={16} />}
+              </div>
+            )}
+          </div>
+
           <div className="bc-ci-sub">
             {isPersonal ? (
               <span>@{friend?.username}</span>
@@ -85,12 +230,15 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
               </>
             )}
           </div>
-          <div className="bc-ci-desc">
-            <span>
-              <PenLine size={12} />
-            </span>
-            {isPersonal ? friend?.bio : chatDetails?.description}
-          </div>
+
+          {isPersonal && friend?.bio && (
+            <div className="bc-ci-desc">
+              <span>
+                <PenLine size={12} />
+              </span>
+              friend?.bio
+            </div>
+          )}
 
           {isPersonal && (
             <div className="bc-ci-status">
@@ -198,9 +346,55 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
         {!isPersonal && (
           <>
             <div className="bc-ci-grp-desc bc-ci-info-section">
-              <div className="bc-ci-info-label">Description</div>
+              <div className="bc-ci-info-label">
+                Description
+                <div
+                  className="bc-ci-edit-btn"
+                  title="edit group description"
+                  onClick={handleEditDescBtnClick}
+                >
+                  {editGroupDesc ? (
+                    <Check size={18} color="var(--white-color)" />
+                  ) : (
+                    <Pencil size={16} color="var(--white-color)" />
+                  )}
+                </div>
+              </div>
               {/* TODO - provide button to add grp description */}
-              <div className="desc-box">{chatDetails.description}</div>
+              <div className="desc-box">
+                {!editGroupDesc ? (
+                  groupDesc ? (
+                    groupDesc
+                  ) : (
+                    <>
+                      <span
+                        className=""
+                        style={{ cursor: 'pointer' }}
+                        onClick={handleEditDescBtnClick}
+                      >
+                        Add description
+                      </span>
+                    </>
+                  )
+                ) : null}
+
+                {editGroupDesc && (
+                  <div className="bc-form-field">
+                    <div className="bc-form-input-wrapper">
+                      <textarea
+                        className="bc-form-input"
+                        rows={4}
+                        id="groupDesc"
+                        placeholder="What's this group about? 💬"
+                        maxLength={250}
+                        value={groupDesc}
+                        onChange={(e) => setGroupDesc(e.target.value)}
+                        autoFocus
+                      ></textarea>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Group Info */}

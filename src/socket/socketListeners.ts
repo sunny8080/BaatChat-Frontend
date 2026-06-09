@@ -3,8 +3,15 @@ import type SocketError from '../interfaces/SocketError';
 import { useChatDetailsStore } from '../zustand/ChatDetailsStore';
 import { useChatListStore } from '../zustand/ChatListStore';
 import socket from './socket';
-import { CHAT_EVENTS, MESSAGE_EVENTS, PRESENCE_EVENTS, TYPING_EVENTS } from './socketEvents';
+import {
+  CHAT_EVENTS,
+  GROUP_EVENTS,
+  MESSAGE_EVENTS,
+  PRESENCE_EVENTS,
+  TYPING_EVENTS,
+} from './socketEvents';
 import { addMessageInCache } from '../tanstack/queryClient';
+import { queryClient } from '../tanstack/queryClient';
 
 /**
  * Registers connection-level socket listeners.
@@ -150,5 +157,31 @@ export const registerChatSocketListeners = () => {
       }, 2000);
       setTypingTimeouts(timeout, user.id);
     }
+  });
+};
+
+/**
+ * Registers group-level socket listeners.
+ *
+ * Keeps the chat list and active chat details cache in sync when group data is
+ * updated over the socket.
+ */
+export const registerGroupSocketListeners = () => {
+  socket.on(GROUP_EVENTS.UPDATED, (data) => {
+    console.log(data);
+    const { id: chatId } = data;
+    // update chat list
+    const { upsertChat } = useChatListStore.getState();
+    upsertChat(data);
+
+    // update chat details
+    queryClient.setQueryData(['chatDetails', chatId], (old: any) => {
+      if (!old) return old;
+      return {
+        ...old,
+        ...data,
+        messages: [...old.messages, data.lastMessage],
+      };
+    });
   });
 };

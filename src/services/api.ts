@@ -104,4 +104,5 @@ export const CHAT_ROUTES = {
   GET_GET_CHATS: '/chats/get-chats',
   POST_GET_CHAT_DETAILS: '/chats/get-chat-details',
   POST_CREATE_GROUP: '/chats/create-group',
+  PATCH_UPDATE_GROUP_DETAILS: '/chats/update-group-details',
 };

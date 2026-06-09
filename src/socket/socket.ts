@@ -1,6 +1,7 @@
 import { io } from 'socket.io-client';
 import {
   registerChatSocketListeners,
+  registerGroupSocketListeners,
   registerMessageSocketListeners,
   registerSocketListeners,
 } from './socketListeners';
@@ -31,6 +32,7 @@ export const connectSocket = (user: UserInterface) => {
   registerSocketListeners();
   registerMessageSocketListeners();
   registerChatSocketListeners();
+  registerGroupSocketListeners();
   socket.user = user;
   socket.connect();
 };
