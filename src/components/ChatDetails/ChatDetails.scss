@@ -47,6 +47,28 @@
       background: var(--border-color);
       border-radius: 2px;
     }
+
+    .bc-cd-messages-date-separator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0;
+
+      .date-content {
+        font-size: 10px;
+        color: var(--muted-color);
+        padding: 3px 10px;
+        background: var(--card-color);
+        border-radius: 8px;
+        border: 0.5px solid var(--border-color);
+      }
+      .date-line {
+        content: "";
+        flex: 1;
+        height: 0.5px;
+        background: var(--border-color);
+      }
+    }
   }
 }
 

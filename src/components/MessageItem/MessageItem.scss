@@ -14,20 +14,6 @@
 
   .bc-msg-content-wrapper {
     justify-content: center;
-
-    &::before {
-      flex: 1;
-      content: "";
-      height: 1px;
-      background-color: #251f2f;
-    }
-
-    &::after {
-      flex: 1;
-      content: "";
-      height: 1px;
-      background-color: #251f2f;
-    }
   }
   .bc-msg-content {
     padding: 2px 12px;

@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import type { ChatDetailsInterface } from '../../interfaces/ChatDetailsInterface';
 import { ChatTypes, MessageTypes } from '../../utils/constant';
-import { formatLastSeen, getRandomMorse } from '../../utils/utils';
+import { formatLastSeen, formatMsgDate, getRandomMorse } from '../../utils/utils';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
@@ -55,6 +55,8 @@ const ChatDetails = () => {
   const updateLastMessage = useChatListStore((state) => state.updateLastMessage);
   const [loadingPreviousMessage, setLoadingPreviousMessage] = useState(false);
   const previousMsgHeightRef = useRef<number | null>(null);
+  // const [previousDate, setPreviousDate] = useState('');
+  let previousDate = '';
 
   const { data: chatData, isLoading } = useQuery({
     queryKey: ['chatDetails', selectedChatId],
@@ -268,9 +270,24 @@ const ChatDetails = () => {
               </div>
             )}
 
-            {chatDetails.messages?.map((msg, _) => (
-              <MessageItem msg={msg} key={msg.id} />
-            ))}
+            {chatDetails.messages?.map((msg, _) => {
+              const currentDate = formatMsgDate(msg.createdAt!);
+              const showDate = currentDate !== previousDate;
+              previousDate = currentDate;
+
+              return (
+                <React.Fragment key={msg.id}>
+                  {showDate && (
+                    <div className="bc-cd-messages-date-separator">
+                      <span className="date-line"></span>
+                      <span className="date-content">{formatMsgDate(msg.createdAt!)}</span>
+                      <span className="date-line"></span>
+                    </div>
+                  )}
+                  <MessageItem msg={msg} />
+                </React.Fragment>
+              );
+            })}
 
             {/* Typing indicator */}
             {/* TODO - show users first name in case of group chats */}

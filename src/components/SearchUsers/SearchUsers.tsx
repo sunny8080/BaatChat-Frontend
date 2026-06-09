@@ -55,16 +55,15 @@ const SearchUsers = ({ activeTab }: Props) => {
       ? friends
       : friendRequests?.map((fReq) => fReq.sender);
 
-  const handleSearchFriends = () => {
-    if (searchText.length === 0) {
+  const handleSearchFriends = (str?: string) => {
+    const sText = str ?? searchText;
+    if (sText.length === 0) {
       setSearchResults(null);
       setSelectedFriendUsername('');
     } else {
       const filteredFriends = friends?.filter(
         ({ name, username, phone }) =>
-          name?.includes(searchText) ||
-          username?.includes(searchText) ||
-          phone?.includes(searchText),
+          name?.includes(sText) || username?.includes(sText) || phone?.includes(sText),
       );
       setSearchResults(filteredFriends ?? []);
       setSelectedFriendUsername('');
@@ -114,6 +113,13 @@ const SearchUsers = ({ activeTab }: Props) => {
     }
   };
 
+  const handleSearchTextChange = (str: string) => {
+    setSearchText(str);
+    if (activeTab === 'Friends') {
+      handleSearchFriends(str);
+    }
+  };
+
   return (
     <div className="bc-SearchUsers">
       <div className="bc-panel-header">
@@ -132,7 +138,7 @@ const SearchUsers = ({ activeTab }: Props) => {
                 handleSearching();
               }
             }}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) => handleSearchTextChange(e.target.value)}
             placeholder="Search by name or @username..."
           />
         </div>

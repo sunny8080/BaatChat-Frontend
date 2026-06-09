@@ -138,9 +138,23 @@ export const formatLastMessageAt = (date: string | undefined) => {
  * Formats a message timestamp for compact chat display.
  *
  * @param date - ISO-compatible date string to format.
- * @returns Time for today, "yesterday" for one day ago, weekday for recent dates, or DD/MM/YYYY.
+ * @returns Time in "H:MM A" format
  */
 export const formatMsgTime = (date: string) => {
+  if (!date) return '';
+  const target = dayjs(date);
+  if (!target.isValid()) return '';
+
+  return target.format('h:mm A'); // 4:12 AM
+};
+
+/**
+ * Formats a message date for chat grouping.
+ *
+ * @param date - ISO-compatible date string to format.
+ * @returns Relative date label for recent dates, or "DD/MM/YYYY" for older dates.
+ */
+export const formatMsgDate = (date: string) => {
   if (!date) return '';
   const target = dayjs(date);
   if (!target.isValid()) return '';
@@ -148,7 +162,7 @@ export const formatMsgTime = (date: string) => {
   const days = dayjs().startOf('day').diff(target.startOf('day'), 'day');
 
   if (days === 0) {
-    return target.format('h:mm A'); // 4:12 AM
+    return 'Today';
   }
 
   if (days === 1) {
