@@ -8,6 +8,36 @@
   }
 }
 
+.bc-MessageItem.notification {
+  margin-inline: auto;
+  max-width: 80%;
+
+  .bc-msg-content-wrapper {
+    justify-content: center;
+
+    &::before {
+      flex: 1;
+      content: "";
+      height: 1px;
+      background-color: #251f2f;
+    }
+
+    &::after {
+      flex: 1;
+      content: "";
+      height: 1px;
+      background-color: #251f2f;
+    }
+  }
+  .bc-msg-content {
+    padding: 2px 12px;
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--muted-color);
+    border: 0.5px solid var(--border-color);
+  }
+}
+
 .bc-msg-content-wrapper {
   display: flex;
   align-items: center;
