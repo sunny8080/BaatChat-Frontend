@@ -18,7 +18,7 @@ type ChatLIstState = {
   setChatFetched: (chatFetched: boolean) => void;
   setChats: (newChats: ChatInterface[]) => void;
   addChat: (newChat: ChatInterface) => void;
-  upsertChat: (newChat: ChatInterface) => void;
+  upsertChat: (newChat: ChatInterface, receiverId?: string, isTmpChat?: boolean) => void;
   removeChat: (chatId: string) => void;
   setSelectedChatId: (chatId: string) => void;
   setLoading: (isLoading: boolean) => void;
@@ -37,7 +37,7 @@ type ChatLIstState = {
  * handles selected chat state, and exposes `getFilteredChats` for deriving
  * the visible chat list from the current filter and search query.
  */
-export const useChatListStore = create<ChatLIstState>()((set) => ({
+export const useChatListStore = create<ChatLIstState>()((set, get) => ({
   chats: [],
   selectedChatId: '',
   searchText: '',
@@ -51,7 +51,26 @@ export const useChatListStore = create<ChatLIstState>()((set) => ({
   setChats: (newChats) => set({ chats: sortChats(newChats), error: null }),
   addChat: (newChat) => set((state) => ({ chats: sortChats([...state.chats, newChat]) })),
 
-  upsertChat: (newChat) => {
+  upsertChat: (newChat, receiverId, tmpChatId) => {
+    if (tmpChatId) {
+      // when temp chat is created, we have to replace temp chat details with original chat details
+      const tempChatId = `personal-${receiverId}`;
+
+      return set((state) => {
+        const chatInd = state.chats.findIndex(({ id }) => id === tempChatId);
+        if (chatInd === -1) {
+          return { chats: sortChats([...state.chats, newChat]) };
+        } else {
+          const updatedChats = [...state.chats];
+          updatedChats[chatInd] = { ...updatedChats[chatInd], ...newChat };
+          get().setSelectedChatId(newChat.id);
+          return { chats: sortChats(updatedChats) };
+        }
+      });
+
+      return;
+    }
+
     return set((state) => {
       const chatInd = state.chats.findIndex(({ id }) => id === newChat.id);
       if (chatInd === -1) {

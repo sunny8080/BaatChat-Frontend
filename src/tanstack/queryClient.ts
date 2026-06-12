@@ -18,7 +18,7 @@ export const addMessageInCache = (chatId: string, msg: MessageInterface) => {
     if (!old) return old;
     return {
       ...old,
-      messages: [...old.messages, msg],
+      messages: [...(old.messages ?? []), msg],
     };
   });
 };

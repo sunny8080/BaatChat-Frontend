@@ -26,7 +26,7 @@ import type MessageInterface from '../../interfaces/MessageInterface';
 import ChatInfo from '../ChatInfo/ChatInfo';
 import Modal from '../Modal/Modal';
 import { useQuery } from '@tanstack/react-query';
-import { addMessageInCache } from '../../tanstack/queryClient';
+import { addMessageInCache, queryClient } from '../../tanstack/queryClient';
 
 const randMorse = getRandomMorse();
 
@@ -40,6 +40,7 @@ const ChatDetails = () => {
   const msgInputRef = useRef<HTMLTextAreaElement>(null);
   const selectedChatId = useChatListStore((state) => state.selectedChatId);
   const updateUnreadCount = useChatListStore((state) => state.updateUnreadCount);
+  const upsertChat = useChatListStore((state) => state.upsertChat);
   const setChatDetails = useChatDetailsStore((state) => state.setChatDetails);
   const addMessage = useChatDetailsStore((state) => state.addMessage);
   const updateTempMessage = useChatDetailsStore((state) => state.updateTempMessage);
@@ -143,11 +144,20 @@ const ChatDetails = () => {
 
     socket.emit(MESSAGE_EVENTS.SEND, socketData, (response: any) => {
       if (response.ok) {
+        // update messages in left rails
         updateTempMessage(response.message, tempId);
         updateLastMessage(chatDetails!.id, response.message);
 
-        // add new msg in query cache
-        addMessageInCache(chatDetails!.id, response.message);
+        if (response.newChat) {
+          // update chat if new chat created
+          const newChat = response.newChat;
+          queryClient.setQueryData(['chatDetails', newChat.id], newChat);
+          addMessageInCache(newChat.id, response.message);
+          upsertChat(newChat, newChat.friend.id, true);
+        } else {
+          // add new msg in query cache
+          addMessageInCache(chatDetails!.id, response.message);
+        }
       } else {
         // TODO - handle error scenario
         toast.error('Something went wrong during sending message');
