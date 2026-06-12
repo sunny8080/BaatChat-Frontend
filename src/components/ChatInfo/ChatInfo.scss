@@ -19,6 +19,29 @@
     z-index: 0;
     pointer-events: none;
   }
+
+  .bc-ci-orb {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(124, 58, 237, 0.1);
+    top: -110px;
+    right: -90px;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .bc-ci-orb2 {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(245, 158, 11, 0.06);
+    bottom: -60px;
+    left: -60px;
+    filter: blur(60px);
+    pointer-events: none;
+  }
 }
 
 .bc-ci-badge {

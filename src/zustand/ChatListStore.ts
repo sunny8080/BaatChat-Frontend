@@ -5,6 +5,7 @@ import type UserInterface from '../interfaces/UserInterface';
 import type { ChatDetailsInterface } from '../interfaces/ChatDetailsInterface';
 import { useChatDetailsStore } from './ChatDetailsStore';
 import type MessageInterface from '../interfaces/MessageInterface';
+import { queryClient } from '../tanstack/queryClient';
 
 type ChatLIstState = {
   chats: ChatInterface[];
@@ -115,8 +116,9 @@ export const useChatListStore = create<ChatLIstState>()((set) => ({
         friend: user,
       };
 
-      // create new chat details
-      useChatDetailsStore.getState().setChatDetails(tempChatDetails);
+      // create new chat details, and store it in query data
+      queryClient.setQueryData(['chatDetails', tempChatId], tempChatDetails);
+      // useChatDetailsStore.getState().setChatDetails(tempChatDetails);
 
       return {
         chats: [newChat, ...state.chats],

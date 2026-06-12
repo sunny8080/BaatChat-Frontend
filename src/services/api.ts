@@ -80,6 +80,8 @@ export const AUTH_ROUTES = {
   POST_CHANGE_PASSWORD: '/auth/change-password',
   GET_CURRENT_USER: '/auth/me',
   GET_CHECK_USERNAME: '/auth/check-username',
+  POST_GOOGLE_CALLBACK: '/auth/google/callback',
+  POST_COMPLETE_SOCIAL_SIGNUP: '/auth/complete-social-signup',
 };
 
 /**

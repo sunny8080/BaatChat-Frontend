@@ -143,6 +143,8 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
 
   return (
     <div className="bc-ChatInfo">
+      <div className="bc-ci-orb"></div>
+      <div className="bc-ci-orb2"></div>
       <div className="bc-chat-info-header">
         <div className="bc-ci-title">
           <span>{isPersonal ? 'Contact Info' : 'Group Info'}</span>

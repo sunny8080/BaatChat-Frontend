@@ -212,3 +212,54 @@ export const getAccessToken = async (): Promise<ApiResponse> => {
   }
   return response;
 };
+
+// todo add js docs
+export const googleCallback = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+
+  try {
+    const toastLoading = toast.loading('Loading your profile...');
+    const res = await apiClient.post(AUTH_ROUTES.POST_GOOGLE_CALLBACK, data);
+    toast.remove(toastLoading);
+    if (res.data && res.data.success && res.data?.data?.accessToken) {
+      // signin user
+      localStorage.setItem('accessToken', res.data?.data?.accessToken);
+      localStorage.setItem('userId', res.data.data?.user?.id);
+      localStorage.setItem('loginType', res.data.data?.user?.loginType);
+    }
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+// todo add js docs
+export const completeSocialSignup = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+
+  try {
+    const signUpGoogleToken = sessionStorage.getItem('signUpGoogleToken');
+    if (!signUpGoogleToken) {
+      toast.error('Something went wrong!');
+      window.location.reload();
+    }
+
+    const res = await apiClient.post(AUTH_ROUTES.POST_COMPLETE_SOCIAL_SIGNUP, data, {
+      headers: {
+        Authorization: `Bearer ${signUpGoogleToken}`,
+      },
+    });
+    if (res.data && res.data.success) {
+      localStorage.setItem('accessToken', res.data?.data?.accessToken);
+      localStorage.setItem('userId', res.data.data?.user?.id);
+      localStorage.setItem('loginType', res.data.data?.user?.loginType);
+    }
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};

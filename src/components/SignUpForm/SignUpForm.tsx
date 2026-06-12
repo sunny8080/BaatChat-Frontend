@@ -2,7 +2,18 @@ import type React from 'react';
 import './SignUpForm.scss';
 import googleSvg from '../../assets/social/google.svg';
 import facebookSvg from '../../assets/social/facebook.svg';
-import { AtSign, Check, Eye, EyeOff, MailCheck, NotebookPen, Search, UserRound, UserRoundKey, X } from 'lucide-react';
+import {
+  AtSign,
+  Check,
+  Eye,
+  EyeOff,
+  MailCheck,
+  NotebookPen,
+  Search,
+  UserRound,
+  UserRoundKey,
+  X,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { checkUsernameAvailability } from '../../services/authService';
 import { useForm } from 'react-hook-form';
@@ -23,14 +34,15 @@ import { useNavigate } from 'react-router-dom';
 
 type Props = {
   setCurAuthTab: React.Dispatch<React.SetStateAction<string>>;
+  openGoogleLoginPopup: () => void;
 };
 
 const passwordStrengthLabel = ['', 'Weak ❌', 'Fair 🙂', 'Good 👍', 'Strong 💪'];
 const passwordStrengthClass = ['', 'weak', 'fair', 'good', 'strong'];
 
-const SignUpForm = ({ setCurAuthTab }: Props) => {
+const SignUpForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [userName, setUsername] = useState('');
+  const [userName, setUserName] = useState('');
   const [checkingUsername, setCheckingUsername] = useState(false);
   const [userNameAvailable, setUserNameAvailable] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,7 +55,11 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
 
   // create zod schema
   const SignUpSchema = z.object({
-    username: z.string().min(1, 'Username is required').min(3, 'Username must be of at least 3 chars').max(15, 'Username can be of at most 15 chars'),
+    username: z
+      .string()
+      .min(1, 'Username is required')
+      .min(3, 'Username must be of at least 3 chars')
+      .max(15, 'Username can be of at most 15 chars'),
     name: z.string().min(1, 'Name is required'),
     email: z.string().min(1, 'Email is required').min(5, 'Invalid email'),
     phone: z
@@ -52,7 +68,10 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
       .regex(/^[0-9]{10}$/, 'Phone number must be digits')
       .regex(/^[1-9][0-9]{9}$/, 'Invalid phone number')
       .length(10, 'Invalid phone number'),
-    password: z.string().min(1, 'Password is required').min(6, 'Password must be of at least 6 characters!'),
+    password: z
+      .string()
+      .min(1, 'Password is required')
+      .min(6, 'Password must be of at least 6 characters!'),
   });
 
   const {
@@ -128,7 +147,9 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
         const circumference = 113; // 2 * pi * 18
         if (cdProgressSVG.current) {
           // strokeDashoffset - how much width of circle should be colored
-          cdProgressSVG.current.style.strokeDashoffset = String(circumference * (1 - (countDownRedirect - 1) / 3));
+          cdProgressSVG.current.style.strokeDashoffset = String(
+            circumference * (1 - (countDownRedirect - 1) / 3),
+          );
         }
 
         return Math.max(0, prev - 1);
@@ -143,14 +164,16 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
   return (
     <div className="bc-SignUpForm bc-slideScreenRight">
       <div className="bc-social-links">
-        <button className="bc-social-link">
-          <img className="bc-social-icon" src={googleSvg} alt="google-signin" />
-          Google
+        <button className="bc-social-link google" onClick={() => openGoogleLoginPopup()}>
+          <img className="bc-social-icon" src={googleSvg} alt="google-signup" />
+          Sign up with Google
         </button>
-        <button className="bc-social-link">
+
+        {/* Currently disabling Facebook */}
+        {/* <button className="bc-social-link facebook">
           <img className="bc-social-icon facebook" src={facebookSvg} alt="facebook-signin" />
           Facebook
-        </button>
+        </button> */}
       </div>
 
       <div className="bc-form-divider">
@@ -160,7 +183,13 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
       </div>
 
       {/* Show OTP Input screen if otp sent and email not verified */}
-      {otpSent && !emailVerified && <OTPForm setOtpSent={setOtpSent} setEmailVerified={setEmailVerified} email={getValues('email')} />}
+      {otpSent && !emailVerified && (
+        <OTPForm
+          setOtpSent={setOtpSent}
+          setEmailVerified={setEmailVerified}
+          email={getValues('email')}
+        />
+      )}
 
       {/* Show Email verified success  screen if otp sent and email verified */}
       {otpSent && emailVerified && (
@@ -170,7 +199,9 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
               <span>🎉</span>
             </div>
             <div className="bc-sup-success-title">Account created!</div>
-            <div className="bc-sup-success-sub">Your BaatChat account is verified and ready. Welcome to the family! 🇮🇳</div>
+            <div className="bc-sup-success-sub">
+              Your BaatChat account is verified and ready. Welcome to the family! 🇮🇳
+            </div>
           </div>
 
           <div className="bc-sup-ac-details">
@@ -239,7 +270,9 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
                 />
               </div>
 
-              {errors.name?.message && <div className="bc-form-input-validation-err">{errors.name?.message}</div>}
+              {errors.name?.message && (
+                <div className="bc-form-input-validation-err">{errors.name?.message}</div>
+              )}
             </div>
             <div className="bc-form-field">
               <label className="bc-form-label" htmlFor="username">
@@ -259,7 +292,7 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
                   id="username"
                   {...register('username', {
                     onChange: (e) => {
-                      setUsername(e.target.value);
+                      setUserName(e.target.value);
                       setUserNameAvailable('');
                     },
                   })}
@@ -267,20 +300,36 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
                 />
               </div>
 
-              {errors.username?.message && <div className="bc-form-input-validation-err">{errors.username?.message}</div>}
+              {errors.username?.message && (
+                <div className="bc-form-input-validation-err">{errors.username?.message}</div>
+              )}
 
               <div className="bc-username-check">
                 <p
                   className={`bc-username-status 
                 ${userNameAvailable === 'true' ? 'available' : ''}
                 ${userNameAvailable === 'false' ? 'not-available' : ''}
-                `}>
-                  <span>{userNameAvailable === 'true' ? <Check size={16} strokeWidth={3} /> : <X size={20} strokeWidth={3} />}</span>
+                `}
+                >
+                  <span>
+                    {userNameAvailable === 'true' ? (
+                      <Check size={16} strokeWidth={3} />
+                    ) : (
+                      <X size={20} strokeWidth={3} />
+                    )}
+                  </span>
 
-                  {userNameAvailable === 'true' ? 'Username is available! Lock it now.' : 'Username is already taken'}
+                  {userNameAvailable === 'true'
+                    ? 'Username is available! Lock it now.'
+                    : 'Username is already taken'}
                 </p>
 
-                <button type="button" className={`bc-username-check-btn ${checkingUsername ? 'loading' : ''}`} disabled={!(userName && userName.length >= 3)} onClick={onCheckUsername}>
+                <button
+                  type="button"
+                  className={`bc-username-check-btn ${checkingUsername ? 'loading' : ''}`}
+                  disabled={!(userName && userName.length >= 3)}
+                  onClick={onCheckUsername}
+                >
                   {checkingUsername && <div className="bc-inline-spinner mr-1"></div>}
                   <Search width={14} height={14} />
                   <span>Check availability</span>
@@ -308,7 +357,9 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
               />
             </div>
 
-            {errors.email?.message && <div className="bc-form-input-validation-err">{errors.email?.message}</div>}
+            {errors.email?.message && (
+              <div className="bc-form-input-validation-err">{errors.email?.message}</div>
+            )}
           </div>
 
           <div className="bc-form-field">
@@ -329,7 +380,9 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
                 {...register('phone')}
               />
             </div>
-            {errors.phone?.message && <div className="bc-form-input-validation-err">{errors.phone?.message}</div>}
+            {errors.phone?.message && (
+              <div className="bc-form-input-validation-err">{errors.phone?.message}</div>
+            )}
           </div>
 
           <div className="bc-form-field">
@@ -360,13 +413,16 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
                   <div
                     key={bar}
                     className={`bc-form-pw-bar 
-                  ${bar <= passwordStrength ? passwordStrengthClass[passwordStrength] : ''}`}></div>
+                  ${bar <= passwordStrength ? passwordStrengthClass[passwordStrength] : ''}`}
+                  ></div>
                 ))}
               </div>
               <div className="bc-form-pw-label">{passwordStrengthLabel[passwordStrength]}</div>
             </div>
 
-            {errors.password?.message && <div className="bc-form-input-validation-err">{errors.password?.message}</div>}
+            {errors.password?.message && (
+              <div className="bc-form-input-validation-err">{errors.password?.message}</div>
+            )}
           </div>
 
           <button type="submit" className="bc-form-submit-btn primary">
@@ -375,7 +431,8 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
           </button>
 
           <div className="bc-signup-terms">
-            By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            By creating an account you agree to our <a href="#">Terms of Service</a> and{' '}
+            <a href="#">Privacy Policy</a>
           </div>
 
           <div className="bc-auth-switch-row">
@@ -388,7 +445,8 @@ const SignUpForm = ({ setCurAuthTab }: Props) => {
                   behavior: 'smooth',
                 });
                 setCurAuthTab('signin');
-              }}>
+              }}
+            >
               Sign in →
             </span>
           </div>

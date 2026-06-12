@@ -88,9 +88,11 @@ const OTPForm = ({ email, setOtpSent, setEmailVerified }: Props) => {
     setOtpValidating(true);
     const res = await verifyEmail({ email, otp: otp.join('') });
     if (res && res.success) {
-      setUser(res.data.user);
-      setAccessToken(res.data.accessToken);
-      connectSocket(res.data.user);
+      setTimeout(() => {
+        setUser(res.data.user);
+        setAccessToken(res.data.accessToken);
+        connectSocket(res.data.user);
+      }, 4000);
       setEmailVerified(true);
       toast.success('Email Verified 🎉');
     }

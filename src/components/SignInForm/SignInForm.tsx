@@ -13,9 +13,10 @@ import { connectSocket } from '../../socket/socket';
 
 type Props = {
   setCurAuthTab: React.Dispatch<React.SetStateAction<string>>;
+  openGoogleLoginPopup: () => void;
 };
 
-const SignInForm = ({ setCurAuthTab }: Props) => {
+const SignInForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -58,14 +59,16 @@ const SignInForm = ({ setCurAuthTab }: Props) => {
   return (
     <div className="bc-SignInForm bc-slideScreenLeft">
       <div className="bc-social-links">
-        <button className="bc-social-link">
+        <button className="bc-social-link google" onClick={() => openGoogleLoginPopup()}>
           <img className="bc-social-icon" src={googleSvg} alt="google-signin" />
-          Google
+          Sign in with Google
         </button>
-        <button className="bc-social-link">
+
+        {/* Currently disabling Facebook */}
+        {/* <button className="bc-social-link facebook">
           <img className="bc-social-icon facebook" src={facebookSvg} alt="facebook-signin" />
           Facebook
-        </button>
+        </button> */}
       </div>
 
       <div className="bc-form-divider">

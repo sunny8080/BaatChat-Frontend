@@ -326,6 +326,13 @@
     justify-content: center;
     gap: 8px;
 
+    &.disabled,
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
     &.primary {
       background: var(--violet-color);
       color: #fff;
