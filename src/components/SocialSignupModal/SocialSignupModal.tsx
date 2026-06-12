@@ -30,8 +30,6 @@ const SocialSignupModal = ({ socialLoginUserData, setShowSocialSignupModal }: Pr
     setCheckingUsername(false);
   };
 
-  console.log(socialLoginUserData);
-
   const handleCompleteSocialSignup = async () => {
     if (userName.length < 3) {
       toast.error('Username must have at least 3 chars');
@@ -50,7 +48,6 @@ const SocialSignupModal = ({ socialLoginUserData, setShowSocialSignupModal }: Pr
 
     setIsCompletingProfile(true);
     const res = await completeSocialSignup(data);
-    console.log(res);
     if (res && res.success) {
       setTimeout(() => {
         setUser(res.data.user);
