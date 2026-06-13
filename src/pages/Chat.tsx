@@ -1,44 +1,20 @@
 import { useState } from 'react';
 import ChatSidebar from '../components/ChatSidebar/ChatSidebar';
 import './Chat.scss';
-import { logOutUser } from '../services/authService';
-import toast from 'react-hot-toast';
-import { BellOff, LogOut, MessageCircleMore, MoveLeft } from 'lucide-react';
 import Modal from '../components/Modal/Modal';
-import socket from '../socket/socket';
 import SearchUsers from '../components/SearchUsers/SearchUsers';
 import UserDetails from '../components/UserDetails/UserDetails';
 import ChatList from '../components/ChatList/ChatList';
 import ChatDetails from '../components/ChatDetails/ChatDetails';
+import UserSettings from '../components/UserSettings/UserSettings';
+import LogoutModal from '../components/LogoutModal/LogoutModal';
 
-export type ChatActiveTabs =
-  | 'ChatList'
-  | 'Calls'
-  | 'Files'
-  | 'Friends'
-  | 'Users'
-  | 'Settings'
-  | 'Profile';
+export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Friends' | 'Users';
 
 const Chat = () => {
   const [activeTab, setActiveTab] = useState<ChatActiveTabs>('ChatList');
-  const [loading, setLoading] = useState(false);
   const [showLogoutModal, setShowLogOutModal] = useState(false);
-
-  const handleLogout = async () => {
-    setLoading(true);
-
-    const res = await logOutUser();
-    if (res && res.success) {
-      toast.success('Logout successfully!');
-      socket.disconnect();
-
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 300);
-    }
-    setLoading(false);
-  };
+  const [showSettingsModal, setShowSettingsModal] = useState(true);
 
   return (
     <div className="bc-Chat">
@@ -69,47 +45,13 @@ const Chat = () => {
 
       {showLogoutModal && (
         <Modal handleOverlayClick={() => setShowLogOutModal(false)}>
-          <div className="bc-logout-modal-content">
-            <div className="bc-logout-modal-bar"></div>
-            <div className="bc-logout-icon">
-              <LogOut />
-            </div>
+          <LogoutModal setShowLogOutModal={setShowLogOutModal} />
+        </Modal>
+      )}
 
-            <div className="bc-logout-txt">Sign out?</div>
-            <p className="bc-logout-sub">
-              You'll be signed out of your BaatChat account on this device.
-            </p>
-
-            <div className="bc-logout-info-rows">
-              <div className="bc-logout-info">
-                <span>
-                  <MessageCircleMore size={20} />
-                </span>
-                Your chats and messages will be safe
-              </div>
-
-              <div className="bc-logout-info">
-                <span>
-                  <BellOff size={20} />
-                </span>
-                You won't receive notifications until you sign back in
-              </div>
-            </div>
-
-            <div className="bc-logout-ctas">
-              <button className="bc-btn warning" onClick={handleLogout}>
-                {loading && <div className="bc-inline-spinner"></div>}
-                {loading ? 'Logging out...' : 'Log out'}
-              </button>
-
-              <button className="bc-btn bc-btn-primary" onClick={() => setShowLogOutModal(false)}>
-                <span>
-                  <MoveLeft size={16} />
-                </span>
-                Stay Signed In
-              </button>
-            </div>
-          </div>
+      {showSettingsModal && (
+        <Modal handleOverlayClick={() => setShowSettingsModal(false)}>
+          <UserSettings setShowSettingsModal={setShowSettingsModal} />
         </Modal>
       )}
     </div>
