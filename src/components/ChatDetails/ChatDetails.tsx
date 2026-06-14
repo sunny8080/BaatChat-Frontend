@@ -114,6 +114,10 @@ const ChatDetails = () => {
   const handleSendMessage = () => {
     // TODO handle sending files
 
+    if (!msgTxt) {
+      return;
+    }
+
     // show optimistic UI that message has been sent
     const tempId = crypto.randomUUID();
 
