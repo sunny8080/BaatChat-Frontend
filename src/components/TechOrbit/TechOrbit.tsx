@@ -111,9 +111,9 @@ const techStacks = [
     animationDelay: '-14.2s',
   },
   {
-    title: 'Docker',
-    iconName: 'docker.svg',
-    uses: 'Deployment',
+    title: 'Tanstack Query',
+    iconName: 'tanstack-query.svg',
+    uses: 'Caching',
     animationDelay: '-17s',
   },
 ];
@@ -121,7 +121,7 @@ const techStacks = [
 const TechOrbit = () => {
   const revealRef = useRevealOnScroll();
   return (
-    <section className="bc-TechOrbit bc-section" id='techOrbit'>
+    <section className="bc-TechOrbit bc-section" id="techOrbit">
       <div className="bc-section-content">
         <div className="bc-sec-badge" ref={revealRef}>
           Tech Stack

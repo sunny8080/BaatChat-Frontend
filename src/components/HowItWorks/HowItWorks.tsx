@@ -6,7 +6,7 @@ const HowItWorks = () => {
   const revealRef = useRevealOnScroll();
 
   return (
-    <section className="bc-HowItWorks bc-section" id='howItWorks'>
+    <section className="bc-HowItWorks bc-section" id="howItWorks">
       <div className="bc-section-content">
         <div className="bc-sec-badge" ref={revealRef}>
           How it works
@@ -29,7 +29,7 @@ const HowItWorks = () => {
               <UserRoundSearch />
             </div>
             <h4>Find friends</h4>
-            <p>Search by username or phone and send a message</p>
+            <p>Find friends by username or name and send friend requests</p>
           </div>
 
           <div className="bc-step" ref={revealRef}>
