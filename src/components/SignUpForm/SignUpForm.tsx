@@ -7,6 +7,7 @@ import {
   Check,
   Eye,
   EyeOff,
+  Mail,
   MailCheck,
   NotebookPen,
   Search,
@@ -79,8 +80,14 @@ const SignUpForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
     handleSubmit,
     watch,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({ resolver: zodResolver(SignUpSchema) });
+
+  const onPhoneChange = (val: string) => {
+    val = val.replace(/\D/g, '');
+    setValue('phone', val);
+  };
 
   const onCheckUsername = async () => {
     if (userName.length < 3) return;
@@ -344,7 +351,7 @@ const SignUpForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
             </label>
             <div className="bc-form-input-wrapper">
               <span className="bc-form-icon">
-                <UserRound />
+                <Mail />
               </span>
               <input
                 type="email"
@@ -356,7 +363,6 @@ const SignUpForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
                 {...register('email')}
               />
             </div>
-
             {errors.email?.message && (
               <div className="bc-form-input-validation-err">{errors.email?.message}</div>
             )}
@@ -377,7 +383,11 @@ const SignUpForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
                 id="phone"
                 placeholder="98765 43210"
                 maxLength={10}
-                {...register('phone')}
+                {...register('phone', {
+                  onChange: (e) => {
+                    onPhoneChange(e.target.value);
+                  },
+                })}
               />
             </div>
             {errors.phone?.message && (

@@ -260,13 +260,13 @@ const ChatDetails = () => {
             </div>
 
             <div className="bc-cd-actions">
-              <button className="bc-cd-action" title="Audio Call">
+              <button className="bc-cd-action" title="Audio Call" disabled>
                 <Phone size={18} />
               </button>
-              <button className="bc-cd-action" title="Video Call">
+              <button className="bc-cd-action" title="Video Call" disabled>
                 <Video size={21} />
               </button>
-              <button className="bc-cd-action" title="Search Message">
+              <button className="bc-cd-action" title="Search Message" disabled>
                 <Search size={20} />
               </button>
             </div>

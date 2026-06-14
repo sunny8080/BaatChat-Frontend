@@ -312,7 +312,7 @@ const CreateGroup = ({ setShowCreateGroupModal, setActiveTab }: Props) => {
 
               <div className="avatar-info">
                 <h4>Group Avatar</h4>
-                <p>Upload a photo that represents your group. PNG, JPG or GIF — max 1 MB.</p>
+                <p>Upload a photo that represents your group. PNG, JPG — max 2 MB.</p>
                 <button className="bc-btn bc-btn-primary upload-btn" onClick={openFilePicker}>
                   Upload Photo
                 </button>

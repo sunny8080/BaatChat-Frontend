@@ -94,7 +94,7 @@ export const USER_ROUTES = {
   POST_ACCEPT_FRIEND_REQUEST: '/users/accept-friend-request',
   POST_REJECT_FRIEND_REQUEST: '/users/reject-friend-request',
   POST_CANCEL_FRIEND_REQUEST: '/users/cancel-friend-request',
-  PATCH_UPDATE_USER: '/users/update-user-details',
+  PATCH_UPDATE_USER_DETAILS: '/users/update-user-details',
   GET_FETCH_RECEIVED_FRIEND_REQUESTS: '/users/fetch-received-friend-requests',
   GET_FETCH_FRIENDS: '/users/fetch-friends',
 };

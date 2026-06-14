@@ -14,7 +14,7 @@ export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Friends' | 'Users
 const Chat = () => {
   const [activeTab, setActiveTab] = useState<ChatActiveTabs>('ChatList');
   const [showLogoutModal, setShowLogOutModal] = useState(false);
-  const [showSettingsModal, setShowSettingsModal] = useState(true);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   return (
     <div className="bc-Chat">
@@ -24,6 +24,7 @@ const Chat = () => {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             setShowLogOutModal={setShowLogOutModal}
+            setShowSettingsModal={setShowSettingsModal}
           />
         </div>
 
@@ -50,7 +51,10 @@ const Chat = () => {
       )}
 
       {showSettingsModal && (
-        <Modal handleOverlayClick={() => setShowSettingsModal(false)}>
+        <Modal
+          handleOverlayClick={() => setShowSettingsModal(false)}
+          modalContentStyles={{ width: '100%', maxWidth: '560px', marginInline: '10px' }}
+        >
           <UserSettings setShowSettingsModal={setShowSettingsModal} />
         </Modal>
       )}

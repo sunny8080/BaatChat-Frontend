@@ -188,6 +188,11 @@ export const changePassword = async (data: any): Promise<ApiResponse> => {
   let response = null;
   try {
     const res = await apiClient.post(AUTH_ROUTES.POST_CHANGE_PASSWORD, data);
+    if (res.data && res.data.success) {
+      // logout user
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userId');
+    }
     response = res.data;
   } catch (error: any) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');

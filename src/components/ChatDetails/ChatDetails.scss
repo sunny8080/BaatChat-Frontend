@@ -185,6 +185,13 @@
       color: var(--white-color);
       transition: all 0.2s;
 
+      &.disabled,
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+
       &:hover {
         color: var(--violet-text-color);
         background: rgba(124, 58, 237, 0.25);

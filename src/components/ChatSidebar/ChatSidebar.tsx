@@ -1,6 +1,14 @@
 import './ChatSidebar.scss';
 import bcLogo from '../../assets/logo/bc-logo.svg';
-import { ContactRound, FolderOpen, LogOut, MessageCircleMore, Phone, Settings, UserRoundSearch } from 'lucide-react';
+import {
+  ContactRound,
+  FolderOpen,
+  LogOut,
+  MessageCircleMore,
+  Phone,
+  Settings,
+  UserRoundSearch,
+} from 'lucide-react';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import { useAuth } from '../../context/AuthContext';
 
@@ -8,9 +16,15 @@ type Props = {
   activeTab: ChatActiveTabs;
   setActiveTab: React.Dispatch<React.SetStateAction<ChatActiveTabs>>;
   setShowLogOutModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowSettingsModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ChatSidebar = ({ activeTab, setActiveTab, setShowLogOutModal }: Props) => {
+const ChatSidebar = ({
+  activeTab,
+  setActiveTab,
+  setShowLogOutModal,
+  setShowSettingsModal,
+}: Props) => {
   const { user } = useAuth();
 
   if (!user) return;
@@ -26,7 +40,8 @@ const ChatSidebar = ({ activeTab, setActiveTab, setShowLogOutModal }: Props) => 
           className={`bc-cs-nav-item 
           ${activeTab === 'ChatList' ? 'active' : ''}`}
           onClick={() => setActiveTab('ChatList')}
-          title="Chat List">
+          title="Chat List"
+        >
           <MessageCircleMore />
           <span className="bc-cs-nav-badge">3</span>
         </div>
@@ -34,28 +49,32 @@ const ChatSidebar = ({ activeTab, setActiveTab, setShowLogOutModal }: Props) => 
           className={`bc-cs-nav-item 
           ${activeTab === 'Calls' ? 'active' : ''}`}
           onClick={() => setActiveTab('Calls')}
-          title="Calls">
+          title="Calls"
+        >
           <Phone />
         </div>
         <div
           className={`bc-cs-nav-item 
           ${activeTab === 'Files' ? 'active' : ''}`}
           onClick={() => setActiveTab('Files')}
-          title="Files">
+          title="Files"
+        >
           <FolderOpen />
         </div>
         <div
           className={`bc-cs-nav-item 
           ${activeTab === 'Friends' ? 'active' : ''}`}
           onClick={() => setActiveTab('Friends')}
-          title="Friends">
+          title="Friends"
+        >
           <ContactRound />
         </div>
         <div
           className={`bc-cs-nav-item 
           ${activeTab === 'Users' ? 'active' : ''}`}
           onClick={() => setActiveTab('Users')}
-          title="Search Users">
+          title="Search Users"
+        >
           <UserRoundSearch />
         </div>
       </div>
@@ -65,11 +84,15 @@ const ChatSidebar = ({ activeTab, setActiveTab, setShowLogOutModal }: Props) => 
           <LogOut />
         </div>
 
-        <div className="bc-cs-nav-item" title="Settings">
+        <div className="bc-cs-nav-item" title="Settings" onClick={() => setShowSettingsModal(true)}>
           <Settings />
         </div>
 
-        <div className="bc-cs-nav-item bc-cs-avatar" title="User Profile">
+        <div
+          className="bc-cs-nav-item bc-cs-avatar"
+          title="User Profile"
+          onClick={() => setShowSettingsModal(true)}
+        >
           <img src={user!.avatarUrl!} alt={user?.name} />
         </div>
       </div>
