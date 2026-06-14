@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import { useAuth } from '../../context/AuthContext';
+import { useChatListStore } from '../../zustand/ChatListStore';
+import type ChatInterface from '../../interfaces/ChatInterface';
 
 type Props = {
   activeTab: ChatActiveTabs;
@@ -26,6 +28,11 @@ const ChatSidebar = ({
   setShowSettingsModal,
 }: Props) => {
   const { user } = useAuth();
+  const chats = useChatListStore((state) => state.chats);
+  const newChatNotificationCount = chats.reduce(
+    (cnt: number, chat: ChatInterface) => (chat?.unreadCount ? 1 : 0) + cnt,
+    0,
+  );
 
   if (!user) return;
 
@@ -43,7 +50,9 @@ const ChatSidebar = ({
           title="Chat List"
         >
           <MessageCircleMore />
-          <span className="bc-cs-nav-badge">3</span>
+          {!!newChatNotificationCount && (
+            <span className="bc-cs-nav-badge">{newChatNotificationCount}</span>
+          )}
         </div>
         <div
           className={`bc-cs-nav-item 
