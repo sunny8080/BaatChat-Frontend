@@ -32,7 +32,11 @@ const randMorse = getRandomMorse();
 
 // TODO - add emoji picker
 
-const ChatDetails = () => {
+type Props = {
+  setShowMobilePanel2: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
   const chatDetails: ChatDetailsInterface | null = useChatDetailsStore(
     (state) => state.chatDetails,
   );
@@ -56,7 +60,7 @@ const ChatDetails = () => {
   const updateLastMessage = useChatListStore((state) => state.updateLastMessage);
   const [loadingPreviousMessage, setLoadingPreviousMessage] = useState(false);
   const previousMsgHeightRef = useRef<number | null>(null);
-  // const [previousDate, setPreviousDate] = useState('');
+  const setSelectedChatId = useChatListStore((state) => state.setSelectedChatId);
   let previousDate = '';
 
   const { data: chatData, isLoading } = useQuery({
@@ -219,6 +223,11 @@ const ChatDetails = () => {
     previousMsgHeightRef.current = null;
   }, [chatDetails?.messages]);
 
+  const handleMobileBackBtnClick = () => {
+    setShowMobilePanel2(false);
+    setSelectedChatId('');
+  };
+
   return (
     <div className="bc-ChatDetails">
       {isLoading && (
@@ -244,22 +253,25 @@ const ChatDetails = () => {
       {!isLoading && chatDetails && (
         <div className="bc-chat-details-wrap">
           {/* Header */}
-          <div className="bc-cd-header" onClick={() => setShowChatInfo(true)}>
+          <div className="bc-cd-header">
             <div className="bc-cd-info">
-              <div className="bc-cd-mobile-back-btn">
+              <div className="bc-cd-mobile-back-btn" onClick={handleMobileBackBtnClick}>
                 <MoveLeft size={16} />
               </div>
-              <div
-                className={`bc-cd-avatar ${chatDetails.type === ChatTypes.PERSONAL ? (chatDetails.friend!.isOnline ? 'online' : 'offline') : ''}`}
-              >
-                <img src={chatDetails.avatarUrl} alt={chatDetails.name} />
-              </div>
-              <div className="bc-cd-name-wrap">
-                <p className="bc-cd-name">{chatDetails.name}</p>
 
-                <p className={`bc-cd-sub ${chatDetails?.friend?.isOnline ? 'online' : ''}`}>
-                  {generateSubName()}
-                </p>
+              <div className="bc-cd-header-content" onClick={() => setShowChatInfo(true)}>
+                <div
+                  className={`bc-cd-avatar ${chatDetails.type === ChatTypes.PERSONAL ? (chatDetails.friend!.isOnline ? 'online' : 'offline') : ''}`}
+                >
+                  <img src={chatDetails.avatarUrl} alt={chatDetails.name} />
+                </div>
+                <div className="bc-cd-name-wrap">
+                  <p className="bc-cd-name">{chatDetails.name}</p>
+
+                  <p className={`bc-cd-sub ${chatDetails?.friend?.isOnline ? 'online' : ''}`}>
+                    {generateSubName()}
+                  </p>
+                </div>
               </div>
             </div>
 

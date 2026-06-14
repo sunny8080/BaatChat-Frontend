@@ -7,12 +7,14 @@ import { fetchFriends, fetchFriendRequests, searchUsersByTxt } from '../../servi
 import type { ChatActiveTabs } from '../../pages/Chat';
 import { useUsersStore } from '../../zustand/UsersStore';
 import { useQuery } from '@tanstack/react-query';
+import bcLogo from '../../assets/logo/bc-logo.svg';
 
 type Props = {
   activeTab: ChatActiveTabs;
+  setShowMobilePanel2: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const SearchUsers = ({ activeTab }: Props) => {
+const SearchUsers = ({ activeTab, setShowMobilePanel2 }: Props) => {
   const {
     selectedFriendUsername,
     selectedSearchUserUsername,
@@ -106,6 +108,7 @@ const SearchUsers = ({ activeTab }: Props) => {
 
   const handleUserItemClick = async (username: string) => {
     if (username === selectedUserUsername) return;
+    setShowMobilePanel2(true);
     if (isFriendTab) {
       setSelectedFriendUsername(username);
     } else {
@@ -124,6 +127,9 @@ const SearchUsers = ({ activeTab }: Props) => {
     <div className="bc-SearchUsers">
       <div className="bc-panel-header">
         <div className="bc-panel-title-row">
+          <div className="bc-panel-mobile-logo">
+            <img src={bcLogo} alt="BaatChat" />
+          </div>
           <h3 className="bc-panel-title">{isFriendTab ? 'Search Friends' : 'Search Users'}</h3>
         </div>
 

@@ -6,6 +6,7 @@ import {
   CopyCheck,
   Mail,
   MessageCircleMore,
+  MoveLeft,
   PenLine,
   Phone,
   Send,
@@ -33,11 +34,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 type Props = {
   activeTab: ChatActiveTabs;
   setActiveTab: Dispatch<SetStateAction<ChatActiveTabs>>;
+  setShowMobilePanel2: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const randMorse = getRandomMorse();
 
-const UserDetails = ({ activeTab, setActiveTab }: Props) => {
+const UserDetails = ({ activeTab, setActiveTab, setShowMobilePanel2 }: Props) => {
   const startChat = useChatListStore((state) => state.startChat);
   const [copiedId, setCopiedId] = useState('');
   const [reqSent, setReqSent] = useState(false);
@@ -51,6 +53,7 @@ const UserDetails = ({ activeTab, setActiveTab }: Props) => {
   const setSelectedSearchUserUsername = useUsersStore(
     (state) => state.setSelectedSearchUserUsername,
   );
+  const setSelectedFriendUsername = useUsersStore((state) => state.setSelectedFriendUsername);
   const selectedUserUsername = isFriendTab ? selectedFriendUsername : selectedSearchUserUsername;
   const queryClient = useQueryClient();
 
@@ -139,8 +142,22 @@ const UserDetails = ({ activeTab, setActiveTab }: Props) => {
     setActiveTab('ChatList');
   };
 
+  const handleMobileBackBtnClick = () => {
+    setShowMobilePanel2(false);
+
+    if (isFriendTab) {
+      setSelectedFriendUsername('');
+    } else {
+      setSelectedSearchUserUsername('');
+    }
+  };
+
   return (
     <div className="bc-UserDetails">
+      <div className="bc-cd-mobile-back-btn" onClick={handleMobileBackBtnClick}>
+        <MoveLeft size={16} />
+      </div>
+
       {isLoading && (
         <div className="bc-loading-user-details">
           <div className="bc-inline-spinner"></div> Loading user info...
@@ -183,12 +200,14 @@ const UserDetails = ({ activeTab, setActiveTab }: Props) => {
             </div>
           </div>
 
-          <div className="bc-user-bio">
-            <span>
-              <PenLine size={12} />
-            </span>
-            {user.bio}
-          </div>
+          {user.bio && (
+            <div className="bc-user-bio">
+              <span>
+                <PenLine size={12} />
+              </span>
+              {user.bio}
+            </div>
+          )}
 
           {!user.status || user.status !== FriendshipStatus.ACCEPTED ? (
             <div className="bc-user-friend-request">

@@ -9,11 +9,17 @@
   border-bottom: 0.5px solid var(--border-color);
   flex-shrink: 0;
 
+  .bc-panel-mobile-logo {
+    @media screen and (min-width: 768px) {
+      display: none;
+    }
+  }
+
   .bc-panel-title-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin-bottom: 10px;
+    gap: 10px;
 
     .bc-panel-title {
       font-size: 17px;
@@ -48,6 +54,7 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+    margin-left: auto;
 
     button {
       cursor: pointer;
@@ -149,6 +156,7 @@
   flex: 1;
   min-height: 0;
   color: var(--muted-color);
+  padding: 0 14px 10px;
 
   .search-users-txt {
     font-size: 13px;
@@ -170,6 +178,10 @@
   overflow-y: auto;
   height: 100%;
   padding: 6px;
+
+  @media screen and (max-width: 768px) {
+    padding-inline: 0;
+  }
 
   .bc-search-user-item {
     display: flex;

@@ -8,13 +8,18 @@ import ChatList from '../components/ChatList/ChatList';
 import ChatDetails from '../components/ChatDetails/ChatDetails';
 import UserSettings from '../components/UserSettings/UserSettings';
 import LogoutModal from '../components/LogoutModal/LogoutModal';
+import ChatSidebarMobile from '../components/ChatSidebarMobile/ChatSidebarMobile';
+import ProfileSettings from '../components/ProfileSettings/ProfileSettings';
+import CallList from '../components/CallList/CallList';
+import FileList from '../components/FileList/FileList';
 
-export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Friends' | 'Users';
+export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Friends' | 'Users' | 'Profile';
 
 const Chat = () => {
   const [activeTab, setActiveTab] = useState<ChatActiveTabs>('ChatList');
   const [showLogoutModal, setShowLogOutModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showMobilePanel2, setShowMobilePanel2] = useState(false);
 
   return (
     <div className="bc-Chat">
@@ -30,19 +35,48 @@ const Chat = () => {
 
         <div className="bc-chat-panel-1">
           {(activeTab === 'Users' || activeTab === 'Friends') && (
-            <SearchUsers activeTab={activeTab} key={activeTab} />
+            <SearchUsers
+              activeTab={activeTab}
+              setShowMobilePanel2={setShowMobilePanel2}
+              key={activeTab}
+            />
           )}
 
-          {activeTab === 'ChatList' && <ChatList setActiveTab={setActiveTab} key={activeTab} />}
+          {activeTab === 'ChatList' && (
+            <ChatList
+              setActiveTab={setActiveTab}
+              key={activeTab}
+              setShowMobilePanel2={setShowMobilePanel2}
+            />
+          )}
+
+          {activeTab === 'Calls' && <CallList key={activeTab} />}
+
+          {activeTab === 'Files' && <FileList key={activeTab} />}
+
+          {activeTab === 'Profile' && (
+            <ProfileSettings setShowLogOutModal={setShowLogOutModal} key={activeTab} />
+          )}
         </div>
 
-        <div className="bc-chat-panel-2">
+        <div className={`bc-chat-panel-2 ${showMobilePanel2 ? 'showMobilePanel2' : ''}`}>
           {(activeTab === 'Users' || activeTab === 'Friends') && (
-            <UserDetails setActiveTab={setActiveTab} activeTab={activeTab} key={activeTab} />
+            <UserDetails
+              setActiveTab={setActiveTab}
+              activeTab={activeTab}
+              setShowMobilePanel2={setShowMobilePanel2}
+              key={activeTab}
+            />
           )}
-          {activeTab === 'ChatList' && <ChatDetails />}
+          {activeTab === 'ChatList' && <ChatDetails setShowMobilePanel2={setShowMobilePanel2} />}
         </div>
       </div>
+
+      {!showMobilePanel2 && (
+        <div className="bc-chat-sidebar-mobile-container">
+          <ChatSidebarMobile activeTab={activeTab} setActiveTab={setActiveTab} />
+        </div>
+      )}
 
       {showLogoutModal && (
         <Modal handleOverlayClick={() => setShowLogOutModal(false)}>

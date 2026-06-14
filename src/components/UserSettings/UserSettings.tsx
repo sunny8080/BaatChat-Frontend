@@ -1,4 +1,4 @@
-import { AtSign, Lock, Phone, Settings, UserRound, X } from 'lucide-react';
+import { AtSign, FolderOpen, Lock, LogOut, Phone, Settings, UserRound, X } from 'lucide-react';
 import './UserSettings.scss';
 import { useState } from 'react';
 import PasswordTabContent from './PasswordTabContent';
@@ -8,10 +8,11 @@ import ProfileTabContent from './ProfileTabContent';
 
 type Props = {
   setShowSettingsModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowLogOutModal?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export type SettingsActiveTab = 'Profile' | 'Username' | 'Contact' | 'Password';
 
-const UserSettings = ({ setShowSettingsModal }: Props) => {
+const UserSettings = ({ setShowSettingsModal, setShowLogOutModal }: Props) => {
   const [currentActiveTab, setCurrentActiveTab] = useState<SettingsActiveTab>('Profile');
 
   return (
@@ -80,6 +81,27 @@ const UserSettings = ({ setShowSettingsModal }: Props) => {
               </span>
               <span className="item-text">Password</span>
             </div>
+          </div>
+
+          <div className="bc-uss-section mobile-settings">
+            <div className="bc-us-section-title">Account</div>
+
+            {/* TODO - setup file list here */}
+            {/* <div className={`bc-us-section-item`}>
+              <span className="item-icon">
+                <FolderOpen size={20} />
+              </span>
+              <span className="item-text">Files</span>
+            </div> */}
+
+            {setShowLogOutModal && (
+              <div className="bc-us-section-item" onClick={() => setShowLogOutModal(true)}>
+                <span className="item-icon">
+                  <LogOut size={20} color="#f97316" opacity={0.7} />
+                </span>
+                <span className="item-text">Password</span>
+              </div>
+            )}
           </div>
         </div>
 

@@ -13,6 +13,13 @@
     margin-inline: 8px;
     height: 100%;
   }
+
+  .bc-cd-mobile-back-btn {
+    margin-top: 1rem;
+    margin-left: 14px;
+    width: 50px;
+    height: 40px;
+  }
 }
 
 .bc-no-item {
@@ -61,6 +68,12 @@
   margin: 1rem;
   margin-top: 4rem;
   z-index: 10;
+
+  @media screen and (max-width: 768px) {
+    padding: 16px 12px 16px;
+    margin: 14px;
+    margin-top: 1rem;
+  }
 
   .bc-user-cover {
     position: absolute;

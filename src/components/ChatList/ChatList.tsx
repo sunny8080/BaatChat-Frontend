@@ -16,12 +16,14 @@ import { useChatListStore } from '../../zustand/ChatListStore';
 import { getChatList } from '../../services/chatServices';
 import Modal from '../Modal/Modal';
 import CreateGroup from '../CreateGroup/CreateGroup';
+import bcLogo from '../../assets/logo/bc-logo.svg';
 
 type Props = {
   setActiveTab: Dispatch<SetStateAction<ChatActiveTabs>>;
+  setShowMobilePanel2: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ChatList = ({ setActiveTab }: Props) => {
+const ChatList = ({ setActiveTab, setShowMobilePanel2 }: Props) => {
   const { user } = useAuth();
   const chats: ChatInterface[] = useChatListStore((state) => state.chats);
   const setChats = useChatListStore((state) => state.setChats);
@@ -59,6 +61,7 @@ const ChatList = ({ setActiveTab }: Props) => {
   const handleSearchChats = () => {};
 
   const handleChatItemClick = async (chatId: string) => {
+    setShowMobilePanel2(true);
     setSelectedChatId(chatId);
   };
 
@@ -92,6 +95,9 @@ const ChatList = ({ setActiveTab }: Props) => {
     <div className="bc-ChatList">
       <div className="bc-panel-header">
         <div className="bc-panel-title-row">
+          <div className="bc-panel-mobile-logo">
+            <img src={bcLogo} alt="BaatChat" />
+          </div>
           <h3 className="bc-panel-title">Chats</h3>
 
           <div className="bc-panel-header-ctas">

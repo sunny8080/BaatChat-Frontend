@@ -14,6 +14,12 @@
     0 48px 120px rgba(0, 0, 0, 0.7),
     0 0 0 0.5px rgba(124, 58, 237, 0.12);
 
+  @media screen and (max-width: 768px) {
+    height: 100%;
+    box-shadow: none;
+    border: none;
+  }
+
   .bc-user-settings-orb1 {
     position: absolute;
     width: 340px;
@@ -25,6 +31,10 @@
     filter: blur(90px);
     pointer-events: none;
     z-index: 0;
+
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
   }
   .bc-user-settings-orb2 {
     position: absolute;
@@ -37,6 +47,10 @@
     filter: blur(70px);
     pointer-events: none;
     z-index: 0;
+
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
   }
 }
 
@@ -47,6 +61,10 @@
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 
   .bc-user-settings-title {
     display: flex;
@@ -144,7 +162,11 @@
     }
   }
 
-  @media screen and (max-width: 600px) {
+  .mobile-settings {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
     width: 52px;
     padding: 0 0 20px 8px;
 
@@ -155,6 +177,9 @@
     .bc-us-section-item {
       padding: 10px;
       justify-content: center;
+    }
+    .mobile-settings {
+      display: block;
     }
   }
 }
