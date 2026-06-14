@@ -4,7 +4,7 @@ import bcLogo from '../../assets/logo/bc-logo.svg';
 
 const randMorse = getRandomMorse();
 
-const Footer = ({ small = false }: { small: boolean }) => {
+const Footer = ({ small = false }: { small?: boolean }) => {
   return (
     <footer className={`bc-Footer ${small ? 'small' : 'main'}`}>
       {small && (
