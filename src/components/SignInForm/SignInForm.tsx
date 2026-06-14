@@ -1,7 +1,7 @@
 import './SignInForm.scss';
 import googleSvg from '../../assets/social/google.svg';
 import facebookSvg from '../../assets/social/facebook.svg';
-import { Eye, EyeOff, UserRound, UserRoundKey } from 'lucide-react';
+import { Check, Eye, EyeOff, UserRound, UserRoundKey } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginUser } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
 import { connectSocket } from '../../socket/socket';
+import { UserLoginTypes } from '../../utils/constant';
 
 type Props = {
   setCurAuthTab: React.Dispatch<React.SetStateAction<string>>;
@@ -56,12 +57,21 @@ const SignInForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
     }
   };
 
+  const lastLoginType = localStorage.getItem('loginType');
+
   return (
     <div className="bc-SignInForm bc-slideScreenLeft">
       <div className="bc-social-links">
         <button className="bc-social-link google" onClick={() => openGoogleLoginPopup()}>
           <img className="bc-social-icon" src={googleSvg} alt="google-signin" />
           Sign in with Google
+          {lastLoginType && lastLoginType === UserLoginTypes.GOOGLE && (
+            <div className="bc-signin-last-login" title="Last login method">
+              <span>
+                <Check size={10} />
+              </span>
+            </div>
+          )}
         </button>
 
         {/* Currently disabling Facebook */}
@@ -79,8 +89,15 @@ const SignInForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
 
       <form className="bc-form" onSubmit={handleSubmit(handleSignin)}>
         <div className="bc-form-field">
-          <label className="bc-form-label" htmlFor="emailOrUsername">
+          <label className="bc-form-label relative" htmlFor="emailOrUsername">
             Username or Email
+            {lastLoginType && lastLoginType === UserLoginTypes.EMAIL_PASSWORD && (
+              <div className="bc-signin-last-login" title="Last login method">
+                <span>
+                  <Check size={10} />
+                </span>
+              </div>
+            )}
           </label>
           <div className="bc-form-input-wrapper">
             <span className="bc-form-icon">
