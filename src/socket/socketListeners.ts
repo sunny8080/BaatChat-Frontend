@@ -168,7 +168,6 @@ export const registerChatSocketListeners = () => {
  */
 export const registerGroupSocketListeners = () => {
   socket.on(GROUP_EVENTS.UPDATED, (data) => {
-    console.log(data);
     const { id: chatId } = data;
     // update chat list
     const { upsertChat } = useChatListStore.getState();
