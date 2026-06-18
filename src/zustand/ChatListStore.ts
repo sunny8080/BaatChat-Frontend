@@ -3,7 +3,6 @@ import type ChatInterface from '../interfaces/ChatInterface';
 import { ChatTypes } from '../utils/constant';
 import type UserInterface from '../interfaces/UserInterface';
 import type { ChatDetailsInterface } from '../interfaces/ChatDetailsInterface';
-import { useChatDetailsStore } from './ChatDetailsStore';
 import type MessageInterface from '../interfaces/MessageInterface';
 import { queryClient } from '../tanstack/queryClient';
 
