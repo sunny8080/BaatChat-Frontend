@@ -142,6 +142,7 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       type: MessageTypes.TEXT,
       text: msgTxt,
       sender: user!,
+      sending: true,
       createdAt: new Date().toISOString(),
     };
 
@@ -206,6 +207,7 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       text: audioMsgTxt,
       sender: user!,
       createdAt: new Date().toISOString(),
+      sending: true,
       attachments: [
         {
           url: audioUrl!,

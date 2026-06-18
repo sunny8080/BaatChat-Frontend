@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react';
 import './ChatList.scss';
 import type ChatInterface from '../../interfaces/ChatInterface';
-import { MessageCirclePlus, Search, UsersRound } from 'lucide-react';
+import { CheckCheck, Clock, MessageCirclePlus, Search, UsersRound } from 'lucide-react';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import {
   ChatListFilterTypes,
@@ -68,7 +68,7 @@ const ChatList = ({ setActiveTab, setShowMobilePanel2 }: Props) => {
   const genLastMsg = (lastMessage: MessageInterface | undefined, chatType: ChatType): string => {
     if (!lastMessage) return '';
     if (!lastMessage.text) return '';
-    if (lastMessage.sender?.id === user?.id) return '✓✓' + ' ' + lastMessage.text;
+    if (lastMessage.sender?.id === user?.id) return lastMessage.text;
     if (chatType === ChatTypes.GROUP) {
       return lastMessage.sender?.name?.split(' ')[0] + ': ' + lastMessage.text;
     }
@@ -195,6 +195,12 @@ const ChatList = ({ setActiveTab, setShowMobilePanel2 }: Props) => {
                       {chat.name}
                     </p>
                     <p className="bc-chat-last-message">
+                      {chat.lastMessage?.sender?.id === user?.id &&
+                        (chat.lastMessage?.sending ? (
+                          <Clock size={12} />
+                        ) : (
+                          <CheckCheck size={14} />
+                        ))}
                       {genLastMsg(chat.lastMessage, chat.type)}
                     </p>
                   </div>

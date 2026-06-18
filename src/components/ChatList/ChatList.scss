@@ -138,6 +138,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
   .bc-chat-last-seen-container {
     min-width: 0;

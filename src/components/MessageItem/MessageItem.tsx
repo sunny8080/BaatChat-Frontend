@@ -1,4 +1,4 @@
-import { Smile } from 'lucide-react';
+import { CheckCheck, Clock, Smile } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
 import { formatMsgTime } from '../../utils/utils';
@@ -60,7 +60,11 @@ const MessageItem = ({ msg }: Props) => {
 
           <div className="bc-msg-time">
             {formatMsgTime(msg.createdAt!)}
-            {isCurrentUserIsSender && <span className="msg-sent-check">✓✓</span>}
+            {isCurrentUserIsSender && (
+              <span className="msg-sent-check">
+                {msg.sending ? <Clock size={12} /> : <CheckCheck size={14} />}
+              </span>
+            )}
           </div>
 
           <div className="bc-msg-reactions-container hidden!"></div>

@@ -32,6 +32,7 @@ export default interface MessageInterface {
   createdAt?: string;
   updatedAt?: string;
   replyTo?: MessageInterface;
+  sending?: boolean;
 }
 export interface attachmentInterface {
   url: string;
