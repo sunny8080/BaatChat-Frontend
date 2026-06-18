@@ -55,7 +55,7 @@
     padding-bottom: 4px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     background: var(--night-color);
 
     &::-webkit-scrollbar {
@@ -363,4 +363,27 @@
     transform: translateY(-4px);
     opacity: 1;
   }
+}
+.bc-cd-voice-recording {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+  padding: 2px 0;
+  overflow: hidden;
+  margin-inline: auto;
+
+  span {
+    width: 4px;
+    background: var(--green-color);
+    border-radius: 12px;
+    max-height: 100%;
+  }
+}
+
+.bc-cd-audio-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }

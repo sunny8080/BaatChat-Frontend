@@ -16,7 +16,6 @@ const ChatSidebarMobile = ({ activeTab, setActiveTab }: Props) => {
     0,
   );
 
-  console.log(activeTab);
   return (
     <div className="bc-ChatSidebarMobile">
       <div

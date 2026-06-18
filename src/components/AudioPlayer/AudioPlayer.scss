@@ -1,0 +1,57 @@
+.bc-AudioPlayer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 8px;
+  margin-inline: auto;
+  max-width: 400px;
+
+  .bc-audio-player-play-pause-btn {
+    padding: 4px;
+    background: var(--border-color);
+    border-radius: 6px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+
+  .bc-audio-player-bars {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2px;
+    height: 40px;
+    max-height: 100%;
+    padding: 2px 0;
+    overflow: hidden;
+    cursor: pointer;
+
+    @media screen and (max-width: 400px) {
+      gap: 0;
+    }
+
+    @media screen and (min-width: 768px) {
+      gap: 4px;
+    }
+
+    .bc-audio-player-bar {
+      width: 4px;
+      background: var(--muted-color);
+      border-radius: 12px;
+      max-height: 100%;
+
+      &.played {
+        background: var(--green-color);
+      }
+      &.not-played {
+        background: var(--muted-color);
+      }
+    }
+  }
+  .bc-audio-player-time {
+    font-size: 14px;
+    color: var(--muted-color);
+    flex-shrink: 0;
+  }
+}

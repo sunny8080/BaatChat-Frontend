@@ -108,3 +108,8 @@ export const CHAT_ROUTES = {
   POST_CREATE_GROUP: '/chats/create-group',
   PATCH_UPDATE_GROUP_DETAILS: '/chats/update-group-details',
 };
+
+// todo add js docs
+export const MESSAGE_ROUTES = {
+  POST_SEND_AUDIO_MESSAGE: '/messages/send-audio-message',
+};

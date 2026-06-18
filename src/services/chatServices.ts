@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import type ApiResponse from '../interfaces/ApiResponse';
-import { apiClient, CHAT_ROUTES } from './api';
+import { apiClient, CHAT_ROUTES, MESSAGE_ROUTES } from './api';
 
 /**
  * Fetches the list of chats for the current user.
@@ -68,6 +68,19 @@ export const updateGroupDetails = async (data: any): Promise<ApiResponse> => {
   let response = null;
   try {
     const res = await apiClient.patch(CHAT_ROUTES.PATCH_UPDATE_GROUP_DETAILS, data);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+// todo add js docs
+export const sendAudioMessage = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.post(MESSAGE_ROUTES.POST_SEND_AUDIO_MESSAGE, data);
     response = res.data;
   } catch (error: any) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');

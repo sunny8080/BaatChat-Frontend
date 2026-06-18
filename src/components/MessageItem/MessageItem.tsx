@@ -6,6 +6,7 @@ import './MessageItem.scss';
 import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
 import type { ChatDetailsInterface } from '../../interfaces/ChatDetailsInterface';
 import { ChatTypes, MessageTypes } from '../../utils/constant';
+import AudioPlayer from '../AudioPlayer/AudioPlayer';
 
 type Props = {
   msg: MessageInterface;
@@ -39,7 +40,18 @@ const MessageItem = ({ msg }: Props) => {
             )}
 
             {/* TODO - how we will handle for files  */}
-            <div className="bc-msg-content">{msg.text}</div>
+            <div className="bc-msg-content">
+              {msg.type === 'text' ? (
+                msg.text
+              ) : msg.type === 'audio' ? (
+                <AudioPlayer
+                  audioUrl={msg.attachments![0].url}
+                  audioWaveform={msg.attachments![0].waveform}
+                />
+              ) : (
+                ''
+              )}
+            </div>
 
             <div className="bc-msg-reaction-trigger">
               <Smile size={12} color="white" />+
@@ -51,7 +63,7 @@ const MessageItem = ({ msg }: Props) => {
             {isCurrentUserIsSender && <span className="msg-sent-check">✓✓</span>}
           </div>
 
-          <div className="bc-msg-reactions-container"></div>
+          <div className="bc-msg-reactions-container hidden!"></div>
 
           <div className="bc-msg-reaction-picker"></div>
         </>

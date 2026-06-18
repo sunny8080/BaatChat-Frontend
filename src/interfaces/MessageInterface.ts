@@ -24,7 +24,7 @@ export default interface MessageInterface {
   sender?: UserInterface;
   type: MessageType;
   text?: string;
-  attachments?: unknown[];
+  attachments?: attachmentInterface[];
   reactions?: unknown[];
   seenBy?: { user: UserInterface; seenAt: string }[];
   deliveredTo?: { user: UserInterface; deliveredAt: string }[];
@@ -32,4 +32,12 @@ export default interface MessageInterface {
   createdAt?: string;
   updatedAt?: string;
   replyTo?: MessageInterface;
+}
+export interface attachmentInterface {
+  url: string;
+  fileName: string;
+  mimeType: string;
+  size?: number;
+  duration?: number;
+  waveform?: number[];
 }
