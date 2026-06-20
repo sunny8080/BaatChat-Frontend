@@ -208,3 +208,62 @@ export const copyToClipboard = async (
 export const countOnlineMembers = (members: UserInterface[] = []) => {
   return members.reduce((curOnline, mem) => curOnline + (mem.isOnline ? 1 : 0), 0);
 };
+
+// todo add js docs
+export const generateLocalUrl = async (cloudUrl: string): Promise<string> => {
+  try {
+    if (!cloudUrl) return '';
+    const response = await fetch(cloudUrl);
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    return blobUrl;
+  } catch (error) {
+    console.error('Failed to generate local url');
+  }
+  return '';
+};
+
+// todo add js docs
+export const formatFileSize = (bytes: number | undefined) => {
+  if (!bytes) return '';
+  if (bytes < 1024) {
+    return `${bytes} B`;
+  }
+
+  if (bytes < 1024 * 1024) {
+    return `${Math.ceil(bytes / 1024)} KB`;
+  }
+
+  if (bytes < 1024 * 1024 * 1024) {
+    return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  }
+
+  return `${(bytes / 1024 / 1024 / 1024).toFixed(1)} GB`;
+};
+
+export const formatPlayTime = (duration: number | undefined) => {
+  if (!duration) return '';
+  return `${Math.floor(duration / 60)
+    .toString()
+    .padStart(2, '0')}
+    :
+    ${Math.ceil(duration % 60)
+      .toString()
+      .padStart(2, '0')}`;
+};
+
+// todo add js docs
+export const downloadFile = async (url: string | undefined, fileName: string | undefined) => {
+  if (!url || !fileName) return;
+
+  const response = await fetch(url);
+  const blob = await response.blob();
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+
+  a.href = blobUrl;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};

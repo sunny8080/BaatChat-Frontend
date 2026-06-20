@@ -88,3 +88,16 @@ export const sendAudioMessage = async (data: any): Promise<ApiResponse> => {
   }
   return response;
 };
+
+// todo add js docs
+export const sendFile = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.post(MESSAGE_ROUTES.POST_SEND_FILE, data, { timeout: 60000 });
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};

@@ -1,11 +1,22 @@
 import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react';
 import './ChatList.scss';
 import type ChatInterface from '../../interfaces/ChatInterface';
-import { CheckCheck, Clock, MessageCirclePlus, Search, UsersRound } from 'lucide-react';
+import {
+  AudioLines,
+  Camera,
+  CheckCheck,
+  Clock,
+  File,
+  MessageCirclePlus,
+  Search,
+  UsersRound,
+  Video,
+} from 'lucide-react';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import {
   ChatListFilterTypes,
   ChatTypes,
+  MessageTypes,
   type ChatListFilterType,
   type ChatType,
 } from '../../utils/constant';
@@ -67,12 +78,21 @@ const ChatList = ({ setActiveTab, setShowMobilePanel2 }: Props) => {
 
   const genLastMsg = (lastMessage: MessageInterface | undefined, chatType: ChatType): string => {
     if (!lastMessage) return '';
-    if (!lastMessage.text) return '';
-    if (lastMessage.sender?.id === user?.id) return lastMessage.text;
-    if (chatType === ChatTypes.GROUP) {
-      return lastMessage.sender?.name?.split(' ')[0] + ': ' + lastMessage.text;
+    let lastMsgTxt = '';
+
+    if (chatType === ChatTypes.GROUP && lastMessage.sender?.id !== user?.id) {
+      const name = lastMessage.sender?.name?.split(' ')[0];
+      if (name) {
+        lastMsgTxt = name?.at(0)?.toUpperCase() + name?.slice(1) + ': ';
+      }
     }
-    return lastMessage.text;
+
+    if (lastMessage.text) {
+      lastMsgTxt += lastMessage.text;
+    } else if (lastMessage.type !== MessageTypes.TEXT && lastMessage.attachments?.length) {
+      lastMsgTxt += lastMessage.attachments[0].fileName;
+    }
+    return lastMsgTxt;
   };
 
   useEffect(() => {
@@ -109,7 +129,6 @@ const ChatList = ({ setActiveTab, setShowMobilePanel2 }: Props) => {
               <MessageCirclePlus size={20} />
             </button>
 
-            {/* TODO - create new group feature */}
             <button
               className="btn2"
               title="Create new group"
@@ -195,12 +214,35 @@ const ChatList = ({ setActiveTab, setShowMobilePanel2 }: Props) => {
                       {chat.name}
                     </p>
                     <p className="bc-chat-last-message">
-                      {chat.lastMessage?.sender?.id === user?.id &&
-                        (chat.lastMessage?.sending ? (
-                          <Clock size={12} />
-                        ) : (
-                          <CheckCheck size={14} />
-                        ))}
+                      {chat.lastMessage?.sender?.id === user?.id && (
+                        <span>
+                          {chat.lastMessage?.sending ? (
+                            <Clock size={12} />
+                          ) : (
+                            <CheckCheck size={14} />
+                          )}
+                        </span>
+                      )}
+                      {chat.lastMessage?.type === MessageTypes.AUDIO && (
+                        <span>
+                          <AudioLines size={14} />
+                        </span>
+                      )}
+                      {chat.lastMessage?.type === MessageTypes.IMAGE && (
+                        <span>
+                          <Camera size={14} />
+                        </span>
+                      )}
+                      {chat.lastMessage?.type === MessageTypes.VIDEO && (
+                        <span>
+                          <Video size={14} />
+                        </span>
+                      )}
+                      {chat.lastMessage?.type === MessageTypes.FILE && (
+                        <span>
+                          <File size={14} />
+                        </span>
+                      )}
                       {genLastMsg(chat.lastMessage, chat.type)}
                     </p>
                   </div>

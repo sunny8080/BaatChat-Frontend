@@ -13,7 +13,7 @@ import {
   Video,
 } from 'lucide-react';
 import type { ChatDetailsInterface } from '../../interfaces/ChatDetailsInterface';
-import { ChatTypes, MessageTypes } from '../../utils/constant';
+import { BLOCKED_MIME_TYPES, ChatTypes, MessageTypes } from '../../utils/constant';
 import { formatLastSeen, formatMsgDate, getRandomMorse } from '../../utils/utils';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -21,7 +21,7 @@ import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
 import socket from '../../socket/socket';
 import { CHAT_EVENTS, MESSAGE_EVENTS, TYPING_EVENTS } from '../../socket/socketEvents';
 import { useChatListStore } from '../../zustand/ChatListStore';
-import { getChatDetails, sendAudioMessage } from '../../services/chatServices';
+import { getChatDetails, sendAudioMessage, sendFile } from '../../services/chatServices';
 import MessageItem from '../MessageItem/MessageItem';
 import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
@@ -30,6 +30,7 @@ import Modal from '../Modal/Modal';
 import { useQuery } from '@tanstack/react-query';
 import { addMessageInCache, queryClient } from '../../tanstack/queryClient';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
+import FilePreview from '../FilePreview/FilePreview';
 
 const randMorse = getRandomMorse();
 
@@ -181,7 +182,6 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
         }
       } else {
         // TODO - handle error scenario
-        toast.error('Something went wrong during sending message');
         setTimeout(() => {
           window.location.reload();
         }, 300);
@@ -254,7 +254,6 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       }
     } else {
       // TODO - handle error scenario
-      toast.error('Something went wrong during sending message');
       setTimeout(() => {
         window.location.reload();
       }, 300);
@@ -418,6 +417,7 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
     if (audioUrl) {
       setAudioUrl(null);
       URL.revokeObjectURL(audioUrl);
+      setAudioBlob(null);
       discardRecordingRef.current = false;
     } else {
       discardRecordingRef.current = true;
@@ -434,6 +434,140 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       }
     };
   }, [selectedChatId, audioUrl]);
+
+  // setup for file sharing, it includes pdf, docs, jpg, jpeg, audio,
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [caption, setCaption] = useState('');
+
+  const handleFilePick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) {
+      return;
+    }
+
+    const file = files[0]; // currently sending only one file at once
+    const mimeType = file.type;
+    e.target.value = '';
+
+    if (BLOCKED_MIME_TYPES.includes(mimeType)) {
+      toast.error('File type not supported');
+      return;
+    }
+
+    if (mimeType.startsWith('video/')) {
+      if (file.size > import.meta.env.VITE_VIDEO_UPLOAD_FILE_SIZE) {
+        toast.error('Video file size must be less than 20 MB');
+      }
+    } else if (mimeType.startsWith('image/')) {
+      if (file.size > import.meta.env.VITE_UPLOAD_FILE_SIZE) {
+        toast.error('Image size must be less than 10 MB');
+      }
+    } else {
+      if (file.size > 5242880) {
+        toast.error('File size must be less than 5 MB');
+      }
+    }
+
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+  const openFilePicker = () => {
+    fileInputRef.current?.click();
+  };
+  const deleteSelectedFile = () => {
+    setSelectedFile(null);
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl('');
+    setCaption('');
+  };
+
+  // todo add js docs
+  const handleSendFile = async () => {
+    if (!chatDetails?.id || !selectedFile || !previewUrl) return;
+
+    const mimeType = selectedFile?.type || '';
+    const isImage = mimeType.startsWith('image/');
+    const isAudio = mimeType.startsWith('audio/');
+    const isVideo = mimeType.startsWith('video/');
+    // const isFile = !isImage && !isVideo && !isAudio;
+
+    const tempId = crypto.randomUUID();
+    const tmpMsgTxt = caption ?? 'Photo';
+    const tmpType = isImage
+      ? MessageTypes.IMAGE
+      : isAudio
+        ? MessageTypes.AUDIO
+        : isVideo
+          ? MessageTypes.VIDEO
+          : MessageTypes.FILE;
+
+    const optimisticMessage: MessageInterface = {
+      id: tempId,
+      chat: chatDetails?.id,
+      type: tmpType,
+      text: tmpMsgTxt,
+      sender: user!,
+      createdAt: new Date().toISOString(),
+      sending: true,
+      attachments: [
+        {
+          url: previewUrl,
+          fileName: selectedFile?.name,
+          mimeType: selectedFile?.type,
+          size: selectedFile.size,
+          ...(isAudio || isVideo ? { duration: audioDuration } : {}),
+          ...(isAudio ? { waveform: bars } : {}),
+        },
+      ],
+    };
+
+    addMessage(optimisticMessage);
+    updateLastMessage(chatDetails!.id, optimisticMessage);
+    setNewMsgAdded(true);
+    setCaption('');
+    setSelectedFile(null);
+
+    const formData = new FormData();
+    formData.append('chatId', chatDetails?.id);
+    formData.append('fileBlob', selectedFile);
+    formData.append('text', caption);
+    if (isAudio) {
+      formData.append('waveform', JSON.stringify(bars));
+    }
+    if (isAudio || isVideo) {
+      formData.append('duration', audioDuration.toString());
+    }
+
+    if (chatDetails?.id?.includes('personal')) {
+      formData.delete('chatId');
+      formData.append('receiverId', chatDetails?.id.replace('personal-', ''));
+    }
+
+    const res = await sendFile(formData);
+    if (res && res.success) {
+      const response = res.data;
+      updateTempMessage(response.message, tempId);
+      updateLastMessage(chatDetails!.id, response.message);
+
+      if (response.newChat) {
+        // update chat if new chat created
+        const newChat = response.newChat;
+        queryClient.setQueryData(['chatDetails', newChat.id], newChat);
+        addMessageInCache(newChat.id, response.message);
+        upsertChat(newChat, newChat.friend.id, true);
+      } else {
+        // add new msg in query cache
+        addMessageInCache(chatDetails!.id, response.message);
+      }
+    } else {
+      // TODO - handle error scenario
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    }
+  };
 
   return (
     <div className="bc-ChatDetails">
@@ -542,11 +676,13 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
                   <Trash2 />
                 </span>
               ) : (
-                <span className="" title="Attach a file">
+                <span className="" title="Attach a file" onClick={openFilePicker}>
                   <CirclePlus />
                 </span>
               )}
             </button>
+
+            <input type="file" className="hidden" ref={fileInputRef} onChange={handleFilePick} />
 
             <div className="bc-cd-input-row">
               {isRecording ? (
@@ -607,6 +743,25 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
               modalContentStyles={{ width: '100%', maxWidth: '440px' }}
             >
               <ChatInfo setShowChatInfo={setShowChatInfo} />
+            </Modal>
+          )}
+
+          {selectedFile && previewUrl && (
+            <Modal
+              handleOverlayClick={deleteSelectedFile}
+              modalContentStyles={{ width: '100%', maxWidth: '700px' }}
+            >
+              <FilePreview
+                selectedFile={selectedFile}
+                previewUrl={previewUrl}
+                deleteSelectedFile={deleteSelectedFile}
+                caption={caption}
+                setCaption={setCaption}
+                handleSendFile={handleSendFile}
+                chatDetails={chatDetails}
+                setBars={setBars}
+                setAudioDuration={setAudioDuration}
+              />
             </Modal>
           )}
         </div>

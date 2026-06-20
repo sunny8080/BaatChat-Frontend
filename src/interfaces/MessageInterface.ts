@@ -36,6 +36,7 @@ export default interface MessageInterface {
 }
 export interface attachmentInterface {
   url: string;
+  thumbnailUrl?: string;
   fileName: string;
   mimeType: string;
   size?: number;
