@@ -21,7 +21,7 @@ import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
 import socket from '../../socket/socket';
 import { CHAT_EVENTS, MESSAGE_EVENTS, TYPING_EVENTS } from '../../socket/socketEvents';
 import { useChatListStore } from '../../zustand/ChatListStore';
-import { getChatDetails, sendAudioMessage, sendFile } from '../../services/chatServices';
+import { getChatDetails, sendFile } from '../../services/chatServices';
 import MessageItem from '../MessageItem/MessageItem';
 import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
@@ -191,20 +191,19 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
 
   const handleSendAudioMessage = async () => {
     if (!chatDetails?.id) return;
+    if (!audioBlob) return;
 
     const tempId = crypto.randomUUID();
-    const audioMsgTxt = `Voice message (${Math.floor(audioDuration / 60)
+    const fileName = `Voice message (${Math.floor(audioDuration / 60)
       .toString()
       .padStart(2, '0')}:${Math.ceil(audioDuration % 60)
       .toString()
-      .padStart(2, '0')})`;
-    const fileName = `audio-${user?.id}-${chatDetails?.id}.webm`;
+      .padStart(2, '0')}).webm`;
 
     const optimisticMessage: MessageInterface = {
       id: tempId,
       chat: chatDetails?.id,
       type: MessageTypes.AUDIO,
-      text: audioMsgTxt,
       sender: user!,
       createdAt: new Date().toISOString(),
       sending: true,
@@ -226,7 +225,7 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
 
     const formData = new FormData();
     formData.append('chatId', chatDetails?.id);
-    formData.append('audioBlob', audioBlob!, fileName);
+    formData.append('fileBlob', audioBlob, fileName);
     formData.append('duration', audioDuration.toString());
     formData.append('waveform', JSON.stringify(bars));
 
@@ -235,7 +234,7 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       formData.append('receiverId', chatDetails?.id.replace('personal-', ''));
     }
 
-    const res = await sendAudioMessage(formData);
+    const res = await sendFile(formData);
     if (res && res.success) {
       const response = res.data;
       updateTempMessage(response.message, tempId);

@@ -111,6 +111,5 @@ export const CHAT_ROUTES = {
 
 // todo add js docs
 export const MESSAGE_ROUTES = {
-  POST_SEND_AUDIO_MESSAGE: '/messages/send-audio-message',
   POST_SEND_FILE: '/messages/send-file',
 };
