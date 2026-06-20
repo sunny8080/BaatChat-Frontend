@@ -80,6 +80,12 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
   const animationFrameRef = useRef<number | null>(null);
   const discardRecordingRef = useRef(false);
 
+  // setup for file sharing, it includes pdf, docs, jpg, jpeg, audio,
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [caption, setCaption] = useState('');
+
   const { data: chatData, isLoading } = useQuery({
     queryKey: ['chatDetails', selectedChatId],
     queryFn: async () => {
@@ -433,12 +439,6 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       }
     };
   }, [selectedChatId, audioUrl]);
-
-  // setup for file sharing, it includes pdf, docs, jpg, jpeg, audio,
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState('');
-  const [caption, setCaption] = useState('');
 
   const handleFilePick = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
