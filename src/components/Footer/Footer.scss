@@ -1,5 +1,6 @@
 .bc-Footer {
   padding: 0 24px;
+  overflow: hidden;
   &.main {
     border-top: 0.5px solid var(--border-color);
     background: var(--surface-color);

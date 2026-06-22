@@ -181,8 +181,14 @@ const SocialSignupModal = ({ socialLoginUserData, setShowSocialSignupModal }: Pr
         </button>
 
         <div className="bc-signup-terms">
-          By creating an account you agree to our <a href="#">Terms of Service</a> and{' '}
-          <a href="#">Privacy Policy</a>
+          By creating an account you agree to our{' '}
+          <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">
+            Terms of Service
+          </a>{' '}
+          and{' '}
+          <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+            Privacy Policy
+          </a>
         </div>
       </div>
     </div>

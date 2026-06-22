@@ -37,7 +37,7 @@ const HowItWorks = () => {
               <MessageCirclePlus />
             </div>
             <h4>Start chatting</h4>
-            <p>Text, share files, send voice notes in real time</p>
+            <p>Message, share files, and exchange voice notes seamlessly in real time.</p>
           </div>
 
           <div className="bc-step" ref={revealRef}>
@@ -45,7 +45,7 @@ const HowItWorks = () => {
               <Phone />
             </div>
             <h4>Jump on a call</h4>
-            <p>One tap for crystal-clear audio or HD video calls</p>
+            <p>Start crystal-clear voice or HD video calls with just one tap.</p>
           </div>
         </div>
       </div>

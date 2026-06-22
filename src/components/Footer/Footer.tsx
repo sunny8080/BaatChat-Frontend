@@ -12,7 +12,9 @@ const Footer = ({ small = false }: { small?: boolean }) => {
           <p className="bc-footer-morse" title={`Decode this - ${randMorse.hint}`}>
             {randMorse.morse}
           </p>
-          <p className="bc-copyright-txt">© 2026 BaatChat ·&nbsp;{import.meta.env.VITE_FED_URL}&nbsp;· Made with ❤️ in India</p>
+          <p className="bc-copyright-txt">
+            © 2026 BaatChat ·&nbsp;{import.meta.env.VITE_FED_URL}&nbsp;· Made with ❤️ in India
+          </p>
         </div>
       )}
       {!small && (
@@ -27,7 +29,7 @@ const Footer = ({ small = false }: { small?: boolean }) => {
                   Baat<span>Chat</span>
                 </span>
               </a>
-              <p>Real-time messaging & video calling. MERN stack. Made in India 🇮🇳</p>
+              <p>Real-time messaging, HD video calls and voice notes app. Made in India 🇮🇳</p>
             </div>
 
             <div className="bc-footer-links">
@@ -35,28 +37,31 @@ const Footer = ({ small = false }: { small?: boolean }) => {
                 <h5>Product</h5>
                 <a href="/#features">Features</a>
                 <a href="/#howItWorks">How it works</a>
-                <a href="#">Changelog</a>
+                <a href="https://github.com/sunny8080/BaatChat">Open Source Code</a>
                 <a href="#">Roadmap</a>
+                {/* <a href="">API docs</a> */}
               </div>
               <div className="footer-col">
-                <h5>Tech</h5>
-                <a href="https://github.com/sunny8080/BaatChat">GitHub</a>
-                <a href="">Architecture</a>
-                <a href="">API docs</a>
-                <a href="">Self-host</a>
+                <h5>Policy & Terms</h5>
+                <a href="/terms-of-service">Terms of Service</a>
+                <a href="/privacy-policy">Privacy Policy</a>
+                <a href="/cookies-policy">Cookies Policy</a>
+                <a href="/terms-of-service#contact-us">Contact US</a>
               </div>
               <div className="footer-col">
                 <h5>Connect</h5>
-                <a href="https://x.com/sunny8080_">Twitter / X</a>
-                <a href="https://www.linkedin.com/in/sunny8080">LinkedIn</a>
                 <a href="mailto:sk7522422@gmail.com">Email</a>
-                <a href="https://github.com/sunny8080/BaatChat">GitHub</a>
+                <a href="https://www.linkedin.com/in/sunny8080">LinkedIn</a>
+                <a href="https://github.com/sunny8080">GitHub</a>
+                <a href="https://x.com/sunny8080_">Twitter / X</a>
               </div>
             </div>
           </div>
 
           <div className="bc-footer-bottom">
-            <p className="bc-copyright-txt">© 2026 BaatChat ·&nbsp;{import.meta.env.VITE_FED_URL}&nbsp;· Made with ❤️ in India</p>
+            <p className="bc-copyright-txt">
+              © 2026 BaatChat ·&nbsp;{import.meta.env.VITE_FED_URL}&nbsp;· Made with ❤️ in India
+            </p>
             <p className="bc-footer-morse" title={`Decode this - ${randMorse.hint}`}>
               {randMorse.morse}
             </p>

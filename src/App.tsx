@@ -4,7 +4,7 @@ import AppRoutes from './AppRoutes';
 
 function App() {
   return (
-    <div className="w-screen min-h-screen overflow-hidden">
+    <div className="w-screen min-h-screen">
       <AppRoutes />
     </div>
   );

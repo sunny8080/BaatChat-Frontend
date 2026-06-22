@@ -21,7 +21,7 @@ const HeroSection = () => {
       <p className="bc-hero-subheading">BaatChat is a real-time messaging and video calling platform built for everyone. Text, voice, video — all in one place. Made in India 🇮🇳.</p>
 
       <div className="bc-hero-ctas">
-        <button className="bc-btn bc-btn-gold" onClick={() => navigate('/auth')}>
+        <button className="bc-btn bc-btn-gold" onClick={() => navigate('/auth?mode=signup')}>
           🚀 Start Chatting Now
         </button>
 

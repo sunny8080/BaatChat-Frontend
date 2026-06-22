@@ -7,6 +7,9 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Chat from './pages/Chat';
 import PublicRoute from './components/PublicRoute/PublicRoute';
 import PageNotFound from './components/PageNotFound/PageNotFound';
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import CookiesPolicy from './pages/CookiesPolicy';
 
 const AppRoutes = () => {
   return (
@@ -56,6 +59,9 @@ const AppRoutes = () => {
           </PublicRoute>
         }
       />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/cookies-policy" element={<CookiesPolicy />} />
 
       {/* all other pages are Page not found */}
       <Route path="*" element={<PageNotFound />} />

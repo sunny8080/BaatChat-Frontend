@@ -9,15 +9,40 @@
   --night-color: #0d0618;
   --surface-color: #130d24;
   --card-color: #1c1232;
+  --card2-color: #1a1030;
   --border-color: #2d1f4e;
   --violet-color: #7c3aed;
+  --violet2-color: #6d28d9;
   --lavender-color: #a78bfa;
+  --lavender2-color: rgba(167, 139, 250, 0.1);
   --gold-color: #f59e0b;
   --white-color: #f8f7ff;
   --muted-color: #6b6b8a;
+  --muted2-color: #4a4a6a;
   --green-color: #4ade80;
   --violet-text-color: #ddd6fe;
   --red-color: #ef4444;
+
+  /* extra color-coding system */
+  --cat-identity: #a78bfa; /* violet  — identity data */
+  --cat-identity-bg: rgba(167, 139, 250, 0.08);
+  --cat-identity-border: rgba(167, 139, 250, 0.25);
+
+  --cat-usage: #f59e0b; /* gold    — usage / behavioural */
+  --cat-usage-bg: rgba(245, 158, 11, 0.08);
+  --cat-usage-border: rgba(245, 158, 11, 0.25);
+
+  --cat-technical: #3b82f6; /* blue    — technical / device */
+  --cat-technical-bg: rgba(59, 130, 246, 0.08);
+  --cat-technical-border: rgba(59, 130, 246, 0.25);
+
+  --cat-content: #4ade80; /* green   — user content */
+  --cat-content-bg: rgba(74, 222, 128, 0.07);
+  --cat-content-border: rgba(74, 222, 128, 0.25);
+
+  --cat-third: #f97316; /* orange  — third-party */
+  --cat-third-bg: rgba(249, 115, 22, 0.08);
+  --cat-third-border: rgba(249, 115, 22, 0.25);
 }
 html {
   scroll-behavior: smooth;
