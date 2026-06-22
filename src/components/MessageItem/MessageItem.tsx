@@ -125,21 +125,25 @@ const MessageItem = ({ msg }: Props) => {
         </>
       )}
 
-      {openFIleViewer && msg.attachments?.length && (
-        <Modal
-          handleOverlayClick={() => setOpenFileViewer(false)}
-          modalContentStyles={{ width: '100%', height: '100%' }}
-        >
-          <FileViewer
-            type={msg.type}
-            fileUrl={msg.attachments[0].url}
-            fileName={msg.attachments[0].fileName}
-            sender={msg.sender}
-            closeFileViewer={() => setOpenFileViewer(false)}
-            createdAt={msg.createdAt}
-          />
-        </Modal>
-      )}
+      {openFIleViewer &&
+        msg.attachments?.length &&
+        (msg.type === MessageTypes.IMAGE || msg.type === MessageTypes.VIDEO) && (
+          <Modal
+            handleOverlayClick={() => setOpenFileViewer(false)}
+            modalContentStyles={{ width: '100%', height: '100%' }}
+          >
+            <FileViewer
+              type={msg.type}
+              fileUrl={msg.attachments[0].url}
+              fileName={msg.attachments[0].fileName}
+              sender={msg.sender}
+              closeFileViewer={() => setOpenFileViewer(false)}
+              createdAt={msg.createdAt}
+              showDownloadBtn={true}
+              showShareBtn={true}
+            />
+          </Modal>
+        )}
     </div>
   );
 };

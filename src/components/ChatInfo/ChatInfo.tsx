@@ -27,6 +27,8 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import toast from 'react-hot-toast';
 import { updateGroupDetails } from '../../services/chatServices';
+import Modal from '../Modal/Modal';
+import FileViewer from '../FileViewer/FileViewer';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -49,6 +51,7 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
   const [previewAvatarUrl, setPreviewAvatarUrl] = useState(chatDetails?.avatarUrl);
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [openFIleViewer, setOpenFileViewer] = useState(false);
 
   // TODO sort members, admins must be at the top
   const sortedMembers = chatDetails?.activeMembers;
@@ -164,7 +167,11 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
           <div
             className={`bc-ci-avatar ${isPersonal ? (friend?.isOnline ? 'online' : 'offline') : ''}`}
           >
-            <img src={previewAvatarUrl} alt={chatDetails?.name} />
+            <img
+              src={previewAvatarUrl}
+              alt={chatDetails?.name}
+              onClick={() => setOpenFileViewer(true)}
+            />
 
             {!isPersonal && (
               <>
@@ -522,6 +529,20 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
           </div>
         </div>
       </div>
+
+      {openFIleViewer && previewAvatarUrl && (
+        <Modal
+          handleOverlayClick={() => setOpenFileViewer(false)}
+          modalContentStyles={{ width: '100%', height: '100%' }}
+        >
+          <FileViewer
+            type={'image'}
+            fileUrl={previewAvatarUrl}
+            fileName={`${chatDetails.name} profile photo`}
+            closeFileViewer={() => setOpenFileViewer(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

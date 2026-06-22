@@ -30,6 +30,8 @@ import { useChatListStore } from '../../zustand/ChatListStore';
 import type { ChatActiveTabs } from '../../pages/Chat';
 import { useUsersStore } from '../../zustand/UsersStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import Modal from '../Modal/Modal';
+import FileViewer from '../FileViewer/FileViewer';
 
 type Props = {
   activeTab: ChatActiveTabs;
@@ -56,6 +58,7 @@ const UserDetails = ({ activeTab, setActiveTab, setShowMobilePanel2 }: Props) =>
   const setSelectedFriendUsername = useUsersStore((state) => state.setSelectedFriendUsername);
   const selectedUserUsername = isFriendTab ? selectedFriendUsername : selectedSearchUserUsername;
   const queryClient = useQueryClient();
+  const [openFIleViewer, setOpenFileViewer] = useState(false);
 
   // react query to load user details
   const { data: user, isLoading } = useQuery<UserInterface | null>({
@@ -183,7 +186,7 @@ const UserDetails = ({ activeTab, setActiveTab, setShowMobilePanel2 }: Props) =>
 
           <div className="bc-user-name-avatar-wrap">
             <div className="bc-user-avatar">
-              <img src={user.avatarUrl} alt={user.name} />
+              <img src={user.avatarUrl} alt={user.name} onClick={() => setOpenFileViewer(true)} />
             </div>
             <div className="bc-user-name-container">
               <div className="bc-user-name">
@@ -370,6 +373,20 @@ const UserDetails = ({ activeTab, setActiveTab, setShowMobilePanel2 }: Props) =>
               </>
             )}
           </div>
+
+          {openFIleViewer && user.avatarUrl && (
+            <Modal
+              handleOverlayClick={() => setOpenFileViewer(false)}
+              modalContentStyles={{ width: '100%', height: '100%' }}
+            >
+              <FileViewer
+                type={'image'}
+                fileUrl={user.avatarUrl}
+                fileName={`${user.name} profile photo`}
+                closeFileViewer={() => setOpenFileViewer(false)}
+              />
+            </Modal>
+          )}
         </div>
       )}
     </div>

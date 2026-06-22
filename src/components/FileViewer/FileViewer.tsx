@@ -5,16 +5,27 @@ import { useAuth } from '../../context/AuthContext';
 import { downloadFile, formatMsgDate, formatMsgTime } from '../../utils/utils';
 
 type Props = {
-  type: string;
+  type: 'image' | 'video';
   fileUrl: string;
   fileName: string;
   closeFileViewer: () => void;
   sender?: UserInterface;
   createdAt?: string;
+  showDownloadBtn?: boolean;
+  showShareBtn?: boolean;
 };
 
 // TODO - currently this supports only image and video, we can setup it for PDF also
-const FileViewer = ({ type, fileUrl, fileName, closeFileViewer, sender, createdAt }: Props) => {
+const FileViewer = ({
+  type,
+  fileUrl,
+  fileName,
+  closeFileViewer,
+  sender,
+  createdAt,
+  showDownloadBtn = false,
+  showShareBtn = false,
+}: Props) => {
   const { user } = useAuth();
 
   return (
@@ -39,17 +50,21 @@ const FileViewer = ({ type, fileUrl, fileName, closeFileViewer, sender, createdA
         </div>
 
         <div className="bc-file-viewer-ctas">
-          <button className="bc-file-viewer-cta" onClick={() => downloadFile(fileUrl, fileName)}>
-            <span>
-              <Download size={20} />
-            </span>
-          </button>
+          {showDownloadBtn && (
+            <button className="bc-file-viewer-cta" onClick={() => downloadFile(fileUrl, fileName)}>
+              <span>
+                <Download size={20} />
+              </span>
+            </button>
+          )}
 
-          <button className="bc-file-viewer-cta cursor-not-allowed!" disabled>
-            <span>
-              <Share2 size={20} />
-            </span>
-          </button>
+          {showShareBtn && (
+            <button className="bc-file-viewer-cta cursor-not-allowed!" disabled>
+              <span>
+                <Share2 size={20} />
+              </span>
+            </button>
+          )}
 
           <button className="bc-file-viewer-cta close-btn" onClick={closeFileViewer}>
             <span>

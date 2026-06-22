@@ -4,6 +4,8 @@ import { type SettingsActiveTab } from './UserSettings';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { updateUserDetails } from '../../services/usersServices';
+import Modal from '../Modal/Modal';
+import FileViewer from '../FileViewer/FileViewer';
 
 type Props = {
   setShowSettingsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +20,7 @@ const ProfileTabContent = ({ setShowSettingsModal, currentActiveTab }: Props) =>
   const [previewAvatarUrl, setPreviewAvatarUrl] = useState(user?.avatarUrl ?? '');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
+  const [openFIleViewer, setOpenFileViewer] = useState(false);
 
   const openFilePicker = () => {
     fileInputRef.current?.click();
@@ -103,7 +106,7 @@ const ProfileTabContent = ({ setShowSettingsModal, currentActiveTab }: Props) =>
 
       <form className="bc-form" onSubmit={handleUserProfileChange}>
         <div className="bc-uss-avatar-editor">
-          <div className="avatar-preview" onClick={openFilePicker}>
+          <div className="avatar-preview" onClick={() => setOpenFileViewer(true)}>
             <img src={previewAvatarUrl} className="avatar-img" alt={user?.name} />
           </div>
 
@@ -198,6 +201,20 @@ const ProfileTabContent = ({ setShowSettingsModal, currentActiveTab }: Props) =>
           </button>
         </div>
       </form>
+
+      {openFIleViewer && (
+        <Modal
+          handleOverlayClick={() => setOpenFileViewer(false)}
+          modalContentStyles={{ width: '100%', height: '100%' }}
+        >
+          <FileViewer
+            type={'image'}
+            fileUrl={previewAvatarUrl}
+            fileName={`${user?.name} profile photo`}
+            closeFileViewer={() => setOpenFileViewer(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };
