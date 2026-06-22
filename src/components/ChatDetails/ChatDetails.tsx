@@ -569,11 +569,12 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
   };
 
   return (
-    <div className="bc-ChatDetails">
+    <div className={`bc-ChatDetails ${isLoading ? 'loading' : ''}`}>
       {isLoading && (
         // TODO - implement chat details skeleton in case of loading
         <div className="bc-loading-chat-details">
-          <div className="bc-inline-spinner"></div> Loading conversation...
+          <div className="bc-inline-spinner"></div>{' '}
+          <span className="loading-txt">Loading conversation...</span>
         </div>
       )}
 

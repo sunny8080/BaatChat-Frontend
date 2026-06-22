@@ -2,6 +2,20 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: var(--night-color);
+
+  @media screen and (max-width: 768px) {
+    &.loading {
+      background: rgb(var(--night-color-rgb) / 60%);
+      .bc-inline-spinner {
+        width: 3rem;
+        height: 3rem;
+      }
+      .loading-txt {
+        display: none;
+      }
+    }
+  }
 
   .bc-loading-user-details {
     display: flex;

@@ -156,14 +156,15 @@ const UserDetails = ({ activeTab, setActiveTab, setShowMobilePanel2 }: Props) =>
   };
 
   return (
-    <div className="bc-UserDetails">
+    <div className={`bc-UserDetails ${isLoading ? 'loading' : ''}`}>
       <div className="bc-cd-mobile-back-btn" onClick={handleMobileBackBtnClick}>
         <MoveLeft size={16} />
       </div>
 
       {isLoading && (
         <div className="bc-loading-user-details">
-          <div className="bc-inline-spinner"></div> Loading user info...
+          <div className="bc-inline-spinner"></div>{' '}
+          <span className="loading-txt">Loading user info...</span>
         </div>
       )}
 
