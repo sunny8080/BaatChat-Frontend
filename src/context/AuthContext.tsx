@@ -64,9 +64,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setAccessToken(accessToken);
             connectSocket(res.data.user);
           } else {
-            setUser(null);
-            setAccessToken(null);
-            socket.disconnect();
+            const isLimitError = res.statusCode === 429;
+            if (!isLimitError) {
+              setUser(null);
+              setAccessToken(null);
+              socket.disconnect();
+            }
           }
         } catch (error) {
           // setIsAuthLoading(false);

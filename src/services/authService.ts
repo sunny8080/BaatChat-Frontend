@@ -149,8 +149,11 @@ export const getCurrentUser = async (): Promise<ApiResponse> => {
     const res = await apiClient.get(AUTH_ROUTES.GET_CURRENT_USER);
     response = res.data;
   } catch (error: any) {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('userId');
+    const isLimitError = error?.response?.data?.statusCode === 429 || error.status === 429;
+    if (!isLimitError) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userId');
+    }
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     response = error?.response?.data;
   }
