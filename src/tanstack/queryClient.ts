@@ -22,3 +22,16 @@ export const addMessageInCache = (chatId: string, msg: MessageInterface) => {
     };
   });
 };
+
+// todo add js docs
+export const removeMessageInCache = (chatId: string, msgId: string) => {
+  queryClient.setQueryData(['chatDetails', chatId], (old: any) => {
+    if (!old) return old;
+    const messages = old.messages?.filter(({ id }: MessageInterface) => id !== msgId) ?? [];
+
+    return {
+      ...old,
+      messages,
+    };
+  });
+};

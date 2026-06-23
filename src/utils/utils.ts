@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { Dispatch, SetStateAction } from 'react';
 import type UserInterface from '../interfaces/UserInterface';
+import { DELETE_FOR_EVERYONE_WINDOW } from './constant';
 dayjs.extend(relativeTime);
 
 /**
@@ -266,4 +267,9 @@ export const downloadFile = async (url: string | undefined, fileName: string | u
   document.body.appendChild(a);
   a.click();
   a.remove();
+};
+
+// todo add js docs
+export const canDeleteForEveryone = (createdAt: string) => {
+  return Date.now() < new Date(createdAt).getTime() + DELETE_FOR_EVERYONE_WINDOW;
 };

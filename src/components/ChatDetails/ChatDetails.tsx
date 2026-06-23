@@ -292,6 +292,11 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       // move to bottom if new message added
       if (!messageContainerRef.current) return;
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+
+      setTimeout(() => {
+        if (!messageContainerRef.current) return;
+        messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+      }, 500);
       setNewMsgAdded(false);
     }
   }, [newMsgAdded, setNewMsgAdded]);

@@ -89,6 +89,9 @@ export const ChatListFilterTypes = {
 export type ChatListFilterType = (typeof ChatListFilterTypes)[keyof typeof ChatListFilterTypes];
 
 // todo add js docs
+export const DELETE_FOR_EVERYONE_WINDOW = 60 * 60 * 1000; // 1 hour window to delete message
+
+// todo add js docs
 export const ALLOWED_MIME_TYPES = [
   // Images
   'image/jpeg',

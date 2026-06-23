@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { ChatDetailsInterface } from '../interfaces/ChatDetailsInterface';
 import type MessageInterface from '../interfaces/MessageInterface';
 import type UserInterface from '../interfaces/UserInterface';
+import { useChatListStore } from './ChatListStore';
 
 type ChatDetailsState = {
   chatDetails: ChatDetailsInterface | null;
@@ -161,6 +162,12 @@ export const useChatDetailsStore = create<ChatDetailsState>()((set, get) => ({
         state.chatDetails.lastMessage?.id === messageId
           ? messages.at(-1)
           : state.chatDetails.lastMessage;
+
+      // update chat list store
+      const { updateLastMessage } = useChatListStore.getState();
+      if (lastMessage?.id && lastMessage?.id !== state.chatDetails.lastMessage?.id) {
+        updateLastMessage(state.chatDetails.id, lastMessage!);
+      }
 
       return {
         chatDetails: {

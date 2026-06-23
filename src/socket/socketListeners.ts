@@ -10,7 +10,7 @@ import {
   PRESENCE_EVENTS,
   TYPING_EVENTS,
 } from './socketEvents';
-import { addMessageInCache } from '../tanstack/queryClient';
+import { addMessageInCache, removeMessageInCache } from '../tanstack/queryClient';
 import { queryClient } from '../tanstack/queryClient';
 
 /**
@@ -90,6 +90,16 @@ export const registerMessageSocketListeners = () => {
     if (chatDetails?.id === chatId) {
       updateMessageSeenBy(msgId, seenBy, seenAt);
     }
+  });
+
+  socket.on(MESSAGE_EVENTS.DELETED, (data) => {
+    const { chatId, msgId } = data;
+    const { chatDetails, removeMessage } = useChatDetailsStore.getState();
+
+    if (chatDetails?.id === chatId) {
+      removeMessage(msgId);
+    }
+    removeMessageInCache(chatId, msgId);
   });
 };
 

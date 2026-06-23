@@ -1,15 +1,38 @@
-import { CheckCheck, Clock, Download, Expand, File, Play, Smile } from 'lucide-react';
+import {
+  CheckCheck,
+  ChevronDown,
+  Clock,
+  Download,
+  Expand,
+  File,
+  MessageSquareX,
+  Play,
+  Plus,
+  Reply,
+  Smile,
+  Trash2,
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import type MessageInterface from '../../interfaces/MessageInterface';
-import { downloadFile, formatFileSize, formatMsgTime, formatPlayTime } from '../../utils/utils';
+import {
+  canDeleteForEveryone,
+  downloadFile,
+  formatFileSize,
+  formatMsgTime,
+  formatPlayTime,
+} from '../../utils/utils';
 import './MessageItem.scss';
 import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
 import type { ChatDetailsInterface } from '../../interfaces/ChatDetailsInterface';
 import { ChatTypes, MessageTypes } from '../../utils/constant';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Modal from '../Modal/Modal';
 import FileViewer from '../FileViewer/FileViewer';
+import socket from '../../socket/socket';
+import { MESSAGE_EVENTS } from '../../socket/socketEvents';
+import { removeMessageInCache } from '../../tanstack/queryClient';
+import toast from 'react-hot-toast';
 
 type Props = {
   msg: MessageInterface;
@@ -23,6 +46,79 @@ const MessageItem = ({ msg }: Props) => {
     (state) => state.chatDetails,
   );
   const [openFIleViewer, setOpenFileViewer] = useState(false);
+  const [showMsgTooltip, setShowMsgTooltip] = useState(false);
+  const msgTooltipRef = useRef<HTMLDivElement>(null);
+  const tooltipTriggerRef = useRef<HTMLDivElement>(null);
+  const removeMessage = useChatDetailsStore((state) => state.removeMessage);
+
+  useEffect(() => {
+    if (!showMsgTooltip) return;
+    const handleOutSideClick = (e: PointerEvent) => {
+      if (
+        msgTooltipRef.current &&
+        !msgTooltipRef.current.contains(e.target as Node) &&
+        !tooltipTriggerRef.current?.contains(e.target as Node)
+      ) {
+        setShowMsgTooltip(false);
+      }
+    };
+    const handleScroll = () => {
+      setShowMsgTooltip(false);
+    };
+
+    document.addEventListener('scroll', handleScroll, { capture: true });
+    document.addEventListener('pointerdown', handleOutSideClick);
+
+    return () => {
+      document.removeEventListener('pointerdown', handleOutSideClick);
+      document.removeEventListener('scroll', handleScroll, { capture: true });
+    };
+  }, [showMsgTooltip]);
+
+  useLayoutEffect(() => {
+    const tooltip = msgTooltipRef.current;
+    if (!showMsgTooltip || !tooltip) return;
+
+    const rect = tooltip.getBoundingClientRect();
+
+    // fix bottom clipping
+    if (rect.bottom + 80 > window.innerHeight) {
+      tooltip.style.top = 'auto';
+      tooltip.style.bottom = 'calc(50% + 16px)';
+    }
+
+    // fix left clipping
+    if (rect.left < 0) {
+      const left = parseFloat(getComputedStyle(tooltip).left);
+      tooltip.style.left = `${left - rect.left + 5}px`;
+    }
+
+    // fix right clipping
+    if (rect.right > window.innerWidth) {
+      const right = parseFloat(getComputedStyle(tooltip).right);
+      tooltip.style.right = `${right + (rect.right - window.innerWidth) + 5}px`;
+    }
+  }, [showMsgTooltip]);
+
+  const handleDeleteMsg = (forEveryone: boolean) => {
+    removeMessage(msg.id);
+
+    socket.emit(
+      MESSAGE_EVENTS.DELETE,
+      { chatId: msg.chat, msgId: msg.id, forEveryone },
+      (response: any) => {
+        if (response.ok) {
+          removeMessageInCache(msg.chat!, msg.id);
+        } else {
+          // TODO - handle error scenario
+          toast.error("Couldn't delete message");
+          setTimeout(() => {
+            window.location.reload();
+          }, 300);
+        }
+      },
+    );
+  };
 
   return (
     <div
@@ -103,10 +199,45 @@ const MessageItem = ({ msg }: Props) => {
               )}
 
               {msg.text && <div className="bc-msg-txt">{msg.text}</div>}
-            </div>
 
-            <div className="bc-msg-reaction-trigger">
-              <Smile size={12} color="white" />+
+              <div
+                className="bc-msg-settings-trigger"
+                onClick={() => setShowMsgTooltip((prev) => !prev)}
+                ref={tooltipTriggerRef}
+              >
+                <ChevronDown size={14} color="white" />
+                <span className="plusIcon">
+                  <Plus size={10} color="white" />
+                </span>
+              </div>
+
+              {showMsgTooltip && (
+                <>
+                  <div className="bc-msg-settings-tooltip" ref={msgTooltipRef}>
+                    <div className="bc-msg-setting">
+                      <Reply />
+                      <span>Reply</span>
+                    </div>
+
+                    <div className="bc-msg-setting">
+                      <Smile />
+                      <span>React</span>
+                    </div>
+
+                    <div className="bc-msg-setting danger" onClick={() => handleDeleteMsg(false)}>
+                      <Trash2 />
+                      <span>Delete for Me</span>
+                    </div>
+
+                    {isCurrentUserIsSender && canDeleteForEveryone(msg.createdAt!) && (
+                      <div className="bc-msg-setting danger" onClick={() => handleDeleteMsg(true)}>
+                        <MessageSquareX />
+                        <span>Delete for Everyone</span>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -119,9 +250,9 @@ const MessageItem = ({ msg }: Props) => {
             )}
           </div>
 
-          <div className="bc-msg-reactions-container hidden!"></div>
+          {/* <div className="bc-msg-reactions-container hidden!"></div> */}
 
-          <div className="bc-msg-reaction-picker"></div>
+          {/* <div className="bc-msg-reaction-picker"></div> */}
         </>
       )}
 

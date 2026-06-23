@@ -31,7 +31,7 @@
   gap: 6px;
   width: 100%;
 
-  &:hover .bc-msg-reaction-trigger {
+  &:hover .bc-msg-settings-trigger {
     opacity: 1;
   }
 }
@@ -67,6 +67,7 @@
   display: flex;
   flex-direction: column;
   height: stretch;
+  position: relative;
 
   .bc-msg-txt {
     padding: 8px 12px;
@@ -333,7 +334,7 @@
   }
 }
 
-.bc-msg-reaction-trigger {
+.bc-msg-settings-trigger {
   opacity: 0;
   font-size: 12px;
   cursor: pointer;
@@ -345,15 +346,83 @@
   transition: all 0.2s;
   white-space: nowrap;
   align-self: center;
-
   display: flex;
   align-items: center;
+  gap: 1px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -45px;
+
+  .plusIcon {
+    opacity: 0.5;
+    transition: all 0.2s;
+  }
 
   &:hover {
     background: var(--surface-color);
     color: var(--white-color);
+
+    .plusIcon {
+      opacity: 1;
+    }
   }
 }
+.bc-MessageItem.msgOut .bc-msg-settings-trigger {
+  left: -45px;
+  right: auto;
+}
 
-.bc-msg-reaction-picker {
+.bc-msg-settings-tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  width: fit-content;
+  background: var(--card-color);
+  border: 0.5px solid var(--violet-color);
+  z-index: 100;
+  position: absolute;
+  width: 220px;
+
+  top: calc(50% + 16px);
+  right: -130px;
+
+  .bc-msg-setting {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+
+    transition: all 0.2s;
+    white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 8px;
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      background: var(--violet-color);
+    }
+
+    &.danger {
+      cursor: pointer;
+      opacity: 1;
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.2);
+        color: rgb(239, 68, 68, 0.9);
+      }
+    }
+  }
+}
+.bc-MessageItem.msgOut .bc-msg-settings-tooltip {
+  right: auto;
+  left: -130px;
 }
