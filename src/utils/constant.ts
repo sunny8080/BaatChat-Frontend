@@ -161,3 +161,22 @@ export const BLOCKED_MIME_TYPES = [
   'application/x-apple-diskimage', // dmg
   'application/vnd.apple.installer+xml', // pkg
 ];
+
+// todo add js docs
+export type CookiesSetting = {
+  essential: boolean;
+  functional: boolean;
+  analytics: boolean;
+  isDismissed?: boolean;
+  providedAt: Date;
+};
+
+// todo add js docs
+export type SetCookieOptions = {
+  maxAge?: number;
+  expires?: Date;
+  path?: string;
+  domain?: string;
+  secure?: boolean;
+  sameSite?: 'Strict' | 'Lax' | 'None';
+};

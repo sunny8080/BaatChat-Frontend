@@ -1,4 +1,5 @@
 import type ApiResponse from '../interfaces/ApiResponse';
+import { functionalCookiesAllowed, setCookie } from '../utils/utils';
 import { apiClient, AUTH_ROUTES } from './api';
 import toast from 'react-hot-toast';
 
@@ -32,7 +33,9 @@ export const loginUser = async (data: any): Promise<ApiResponse> => {
     if (res.data && res.data.success) {
       localStorage.setItem('accessToken', res.data?.data?.accessToken);
       localStorage.setItem('userId', res.data.data?.user?.id);
-      localStorage.setItem('loginType', res.data.data?.user?.loginType);
+      if (functionalCookiesAllowed()) {
+        setCookie('loginType', res.data.data?.user?.loginType);
+      }
     }
     response = res.data;
   } catch (error: any) {
@@ -92,7 +95,9 @@ export const verifyEmail = async (data: any): Promise<ApiResponse> => {
     if (res.data && res.data.success) {
       localStorage.setItem('accessToken', res.data?.data?.accessToken);
       localStorage.setItem('userId', res.data.data?.user?.id);
-      localStorage.setItem('loginType', res.data.data?.user?.loginType);
+      if (functionalCookiesAllowed()) {
+        setCookie('loginType', res.data.data?.user?.loginType);
+      }
     }
     response = res.data;
   } catch (error: any) {
@@ -233,7 +238,9 @@ export const googleCallback = async (data: any): Promise<ApiResponse> => {
       // signin user
       localStorage.setItem('accessToken', res.data?.data?.accessToken);
       localStorage.setItem('userId', res.data.data?.user?.id);
-      localStorage.setItem('loginType', res.data.data?.user?.loginType);
+      if (functionalCookiesAllowed()) {
+        setCookie('loginType', res.data.data?.user?.loginType);
+      }
     }
     response = res.data;
   } catch (error: any) {
@@ -262,7 +269,9 @@ export const completeSocialSignup = async (data: any): Promise<ApiResponse> => {
     if (res.data && res.data.success) {
       localStorage.setItem('accessToken', res.data?.data?.accessToken);
       localStorage.setItem('userId', res.data.data?.user?.id);
-      localStorage.setItem('loginType', res.data.data?.user?.loginType);
+      if (functionalCookiesAllowed()) {
+        setCookie('loginType', res.data.data?.user?.loginType);
+      }
     }
     response = res.data;
   } catch (error: any) {

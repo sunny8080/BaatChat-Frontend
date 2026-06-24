@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { Dispatch, SetStateAction } from 'react';
 import type UserInterface from '../interfaces/UserInterface';
-import { DELETE_FOR_EVERYONE_WINDOW } from './constant';
+import { DELETE_FOR_EVERYONE_WINDOW, type CookiesSetting, type SetCookieOptions } from './constant';
 dayjs.extend(relativeTime);
 
 /**
@@ -272,4 +272,62 @@ export const downloadFile = async (url: string | undefined, fileName: string | u
 // todo add js docs
 export const canDeleteForEveryone = (createdAt: string) => {
   return Date.now() < new Date(createdAt).getTime() + DELETE_FOR_EVERYONE_WINDOW;
+};
+
+// todo add js docs
+export const setCookie = (name: string, value: string, options: SetCookieOptions = {}) => {
+  const { maxAge, expires, path = '/', domain, secure, sameSite } = options;
+
+  let cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+  if (maxAge !== undefined) {
+    cookie += `; max-age=${maxAge}`;
+  }
+  if (expires) {
+    cookie += `; expires=${expires.toUTCString()}`;
+  }
+  if (path) {
+    cookie += `; path=${path}`;
+  }
+  if (domain) {
+    cookie += `; domain=${domain}`;
+  }
+  if (secure) {
+    cookie += '; secure';
+  }
+  if (sameSite) {
+    cookie += `; samesite=${sameSite}`;
+  }
+
+  document.cookie = cookie;
+};
+
+// todo add js docs
+export const removeCookie = (name: string, path = '/', domain?: string) => {
+  document.cookie = `${name}=; max-age=0; path=${path}` + (domain ? `; domain=${domain}` : '');
+};
+
+// todo add js docs
+export const getCookie = (name: string): string | null => {
+  const prefix = `${encodeURIComponent(name)}=`;
+  const cookie = document.cookie.split('; ').find((c) => c.startsWith(prefix));
+  return cookie ? decodeURIComponent(cookie.substring(prefix.length)) : null;
+};
+
+// todo add js docs
+export const getCookiesPref = (): CookiesSetting | null => {
+  const cookiesPrefsStr = getCookie('cookiesPrefs');
+  try {
+    if (!cookiesPrefsStr) return null;
+    const cookiesPrefs = JSON.parse(cookiesPrefsStr) as CookiesSetting;
+    return cookiesPrefs;
+  } catch (error) {
+    return null;
+  }
+};
+
+// todo add js docs
+export const functionalCookiesAllowed = (): boolean => {
+  const cookiesPref = getCookiesPref();
+  return cookiesPref ? cookiesPref.functional : false;
 };

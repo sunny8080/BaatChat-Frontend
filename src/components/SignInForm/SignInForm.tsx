@@ -11,6 +11,7 @@ import { loginUser } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
 import { connectSocket } from '../../socket/socket';
 import { UserLoginTypes } from '../../utils/constant';
+import { getCookie } from '../../utils/utils';
 
 type Props = {
   setCurAuthTab: React.Dispatch<React.SetStateAction<string>>;
@@ -57,7 +58,7 @@ const SignInForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
     }
   };
 
-  const lastLoginType = localStorage.getItem('loginType');
+  const lastLoginType = getCookie('loginType');
 
   return (
     <div className="bc-SignInForm bc-slideScreenLeft">
