@@ -12,7 +12,7 @@ function App() {
 
   return (
     <div className="w-screen min-h-screen">
-      <AppRoutes />
+      <AppRoutes setShowCookieBanner={setShowCookieBanner} />
 
       {showCookieBanner && <CookieBanner setShowCookieBanner={setShowCookieBanner} />}
     </div>

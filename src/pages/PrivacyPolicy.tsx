@@ -23,9 +23,11 @@ import {
   KeyRound,
   Laptop,
   Link,
+  Lock,
   LockKeyhole,
   Mail,
   MapPin,
+  MapPinHouseIcon,
   MapPinOff,
   MessageCircleMore,
   Mic,
@@ -324,23 +326,23 @@ const PrivacyPolicy = () => {
 
           <div className="bc-toc-mini-legend">
             <div className="toc-legend-item">
-              <div className="toc-legend-dot" style={{ background: 'var(--cat-identity)' }}></div>
+              <div className="toc-legend-dot" style={{ background: 'var(--lavender-color)' }}></div>
               <span>Identity data</span>
             </div>
             <div className="toc-legend-item">
-              <div className="toc-legend-dot" style={{ background: 'var(--cat-usage)' }}></div>
+              <div className="toc-legend-dot" style={{ background: 'var(--gold-color)' }}></div>
               <span>Usage &amp; behavioural</span>
             </div>
             <div className="toc-legend-item">
-              <div className="toc-legend-dot" style={{ background: 'var(--cat-technical)' }}></div>
+              <div className="toc-legend-dot" style={{ background: 'var(--blue-color)' }}></div>
               <span>Technical &amp; device</span>
             </div>
             <div className="toc-legend-item">
-              <div className="toc-legend-dot" style={{ background: 'var(--cat-content)' }}></div>
+              <div className="toc-legend-dot" style={{ background: 'var(--green-color)' }}></div>
               <span>User content</span>
             </div>
             <div className="toc-legend-item">
-              <div className="toc-legend-dot" style={{ background: 'var(--cat-third)' }}></div>
+              <div className="toc-legend-dot" style={{ background: 'var(--orange-color)' }}></div>
               <span>Third-party</span>
             </div>
           </div>
@@ -652,7 +654,7 @@ const PrivacyPolicy = () => {
             </div>
             <ul className="bc-tos-list">
               <li>
-                <LockKeyhole color="var(--cat-technical)" />
+                <LockKeyhole color="var(--blue-color)" />
                 <span>
                   <strong>Encryption in transit:</strong> All data between your device and BaatChat
                   servers is encrypted using <strong>TLS 1.3</strong>. WebRTC calls use DTLS-SRTP
@@ -660,7 +662,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <DatabaseZap color="var(--cat-technical)" />
+                <DatabaseZap color="var(--blue-color)" />
                 <span>
                   <strong>Encryption at rest:</strong> User data stored in our MongoDB database is
                   encrypted at rest using AES-256. Passwords are hashed with <strong>bcrypt</strong>{' '}
@@ -668,7 +670,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <ArchiveRestore color="var(--cat-content)" />
+                <ArchiveRestore color="var(--green-color)" />
                 <span>
                   <strong>Media storage:</strong> Images, videos, and files you share are stored
                   securely on <strong>Cloudinary</strong> with signed access URLs that expire after
@@ -676,7 +678,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <KeyRound color="var(--cat-technical)" />
+                <KeyRound color="var(--blue-color)" />
                 <span>
                   <strong>Authentication:</strong> All sessions use signed{' '}
                   <strong>JWT tokens</strong> with short expiry windows. Refresh tokens are stored
@@ -684,7 +686,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <Server color="var(--cat-technical)" />
+                <Server color="var(--blue-color)" />
                 <span>
                   <strong>Infrastructure:</strong> Our servers are hosted on reputable cloud
                   providers with SOC 2 Type II certification. Access to production databases is
@@ -692,7 +694,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <Clock4 color="var(--cat-usage)" />
+                <Clock4 color="var(--gold-color)" />
                 <span>
                   <strong>Data retention:</strong> Account data is retained for as long as your
                   account is active. After account deletion, personal data is purged within{' '}
@@ -735,7 +737,7 @@ const PrivacyPolicy = () => {
             </div>
             <ul className="bc-tos-list">
               <li>
-                <Hotel color="var(--cat-third)" />
+                <Hotel color="var(--orange-color)" />
                 <span>
                   <strong>Service providers:</strong> We use Cloudinary (media storage), MongoDB
                   Atlas (database), and email delivery services to operate BaatChat. These providers
@@ -743,7 +745,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <GoogleIcon2 style={{ color: 'var(--cat-third)' }} />
+                <GoogleIcon2 style={{ color: 'var(--orange-color)' }} />
                 <span>
                   <strong>Google OAuth:</strong> If you sign in with Google, we receive your name,
                   email, and profile photo from Google. We do not share data back to Google beyond
@@ -767,7 +769,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <CircleUserRound color="var(--cat-content)" />
+                <CircleUserRound color="var(--green-color)" />
                 <span>
                   <strong>Other users:</strong> Your username, profile photo, bio, and "last seen"
                   status are visible to users you communicate with, subject to your privacy
@@ -802,7 +804,7 @@ const PrivacyPolicy = () => {
             </div>
             <ul className="bc-tos-list">
               <li>
-                <MessageCircleMore color="var(--cat-content)" />
+                <MessageCircleMore color="var(--green-color)" />
                 <span>
                   <strong>Message content:</strong> Messages are transmitted via Socket.io over
                   encrypted TLS connections and stored in our database so you can access your
@@ -811,7 +813,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <Phone color="var(--cat-content)" />
+                <Phone color="var(--green-color)" />
                 <span>
                   <strong>Voice &amp; video calls:</strong> Calls use{' '}
                   <strong>WebRTC peer-to-peer</strong> connections where possible. Call audio and
@@ -821,7 +823,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <Mic color="var(--cat-content)" />
+                <Mic color="var(--green-color)" />
                 <span>
                   <strong>Voice notes:</strong> Voice notes are uploaded to Cloudinary and stored as
                   audio files. They are accessible to the sender and recipients for the duration the
@@ -829,7 +831,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <File color="var(--cat-content)" />
+                <File color="var(--green-color)" />
                 <span>
                   <strong>Shared files:</strong> Files shared in chats are stored on Cloudinary with
                   access restricted to chat participants. Files are not scanned for content by
@@ -837,7 +839,7 @@ const PrivacyPolicy = () => {
                 </span>
               </li>
               <li>
-                <Clock4 color="var(--cat-usage)" />
+                <Clock4 color="var(--gold-color)" />
                 <span>
                   <strong>Call metadata retained:</strong> Caller ID (hashed), callee ID (hashed),
                   duration, timestamp, and call type (voice/video). This data is retained for 12
@@ -879,7 +881,7 @@ const PrivacyPolicy = () => {
                     style={{ background: 'rgba(66, 133, 244, 0.15)' }}
                   >
                     <GoogleIcon
-                      style={{ color: 'var(--cat-third)', width: '17px', height: '17px' }}
+                      style={{ color: 'var(--orange-color)', width: '17px', height: '17px' }}
                     />
                   </div>
                   <div>
@@ -892,7 +894,7 @@ const PrivacyPolicy = () => {
                   may collect login event data per their{' '}
                   <a
                     href="https://policies.google.com/privacy"
-                    style={{ color: 'var(--cat-third)' }}
+                    style={{ color: 'var(--orange-color)' }}
                   >
                     Privacy Policy
                   </a>
@@ -907,7 +909,7 @@ const PrivacyPolicy = () => {
                     style={{ background: 'rgba(249, 115, 22, 0.12)' }}
                   >
                     <CloudinaryIcon
-                      style={{ color: 'var(--cat-third)', width: '17px', height: '17px' }}
+                      style={{ color: 'var(--orange-color)', width: '17px', height: '17px' }}
                     />
                   </div>
                   <div>
@@ -918,7 +920,7 @@ const PrivacyPolicy = () => {
                 <div className="third-card-body">
                   All images, videos, voice notes, and files are stored on Cloudinary's CDN. Data is
                   encrypted at rest. See{' '}
-                  <a href="https://cloudinary.com/privacy" style={{ color: 'var(--cat-third)' }}>
+                  <a href="https://cloudinary.com/privacy" style={{ color: 'var(--orange-color)' }}>
                     Cloudinary Privacy Policy
                   </a>
                   .
@@ -945,7 +947,7 @@ const PrivacyPolicy = () => {
                   encrypted at rest and in transit. See{' '}
                   <a
                     href="https://www.mongodb.com/legal/privacy-policy"
-                    style={{ color: 'var(--cat-third)' }}
+                    style={{ color: 'var(--orange-color)' }}
                   >
                     MongoDB Privacy Policy
                   </a>
@@ -960,7 +962,7 @@ const PrivacyPolicy = () => {
                     style={{ background: 'rgba(59, 130, 246, 0.1)' }}
                   >
                     <Mail
-                      style={{ color: 'var(--cat-technical)', width: '17px', height: '17px' }}
+                      style={{ color: 'var(--blue-color)', width: '17px', height: '17px' }}
                     />
                   </div>
                   <div>
@@ -1408,7 +1410,9 @@ const PrivacyPolicy = () => {
                 style={{ borderTopColor: 'var(--lavender-color)' }}
               >
                 <div className="data-card-head">
-                  <span className="data-card-icon">🔒</span>
+                  <span className="data-card-icon">
+                    <Lock />
+                  </span>
                   <span className="data-card-title" style={{ color: 'var(--lavender-color)' }}>
                     Privacy &amp; DPO
                   </span>
@@ -1426,18 +1430,20 @@ const PrivacyPolicy = () => {
               </div>
               <div
                 className="data-card dc-technical"
-                style={{ borderTopColor: 'var(--cat-technical)' }}
+                style={{ borderTopColor: 'var(--blue-color)' }}
               >
                 <div className="data-card-head">
-                  <span className="data-card-icon">🛡️</span>
-                  <span className="data-card-title" style={{ color: 'var(--cat-technical)' }}>
+                  <span className="data-card-icon">
+                    <ShieldCheck />
+                  </span>
+                  <span className="data-card-title" style={{ color: 'var(--blue-color)' }}>
                     Security
                   </span>
                 </div>
                 <div className="data-card-body">
                   <a
                     href={`mailto:${import.meta.env.VITE_SITE_EMAIL}`}
-                    style={{ color: 'var(--cat-technical)' }}
+                    style={{ color: 'var(--blue-color)' }}
                   >
                     {import.meta.env.VITE_SITE_EMAIL}
                   </a>
@@ -1447,11 +1453,13 @@ const PrivacyPolicy = () => {
               </div>
               <div
                 className="data-card dc-content"
-                style={{ borderTopColor: 'var(--cat-content)', gridColumn: 'span 2' }}
+                style={{ borderTopColor: 'var(--green-color)', gridColumn: 'span 2' }}
               >
                 <div className="data-card-head">
-                  <span className="data-card-icon">📬</span>
-                  <span className="data-card-title" style={{ color: 'var(--cat-content)' }}>
+                  <span className="data-card-icon">
+                    <MapPinHouseIcon />
+                  </span>
+                  <span className="data-card-title" style={{ color: 'var(--green-color)' }}>
                     Postal Address
                   </span>
                 </div>

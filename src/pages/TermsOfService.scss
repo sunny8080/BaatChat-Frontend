@@ -1,5 +1,6 @@
 .bc-TermsOfService,
-.bc-PrivacyPolicy {
+.bc-PrivacyPolicy,
+.bc-CookiesPolicy {
   width: 100%;
   height: 100%;
   display: flex;
@@ -313,11 +314,11 @@
     }
     &.cat-technical {
       background: rgba(59, 130, 246, 0.1);
-      color: var(--cat-technical);
+      color: var(--blue-color);
     }
     &.cat-third {
       background: rgba(249, 115, 22, 0.1);
-      color: var(--cat-third);
+      color: var(--orange-color);
     }
   }
   .section-heading {
@@ -467,7 +468,7 @@
   .third-card {
     background: var(--card-color);
     border: 0.5px solid var(--border-color);
-    border-top: 2px solid var(--cat-third);
+    border-top: 2px solid var(--orange-color);
     border-radius: 13px;
     padding: 13px 14px;
     transition: transform 0.18s;
@@ -498,7 +499,7 @@
   }
   .third-card-type {
     font-size: 10px;
-    color: var(--cat-third);
+    color: var(--orange-color);
   }
   .third-card-body {
     font-size: 11px;
@@ -659,6 +660,46 @@
     }
   }
 }
+.bc-tos-note-box {
+  background: rgba(66, 133, 244, 0.07);
+  border: 0.5px solid rgba(66, 133, 244, 0.22);
+  border-radius: 12px;
+  padding: 12px 15px;
+  margin-top: 12px;
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    color: var(--blue-color);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .note-box-body {
+    font-size: 12.5px;
+    color: rgba(248, 247, 255, 0.7);
+    line-height: 1.65;
+    strong {
+      color: var(--blue-color);
+    }
+    a {
+      color: var(--blue-color);
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    code {
+      font-size: 10.5px;
+      background: rgba(66, 133, 244, 0.1);
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: var(--blue-color);
+    }
+  }
+}
 
 .bc-tos-table {
   width: 100%;
@@ -686,33 +727,33 @@
     vertical-align: top;
 
     &.identity {
-      color: var(--cat-identity);
+      color: var(--lavender-color);
       .td-dot {
-        background: var(--cat-identity);
+        background: var(--lavender-color);
       }
     }
     &.usage {
-      color: var(--cat-usage);
+      color: var(--gold-color);
       .td-dot {
-        background: var(--cat-usage);
+        background: var(--gold-color);
       }
     }
     &.technical {
-      color: var(--cat-technical);
+      color: var(--blue-color);
       .td-dot {
-        background: var(--cat-technical);
+        background: var(--blue-color);
       }
     }
     &.content {
-      color: var(--cat-content);
+      color: var(--green-color);
       .td-dot {
-        background: var(--cat-content);
+        background: var(--green-color);
       }
     }
     &.third {
-      color: var(--cat-third);
+      color: var(--orange-color);
       .td-dot {
-        background: var(--cat-third);
+        background: var(--orange-color);
       }
     }
   }
@@ -755,19 +796,19 @@
     vertical-align: middle;
     flex-shrink: 0;
     &.identity {
-      background: var(--cat-identity);
+      background: var(--lavender-color);
     }
     &.usage {
-      background: var(--cat-usage);
+      background: var(--gold-color);
     }
     &.technical {
-      background: var(--cat-technical);
+      background: var(--blue-color);
     }
     &.content {
-      background: var(--cat-content);
+      background: var(--green-color);
     }
     &.third {
-      background: var(--cat-third);
+      background: var(--orange-color);
     }
   }
 }
@@ -806,43 +847,43 @@
     cursor: default;
 
     &.identity {
-      background: var(--cat-identity-bg);
-      color: var(--cat-identity);
-      border: 0.5px solid var(--cat-identity-border);
+      background: var(--lavender-bg-color);
+      color: var(--lavender-color);
+      border: 0.5px solid var(--lavender-border-color);
       .legend-dot {
-        background: var(--cat-identity);
+        background: var(--lavender-color);
       }
     }
     &.usage {
-      background: var(--cat-usage-bg);
-      border: 0.5px solid var(--cat-usage-border);
-      color: var(--cat-usage);
+      background: var(--gold-bg-color);
+      border: 0.5px solid var(--gold-border-color);
+      color: var(--gold-color);
       .legend-dot {
-        background: var(--cat-usage);
+        background: var(--gold-color);
       }
     }
     &.technical {
-      background: var(--cat-technical-bg);
-      border: 0.5px solid var(--cat-technical-border);
-      color: var(--cat-technical);
+      background: var(--blue-bg-color);
+      border: 0.5px solid var(--blue-border-color);
+      color: var(--blue-color);
       .legend-dot {
-        background: var(--cat-technical);
+        background: var(--blue-color);
       }
     }
     &.user-content {
-      background: var(--cat-content-bg);
-      border: 0.5px solid var(--cat-content-border);
-      color: var(--cat-content);
+      background: var(--green-bg-color);
+      border: 0.5px solid var(--green-border-color);
+      color: var(--green-color);
       .legend-dot {
-        background: var(--cat-content);
+        background: var(--green-color);
       }
     }
     &.third-party {
-      background: var(--cat-third-bg);
-      border: 0.5px solid var(--cat-third-border);
-      color: var(--cat-third);
+      background: var(--orange-bg-color);
+      border: 0.5px solid var(--orange-border-color);
+      color: var(--orange-color);
       .legend-dot {
-        background: var(--cat-third);
+        background: var(--orange-color);
       }
     }
   }
@@ -952,100 +993,100 @@
 
 /* identity — violet */
 .dc-identity {
-  border-top-color: var(--cat-identity);
+  border-top-color: var(--lavender-color);
 
   .data-card-title,
   .data-card-icon {
-    color: var(--cat-identity);
+    color: var(--lavender-color);
   }
   .data-card-tag {
-    background: var(--cat-identity-bg);
-    color: var(--cat-identity);
-    border: 0.5px solid var(--cat-identity-border);
+    background: var(--lavender-bg-color);
+    color: var(--lavender-color);
+    border: 0.5px solid var(--lavender-border-color);
   }
   .data-chip {
-    background: var(--cat-identity-bg);
-    color: var(--cat-identity);
-    border: 0.5px solid var(--cat-identity-border);
+    background: var(--lavender-bg-color);
+    color: var(--lavender-color);
+    border: 0.5px solid var(--lavender-border-color);
   }
 }
 
 /* usage — gold */
 .dc-usage {
-  border-top-color: var(--cat-usage);
+  border-top-color: var(--gold-color);
 
   .data-card-title,
   .data-card-icon {
-    color: var(--cat-usage);
+    color: var(--gold-color);
   }
   .data-card-tag {
-    background: var(--cat-usage-bg);
-    color: var(--cat-usage);
-    border: 0.5px solid var(--cat-usage-border);
+    background: var(--gold-bg-color);
+    color: var(--gold-color);
+    border: 0.5px solid var(--gold-border-color);
   }
   .data-chip {
-    background: var(--cat-usage-bg);
-    color: var(--cat-usage);
-    border: 0.5px solid var(--cat-usage-border);
+    background: var(--gold-bg-color);
+    color: var(--gold-color);
+    border: 0.5px solid var(--gold-border-color);
   }
 }
 
 /* technical — blue */
 .dc-technical {
-  border-top-color: var(--cat-technical);
+  border-top-color: var(--blue-color);
 
   .data-card-title,
   .data-card-icon {
-    color: var(--cat-technical);
+    color: var(--blue-color);
   }
   .data-card-tag {
-    background: var(--cat-technical-bg);
-    color: var(--cat-technical);
-    border: 0.5px solid var(--cat-technical-border);
+    background: var(--blue-bg-color);
+    color: var(--blue-color);
+    border: 0.5px solid var(--blue-border-color);
   }
   .data-chip {
-    background: var(--cat-technical-bg);
-    color: var(--cat-technical);
-    border: 0.5px solid var(--cat-technical-border);
+    background: var(--blue-bg-color);
+    color: var(--blue-color);
+    border: 0.5px solid var(--blue-border-color);
   }
 }
 
 /* content — green */
 .dc-content {
-  border-top-color: var(--cat-content);
+  border-top-color: var(--green-color);
 
   .data-card-title,
   .data-card-icon {
-    color: var(--cat-content);
+    color: var(--green-color);
   }
   .data-card-tag {
-    background: var(--cat-content-bg);
-    color: var(--cat-content);
-    border: 0.5px solid var(--cat-content-border);
+    background: var(--green-bg-color);
+    color: var(--green-color);
+    border: 0.5px solid var(--green-border-color);
   }
   .data-chip {
-    background: var(--cat-content-bg);
-    color: var(--cat-content);
-    border: 0.5px solid var(--cat-content-border);
+    background: var(--green-bg-color);
+    color: var(--green-color);
+    border: 0.5px solid var(--green-border-color);
   }
 }
 
 /* third-party — orange */
 .dc-third {
-  border-top-color: var(--cat-third);
+  border-top-color: var(--orange-color);
 
   .data-card-title,
   .data-card-icon {
-    color: var(--cat-third);
+    color: var(--orange-color);
   }
   .data-card-tag {
-    background: var(--cat-third-bg);
-    color: var(--cat-third);
-    border: 0.5px solid var(--cat-third-border);
+    background: var(--orange-bg-color);
+    color: var(--orange-color);
+    border: 0.5px solid var(--orange-border-color);
   }
   .data-chip {
-    background: var(--cat-third-bg);
-    color: var(--cat-third);
-    border: 0.5px solid var(--cat-third-border);
+    background: var(--orange-bg-color);
+    color: var(--orange-color);
+    border: 0.5px solid var(--orange-border-color);
   }
 }

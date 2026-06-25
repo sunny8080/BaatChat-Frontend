@@ -11,7 +11,11 @@ import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiesPolicy from './pages/CookiesPolicy';
 
-const AppRoutes = () => {
+type Props = {
+  setShowCookieBanner: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const AppRoutes = ({ setShowCookieBanner }: Props) => {
   return (
     <Routes>
       {/* If users is logged in then redirect it to chat dashboard, o/w show homepage*/}
@@ -61,7 +65,10 @@ const AppRoutes = () => {
       />
       <Route path="/terms-of-service" element={<TermsOfService />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/cookies-policy" element={<CookiesPolicy />} />
+      <Route
+        path="/cookies-policy"
+        element={<CookiesPolicy setShowCookieBanner={setShowCookieBanner} />}
+      />
 
       {/* all other pages are Page not found */}
       <Route path="*" element={<PageNotFound />} />
