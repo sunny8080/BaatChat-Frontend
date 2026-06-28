@@ -32,6 +32,7 @@ import { useUsersStore } from '../../zustand/UsersStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Modal from '../Modal/Modal';
 import FileViewer from '../FileViewer/FileViewer';
+import { useAuth } from '../../context/AuthContext';
 
 type Props = {
   activeTab: ChatActiveTabs;
@@ -59,6 +60,7 @@ const UserDetails = ({ activeTab, setActiveTab, setShowMobilePanel2 }: Props) =>
   const selectedUserUsername = isFriendTab ? selectedFriendUsername : selectedSearchUserUsername;
   const queryClient = useQueryClient();
   const [openFIleViewer, setOpenFileViewer] = useState(false);
+  const { user: currentLoginUser } = useAuth();
 
   // react query to load user details
   const { data: user, isLoading } = useQuery<UserInterface | null>({
@@ -138,7 +140,7 @@ const UserDetails = ({ activeTab, setActiveTab, setShowMobilePanel2 }: Props) =>
   };
 
   const handleStartMessage = () => {
-    if (user) startChat(user);
+    if (user) startChat(user, currentLoginUser!);
     if (reqAccepted) {
       setSelectedSearchUserUsername('');
     }

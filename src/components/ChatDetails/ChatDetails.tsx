@@ -31,6 +31,7 @@ import { useQuery } from '@tanstack/react-query';
 import { addMessageInCache, queryClient } from '../../tanstack/queryClient';
 import AudioPlayer from '../AudioPlayer/AudioPlayer';
 import FilePreview from '../FilePreview/FilePreview';
+import type UserInterface from '../../interfaces/UserInterface';
 
 const randMorse = getRandomMorse();
 
@@ -66,6 +67,8 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
   const previousMsgHeightRef = useRef<number | null>(null);
   const setSelectedChatId = useChatListStore((state) => state.setSelectedChatId);
   let previousDate = '';
+  const isCurrentUserActiveMember =
+    chatDetails?.activeMembers?.some((mem: UserInterface) => mem.id === user?.id) ?? false;
 
   // Audio recording setup
   const [isRecording, setIsRecording] = useState(false);
@@ -102,9 +105,12 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       setChatDetails(chatData);
       setNewMsgAdded(true); // scroll to bottom
       updateUnreadCount(chatData?.id, 0);
-      socket.emit(CHAT_EVENTS.JOIN, { chatId: chatData?.id });
+      if (isCurrentUserActiveMember) {
+        socket.emit(CHAT_EVENTS.JOIN, { chatId: chatData?.id });
+      }
     }
-  }, [chatData, setChatDetails, updateUnreadCount, chatDetails?.id, setNewMsgAdded]);
+    updateUnreadCount(chatData?.id, 0);
+  }, [chatData, setChatDetails, updateUnreadCount, setNewMsgAdded]);
 
   const generateSubName = () => {
     if (!chatDetails) return '';
@@ -436,6 +442,7 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
 
   useEffect(() => {
     return () => {
+      setMsgTxt('');
       if (isRecording) {
         stopRecording();
       }
@@ -674,73 +681,84 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
           </div>
 
           {/* input area */}
-          <div className="bc-cd-input-container">
-            <button className="bc-cd-tool-btn bc-cd-file-input-btn">
-              {isRecording || audioBlob ? (
-                <span className="" title="Delete recording" onClick={handleDeleteRecording}>
-                  <Trash2 />
-                </span>
-              ) : (
-                <span className="" title="Attach a file" onClick={openFilePicker}>
-                  <CirclePlus />
-                </span>
-              )}
-            </button>
+          {isCurrentUserActiveMember && (
+            <div className="bc-cd-input-container">
+              <button className="bc-cd-tool-btn bc-cd-file-input-btn">
+                {isRecording || audioBlob ? (
+                  <span className="" title="Delete recording" onClick={handleDeleteRecording}>
+                    <Trash2 />
+                  </span>
+                ) : (
+                  <span className="" title="Attach a file" onClick={openFilePicker}>
+                    <CirclePlus />
+                  </span>
+                )}
+              </button>
 
-            <input type="file" className="hidden" ref={fileInputRef} onChange={handleFilePick} />
+              <input type="file" className="hidden" ref={fileInputRef} onChange={handleFilePick} />
 
-            <div className="bc-cd-input-row">
-              {isRecording ? (
-                <div className="bc-cd-voice-recording">
-                  {bars.slice(0, 24).map((value, ind) => (
-                    <span
-                      className=""
-                      style={{
-                        height: `${Math.max(value / 5, 5)}px`,
-                      }}
-                      key={ind}
-                    ></span>
-                  ))}
-                </div>
-              ) : audioUrl && audioBlob ? (
-                <div className="bc-cd-audio-preview">
-                  <AudioPlayer
-                    audioUrl={audioUrl}
-                    audioBlob={audioBlob}
-                    setBars={setBars}
-                    setAudioDuration={setAudioDuration}
-                  />
-                </div>
-              ) : (
-                <>
-                  <textarea
-                    className="bc-cd-msg-input"
-                    rows={1}
-                    ref={msgInputRef}
-                    name="msg-input"
-                    id="msg-input"
-                    placeholder="Type a message"
-                    value={msgTxt}
-                    onChange={handleMsgInput}
-                    onKeyDown={handleKeyDown}
-                  ></textarea>
-
-                  <div className="bc-cd-tool-btn bc-cd-emoji-picker">
-                    <Smile />
+              <div className="bc-cd-input-row">
+                {isRecording ? (
+                  <div className="bc-cd-voice-recording">
+                    {bars.slice(0, 24).map((value, ind) => (
+                      <span
+                        className=""
+                        style={{
+                          height: `${Math.max(value / 5, 5)}px`,
+                        }}
+                        key={ind}
+                      ></span>
+                    ))}
                   </div>
-                </>
-              )}
+                ) : audioUrl && audioBlob ? (
+                  <div className="bc-cd-audio-preview">
+                    <AudioPlayer
+                      audioUrl={audioUrl}
+                      audioBlob={audioBlob}
+                      setBars={setBars}
+                      setAudioDuration={setAudioDuration}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <textarea
+                      className="bc-cd-msg-input"
+                      rows={1}
+                      ref={msgInputRef}
+                      name="msg-input"
+                      id="msg-input"
+                      placeholder="Type a message"
+                      value={msgTxt}
+                      onChange={handleMsgInput}
+                      onKeyDown={handleKeyDown}
+                    ></textarea>
+
+                    <div className="bc-cd-tool-btn bc-cd-emoji-picker">
+                      <Smile />
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="bc-cd-send-btn" onClick={handleSendOrRecordBtnClick}>
+                {msgTxt || audioUrl ? (
+                  <span>
+                    <SendHorizontal size={20} />
+                  </span>
+                ) : (
+                  <span>{isRecording ? <Pause size={20} /> : <Mic size={20} />}</span>
+                )}
+              </div>
             </div>
-            <div className="bc-cd-send-btn" onClick={handleSendOrRecordBtnClick}>
-              {msgTxt || audioUrl ? (
-                <span>
-                  <SendHorizontal size={20} />
-                </span>
-              ) : (
-                <span>{isRecording ? <Pause size={20} /> : <Mic size={20} />}</span>
-              )}
+          )}
+
+          {!isCurrentUserActiveMember && (
+            <div className="bc-cd-input-container bc-cd-no-active-member-message">
+              <p>
+                You are no longer active member of this group, you can't send or receive new
+                messages.
+              </p>
             </div>
-          </div>
+          )}
 
           {showChatInfo && (
             <Modal

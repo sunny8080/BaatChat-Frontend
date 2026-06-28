@@ -23,7 +23,7 @@ type ChatLIstState = {
   setLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
   clearChatLIst: () => void;
-  startChat: (user: UserInterface) => void;
+  startChat: (friend: UserInterface, currentLoginUser: UserInterface) => void;
   updateUnreadCount: (chatId: string, unreadCount: number) => void;
   updateLastMessage: (chatId: string, lastMessage: MessageInterface) => void;
   updateOnlinePresence: (userId: string, isOnline: boolean) => void;
@@ -102,9 +102,9 @@ export const useChatListStore = create<ChatLIstState>()((set, get) => ({
     });
   },
 
-  startChat: (user) => {
+  startChat: (friend: UserInterface, currentLoginUser: UserInterface) => {
     // start chat when users clicks on chat button
-    const tempChatId = `personal-${user.id}`;
+    const tempChatId = `personal-${friend.id}`;
 
     return set((state) => {
       // check if there is already existing personal chat with that user
@@ -112,7 +112,7 @@ export const useChatListStore = create<ChatLIstState>()((set, get) => ({
         (chat) =>
           chat.type === ChatTypes.PERSONAL &&
           (chat.id === tempChatId ||
-            (chat.name === user.name && chat.avatarUrl === user.avatarUrl)),
+            (chat.name === friend.name && chat.avatarUrl === friend.avatarUrl)),
       );
 
       if (existingChat) return { selectedChatId: existingChat.id };
@@ -121,17 +121,18 @@ export const useChatListStore = create<ChatLIstState>()((set, get) => ({
       const newChat: ChatInterface = {
         id: tempChatId,
         type: ChatTypes.PERSONAL,
-        name: user.name!,
-        avatarUrl: user.avatarUrl!,
-        isOnline: user.isOnline,
+        name: friend.name!,
+        activeMembers: [friend, currentLoginUser],
+        avatarUrl: friend.avatarUrl!,
+        isOnline: friend.isOnline,
         unreadCount: 0,
       };
 
       const tempChatDetails: ChatDetailsInterface = {
         ...newChat,
-        createdBy: user.id,
+        createdBy: friend.id,
         messages: [],
-        friend: user,
+        friend,
       };
 
       // create new chat details, and store it in query data

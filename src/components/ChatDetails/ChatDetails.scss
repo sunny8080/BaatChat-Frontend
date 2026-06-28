@@ -238,6 +238,21 @@
   align-items: flex-end;
   gap: 6px;
 
+  &.bc-cd-no-active-member-message {
+    align-items: center;
+    justify-content: center;
+    color: var(--muted-color);
+    font-size: 12px;
+    text-align: center;
+    p {
+      max-width: 80%;
+
+      @media screen and (max-width: 768px) {
+        max-width: 100%;
+      }
+    }
+  }
+
   .bc-cd-tool-btn {
     width: 34px;
     height: 34px;
