@@ -11,6 +11,7 @@ type ChatDetailsState = {
   newMsgAdded: boolean;
   typingUsers: UserInterface[];
   typingTimeouts: Map<string, ReturnType<typeof setTimeout>>;
+  isCurrentUserActiveMember: boolean;
 
   setChatDetails: (chatDetails: ChatDetailsInterface | null) => void;
   updateChatDetails: (chatDetails: Partial<ChatDetailsInterface>) => void;
@@ -34,6 +35,7 @@ type ChatDetailsState = {
   updateTypingUsers: (user: UserInterface, isTyping: boolean) => void;
   setTypingTimeouts: (timeout: number | null, userId: string) => void;
   updateChatOnlinePresence: (userId: string, isOnline: boolean) => void;
+  setIsCurrentUserActiveMember: (isCurrentUserActiveMember: boolean) => void;
 };
 
 /**
@@ -50,6 +52,7 @@ export const useChatDetailsStore = create<ChatDetailsState>()((set, get) => ({
   newMsgAdded: false,
   typingUsers: [],
   typingTimeouts: new Map(),
+  isCurrentUserActiveMember: false,
 
   setChatDetails: (chatDetails) => set({ chatDetails, error: null }),
 
@@ -275,4 +278,6 @@ export const useChatDetailsStore = create<ChatDetailsState>()((set, get) => ({
       };
     });
   },
+  setIsCurrentUserActiveMember: (isCurrentUserActiveMember: boolean) =>
+    set({ isCurrentUserActiveMember }),
 }));

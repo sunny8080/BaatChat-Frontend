@@ -249,7 +249,9 @@ const ChatList = ({ setActiveTab, setShowMobilePanel2 }: Props) => {
                 </div>
 
                 <div className="bc-chat-last-seen-container">
-                  <div className="bc-chat-last-seen">{formatLastMessageAt(chat.lastMessageAt)}</div>
+                  <div className="bc-chat-last-seen">
+                    {formatLastMessageAt(chat.lastMessage?.createdAt)}
+                  </div>
                   {chat.unreadCount && chat.unreadCount !== 0 ? (
                     <div className={`bc-chat-notification ${chat.unreadCount > 9 ? 'gld' : ''}`}>
                       {chat.unreadCount > 99 ? '99+' : chat.unreadCount}

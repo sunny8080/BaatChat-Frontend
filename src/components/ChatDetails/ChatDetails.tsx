@@ -57,6 +57,10 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
   const setNewMsgAdded = useChatDetailsStore((state) => state.setNewMsgAdded);
   const typingUsers = useChatDetailsStore((state) => state.typingUsers);
   const addPreviousMessage = useChatDetailsStore((state) => state.addPreviousMessage);
+  const isCurrentUserActiveMember = useChatDetailsStore((state) => state.isCurrentUserActiveMember);
+  const setIsCurrentUserActiveMember = useChatDetailsStore(
+    (state) => state.setIsCurrentUserActiveMember,
+  );
   const dummyRef = useRef<HTMLDivElement>(null);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
@@ -67,8 +71,6 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
   const previousMsgHeightRef = useRef<number | null>(null);
   const setSelectedChatId = useChatListStore((state) => state.setSelectedChatId);
   let previousDate = '';
-  const isCurrentUserActiveMember =
-    chatDetails?.activeMembers?.some((mem: UserInterface) => mem.id === user?.id) ?? false;
 
   // Audio recording setup
   const [isRecording, setIsRecording] = useState(false);
@@ -105,12 +107,17 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
       setChatDetails(chatData);
       setNewMsgAdded(true); // scroll to bottom
       updateUnreadCount(chatData?.id, 0);
-      if (isCurrentUserActiveMember) {
+
+      const userActiveMember =
+        chatData?.activeMembers?.some((mem: UserInterface) => mem.id === user?.id) ?? false;
+      setIsCurrentUserActiveMember(userActiveMember);
+
+      if (userActiveMember) {
         socket.emit(CHAT_EVENTS.JOIN, { chatId: chatData?.id });
       }
     }
     updateUnreadCount(chatData?.id, 0);
-  }, [chatData, setChatDetails, updateUnreadCount, setNewMsgAdded]);
+  }, [chatData, setChatDetails, updateUnreadCount, setNewMsgAdded, setIsCurrentUserActiveMember]);
 
   const generateSubName = () => {
     if (!chatDetails) return '';

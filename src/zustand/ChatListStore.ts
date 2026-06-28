@@ -25,7 +25,7 @@ type ChatLIstState = {
   clearChatLIst: () => void;
   startChat: (friend: UserInterface, currentLoginUser: UserInterface) => void;
   updateUnreadCount: (chatId: string, unreadCount: number) => void;
-  updateLastMessage: (chatId: string, lastMessage: MessageInterface) => void;
+  updateLastMessage: (chatId: string, lastMessage: MessageInterface | undefined) => void;
   updateOnlinePresence: (userId: string, isOnline: boolean) => void;
 };
 
@@ -159,11 +159,7 @@ export const useChatListStore = create<ChatLIstState>()((set, get) => ({
     return set((state) => {
       return {
         chats: sortChats(
-          state.chats.map((chat) =>
-            chat.id === chatId
-              ? { ...chat, lastMessage, lastMessageAt: lastMessage.createdAt }
-              : chat,
-          ),
+          state.chats.map((chat) => (chat.id === chatId ? { ...chat, lastMessage } : chat)),
         ),
       };
     });
@@ -185,8 +181,8 @@ export const useChatListStore = create<ChatLIstState>()((set, get) => ({
 
 const sortChats = (chats: ChatInterface[]) => {
   return chats.toSorted((a, b) => {
-    const aTime = a.lastMessageAt ? Date.parse(a.lastMessageAt) : 0;
-    const bTime = b.lastMessageAt ? Date.parse(b.lastMessageAt) : 0;
+    const aTime = a.lastMessage?.createdAt ? new Date(a.lastMessage.createdAt).getTime() : 0;
+    const bTime = b.lastMessage?.createdAt ? new Date(b.lastMessage.createdAt).getTime() : 0;
     return bTime - aTime;
   });
 };

@@ -1,17 +1,16 @@
 import {
   AtSign,
-  Ban,
   CalendarDays,
   Check,
   Copy,
   CopyCheck,
-  FlagTriangleRight,
   Hand,
   Mail,
   MessageCircleMore,
   Pencil,
   PenLine,
   Phone,
+  Trash2,
   Video,
   X,
 } from 'lucide-react';
@@ -26,9 +25,12 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import toast from 'react-hot-toast';
-import { updateGroupDetails } from '../../services/chatServices';
+import { deleteChat, leaveGroupChat, updateGroupDetails } from '../../services/chatServices';
 import Modal from '../Modal/Modal';
 import FileViewer from '../FileViewer/FileViewer';
+import { useChatListStore } from '../../zustand/ChatListStore';
+import { useQueryClient } from '@tanstack/react-query';
+import { removeAllMessageInCache } from '../../tanstack/queryClient';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -40,6 +42,15 @@ type Props = {
 const ChatInfo = ({ setShowChatInfo }: Props) => {
   const { user } = useAuth();
   const chatDetails = useChatDetailsStore((state) => state.chatDetails);
+  const clearChatDetails = useChatDetailsStore((state) => state.clearChatDetails);
+  const setMessages = useChatDetailsStore((state) => state.setMessages);
+  const isCurrentUserActiveMember = useChatDetailsStore((state) => state.isCurrentUserActiveMember);
+  const setIsCurrentUserActiveMember = useChatDetailsStore(
+    (state) => state.setIsCurrentUserActiveMember,
+  );
+  const removeChat = useChatListStore((state) => state.removeChat);
+  const setSelectedChatId = useChatListStore((state) => state.setSelectedChatId);
+  const updateLastMessage = useChatListStore((state) => state.updateLastMessage);
   const isPersonal = chatDetails?.type === ChatTypes.PERSONAL;
   const friend = chatDetails?.friend;
   const [copiedId, setCopiedId] = useState('');
@@ -52,6 +63,7 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
   const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [openFIleViewer, setOpenFileViewer] = useState(false);
+  const queryClient = useQueryClient();
 
   // TODO sort members, admins must be at the top
   const sortedMembers = chatDetails?.activeMembers;
@@ -142,6 +154,59 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
 
     const url = URL.createObjectURL(file);
     setPreviewAvatarUrl(url);
+  };
+
+  const handleLeaveGroup = async () => {
+    setIsCurrentUserActiveMember(false);
+    setShowChatInfo(false);
+
+    const res = await leaveGroupChat({ chatId: chatDetails.id });
+    if (res && res.success) {
+      toast.success('Group left successfully');
+    } else {
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    }
+  };
+
+  const handleDeleteChat = async () => {
+    if (chatDetails.type === ChatTypes.GROUP && isCurrentUserActiveMember) {
+      // 1. delete chat from chatList store
+      updateLastMessage(chatDetails.id, undefined);
+      setShowChatInfo(false);
+      // setSelectedChatId('');
+
+      // 2. delete all message from chatDetails store
+      setMessages([]);
+
+      // 3. delete chatDetails from chatDetails query cache
+      // queryClient.removeQueries({
+      //   queryKey: ['chatDetails', chatDetails.id],
+      // });
+      removeAllMessageInCache(chatDetails.id);
+    } else {
+      // 1. delete chat from chatList store
+      removeChat(chatDetails.id);
+      setSelectedChatId('');
+
+      // 2. delete chatDetails store
+      clearChatDetails();
+
+      // 3. delete chatDetails from chatDetails query cache
+      queryClient.removeQueries({
+        queryKey: ['chatDetails', chatDetails.id],
+      });
+    }
+
+    const res = await deleteChat({ chatId: chatDetails.id });
+    if (res && res.success) {
+      // do nothing
+    } else {
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    }
   };
 
   return (
@@ -508,24 +573,26 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
         <div className="bc-ci-options bc-ci-info-section">
           <div className="bc-ci-info-label">Options</div>
 
-          {/* TODO - add functionalities here */}
-          {isPersonal ? (
+          {/* TODO - add functionalities for blocking user */}
+          {/* {isPersonal && (
             <div className="bc-ci-cta danger">
               <Ban size={20} />
               Block User
             </div>
-          ) : (
-            <div className="bc-ci-cta warning">
+          )} */}
+
+          {!isPersonal && isCurrentUserActiveMember && (
+            <div className="bc-ci-cta warning" onClick={handleLeaveGroup}>
               <Hand size={20} style={{ rotate: '-30deg' }} />
               Leave Group
             </div>
           )}
 
-          <div className="bc-ci-cta danger">
+          <div className="bc-ci-cta danger" onClick={handleDeleteChat}>
             <span>
-              <FlagTriangleRight size={20} />
+              <Trash2 size={20} />
             </span>
-            Report {isPersonal ? 'User' : 'Group'}
+            {isPersonal ? 'Delete Chat' : 'Delete messages in this chat'}
           </div>
         </div>
       </div>

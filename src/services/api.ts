@@ -107,6 +107,9 @@ export const CHAT_ROUTES = {
   POST_GET_CHAT_DETAILS: '/chats/get-chat-details',
   POST_CREATE_GROUP: '/chats/create-group',
   PATCH_UPDATE_GROUP_DETAILS: '/chats/update-group-details',
+  PATCH_ADD_MEMBER: '/chats/add-member',
+  PATCH_LEAVE_GROUP: '/chats/leave-group',
+  DELETE_DELETE_CHAT: '/chats/delete-chat',
 };
 
 // todo add js docs

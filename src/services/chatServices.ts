@@ -88,3 +88,42 @@ export const sendFile = async (data: any): Promise<ApiResponse> => {
   }
   return response;
 };
+
+// todo add js docs
+export const addMemberInGroupChat = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.patch(CHAT_ROUTES.PATCH_ADD_MEMBER, data);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+// todo add js docs
+export const leaveGroupChat = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.patch(CHAT_ROUTES.PATCH_LEAVE_GROUP, data);
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};
+
+// todo add js docs
+export const deleteChat = async (data: any): Promise<ApiResponse> => {
+  let response = null;
+  try {
+    const res = await apiClient.delete(CHAT_ROUTES.DELETE_DELETE_CHAT, { data });
+    response = res.data;
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    response = error?.response?.data;
+  }
+  return response;
+};

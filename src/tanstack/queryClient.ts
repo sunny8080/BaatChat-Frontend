@@ -35,3 +35,14 @@ export const removeMessageInCache = (chatId: string, msgId: string) => {
     };
   });
 };
+
+// todo add js docs
+export const removeAllMessageInCache = (chatId: string) => {
+  queryClient.setQueryData(['chatDetails', chatId], (old: any) => {
+    if (!old) return old;
+    return {
+      ...old,
+      messages: [],
+    };
+  });
+};
