@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import type MessageInterface from '../interfaces/MessageInterface';
+import type UserInterface from '../interfaces/UserInterface';
 
 /**
  * Shared TanStack Query client used by the frontend to manage server-state
@@ -32,6 +33,18 @@ export const removeMessageInCache = (chatId: string, msgId: string) => {
     return {
       ...old,
       messages,
+    };
+  });
+};
+
+// todo add js docs
+export const updateActiveMembersInCache = (chatId: string, activeMembers: UserInterface[]) => {
+  queryClient.setQueryData(['chatDetails', chatId], (old: any) => {
+    if (!old) return old;
+
+    return {
+      ...old,
+      activeMembers,
     };
   });
 };

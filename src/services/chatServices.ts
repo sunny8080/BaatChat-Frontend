@@ -90,10 +90,10 @@ export const sendFile = async (data: any): Promise<ApiResponse> => {
 };
 
 // todo add js docs
-export const addMemberInGroupChat = async (data: any): Promise<ApiResponse> => {
+export const addMembersInGroupChat = async (data: any): Promise<ApiResponse> => {
   let response = null;
   try {
-    const res = await apiClient.patch(CHAT_ROUTES.PATCH_ADD_MEMBER, data);
+    const res = await apiClient.patch(CHAT_ROUTES.PATCH_ADD_MEMBERS, data);
     response = res.data;
   } catch (error: any) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');

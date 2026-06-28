@@ -10,6 +10,7 @@ import {
   Pencil,
   PenLine,
   Phone,
+  Plus,
   Trash2,
   Video,
   X,
@@ -31,6 +32,7 @@ import FileViewer from '../FileViewer/FileViewer';
 import { useChatListStore } from '../../zustand/ChatListStore';
 import { useQueryClient } from '@tanstack/react-query';
 import { removeAllMessageInCache } from '../../tanstack/queryClient';
+import AddGroupMemberSection from '../AddGroupMemberSection/AddGroupMemberSection';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -64,6 +66,8 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [openFIleViewer, setOpenFileViewer] = useState(false);
   const queryClient = useQueryClient();
+  const isCurrentUserAdmin = chatDetails?.admins?.some((adminId) => adminId === user?.id);
+  const [addMember, setAddMember] = useState(false);
 
   // TODO sort members, admins must be at the top
   const sortedMembers = chatDetails?.activeMembers;
@@ -541,7 +545,23 @@ const ChatInfo = ({ setShowChatInfo }: Props) => {
 
             {/* Group Members */}
             <div className="bc-ci-grp-members bc-ci-info-section">
-              <div className="bc-ci-info-label">Members</div>
+              <div className="bc-ci-info-label">
+                Members
+                {isCurrentUserAdmin && (
+                  <div
+                    className="bc-ci-add-member-btn"
+                    title="Add member"
+                    onClick={() => setAddMember((prev) => !prev)}
+                  >
+                    <Plus />
+                    Add member
+                  </div>
+                )}
+              </div>
+
+              {addMember && isCurrentUserAdmin && (
+                <AddGroupMemberSection setAddMember={setAddMember} />
+              )}
 
               {sortedMembers?.map((mem, ind) => {
                 return (
