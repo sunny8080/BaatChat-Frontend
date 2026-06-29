@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_BED_API_URL,
   withCredentials: true,
-  timeout: 10000, // timeout in ms
+  // timeout: 10000, // timeout in ms // removing timeout as production backend will be slow
 });
 
 /**
