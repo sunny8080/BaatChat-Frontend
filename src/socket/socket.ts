@@ -33,7 +33,7 @@ export const connectSocket = (user: UserInterface) => {
   registerMessageSocketListeners();
   registerChatSocketListeners();
   registerGroupSocketListeners();
-  socket.user = user;
+  // socket.user = user;
   socket.connect();
 };
 
