@@ -1,0 +1,20 @@
+<svg width="400px" viewBox="0 0 600 240" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>BaatChat Logo</title>
+  <desc>BaatChat logo — speech bubble with morse code dots, Baat in white serif, Chat in violet, on
+    deep purple background</desc>
+  <rect x="0" y="0" width="600" height="240" rx="20" fill="#1A0A2E"></rect>
+  <rect x="60" y="50" width="100" height="76" rx="18" fill="#7C3AED"></rect>
+  <polygon points="78,126 58,152 102,126" fill="#7C3AED"></polygon>
+  <rect x="118" y="76" width="66" height="48" rx="12" fill="#A78BFA" opacity="0.92"></rect>
+  <polygon points="164,124 182,146 146,124" fill="#A78BFA" opacity="0.92"></polygon>
+  <circle cx="80" cy="88" r="6" fill="#F59E0B"></circle>
+  <circle cx="100" cy="88" r="6" fill="#F59E0B"></circle>
+  <circle cx="120" cy="88" r="6" fill="#F59E0B"></circle>
+  <text x="208" y="116" font-size="52" font-weight="700" fill="#F8F7FF" font-family="Georgia, serif"
+    letter-spacing="-1">Baat</text>
+  <text x="328" y="116" font-size="52" font-weight="700" fill="#A78BFA" font-family="Georgia, serif"
+    letter-spacing="-1">Chat</text>
+  <text x="209" y="148" font-size="13" fill="#F59E0B" font-family="sans-serif" letter-spacing="3">BOLO
+    • SUNO • CONNECT</text>
+  <text x="210" y="198" font-size="12" fill="#444466" font-family="monospace">baatchat.online</text>
+</svg>
