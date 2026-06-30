@@ -1,11 +1,17 @@
 import { House, LayoutDashboard, MoveLeft, MoveRight, Settings, UserRoundKey } from 'lucide-react';
-import BaatChatLogo from '../BaatChatLogo/BaatChatLogo';
+import BaatChatLogo from '../components/BaatChatLogo/BaatChatLogo';
 import './PageNotFound.scss';
-import { useNavigate } from 'react-router-dom';
-import noSignal from '../../assets/others/noSignal.svg';
-import Footer from '../Footer/Footer';
+import { useLocation, useNavigate } from 'react-router-dom';
+import noSignal from '../assets/others/noSignal.svg';
+import Footer from '../components/Footer/Footer';
+import SEOTags from '../components/SEOTags/SEOTags';
 
-const particleColors = ['rgba(124,58,237,.5)', 'rgba(167,139,250,.4)', 'rgba(245,158,11,.3)', 'rgba(74,222,128,.3)'];
+const particleColors = [
+  'rgba(124,58,237,.5)',
+  'rgba(167,139,250,.4)',
+  'rgba(245,158,11,.3)',
+  'rgba(74,222,128,.3)',
+];
 const genRandomParticleStyle = () => {
   const size = Math.random() * 4 + 4; // height and width will be [4, 8]
 
@@ -22,9 +28,18 @@ const genRandomParticleStyle = () => {
 
 const PageNotFound = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className="bc-PageNotFound w-full h-full min-h-screen">
+      <SEOTags
+        title="404 Page Not Found | BaatChat"
+        description="The page you're looking for doesn't exist or may have been moved."
+        canonicalLink={import.meta.env.VITE_FED_URL + '/' + location.pathname}
+        pageType="default"
+        noIndex={true}
+      />
+
       <div className="bc-pnf-grid-bg"></div>
       <div className="bc-pnf-scanline"></div>
       <div className="bc-pnf-orb orb1"></div>
@@ -34,7 +49,11 @@ const PageNotFound = () => {
       {/* Random Floating particles */}
       <div className="bc-pnf-floating-particles-container">
         {Array.from({ length: 30 }).map((_, ind) => (
-          <div className="bc-pnf-floating-particle" key={ind} style={genRandomParticleStyle()}></div>
+          <div
+            className="bc-pnf-floating-particle"
+            key={ind}
+            style={genRandomParticleStyle()}
+          ></div>
         ))}
       </div>
 
@@ -45,7 +64,10 @@ const PageNotFound = () => {
 
           <div className="bc-pnf-cta">
             {window.history.length > 2 && (
-              <button className="bc-btn bc-btn-secondary bc-pnf-nav-btn" onClick={() => navigate(-1)}>
+              <button
+                className="bc-btn bc-btn-secondary bc-pnf-nav-btn"
+                onClick={() => navigate(-1)}
+              >
                 <MoveLeft size={16} color="var(--violet-text-color)" /> Go Back
               </button>
             )}
@@ -74,7 +96,10 @@ const PageNotFound = () => {
           <br />
           This page doesn't exist
         </div>
-        <div className="bc-pnf-sub">Looks like you wandered off to a page that never existed, was deleted, or moved to a new address. Happens to the best of us! 🙈</div>
+        <div className="bc-pnf-sub">
+          Looks like you wandered off to a page that never existed, was deleted, or moved to a new
+          address. Happens to the best of us! 🙈
+        </div>
 
         {/* URL Box */}
         <div className="bc-pnf-url-box">
@@ -152,7 +177,7 @@ const PageNotFound = () => {
           </button>
         </div>
 
-        <div className='bc-pnf-footer'>
+        <div className="bc-pnf-footer">
           <Footer small={true} />
         </div>
       </div>

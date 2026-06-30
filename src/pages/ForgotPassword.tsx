@@ -9,6 +9,7 @@ import { forgotPassword } from '../services/authService';
 import toast from 'react-hot-toast';
 import { Key, MailSearch, UserRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import SEOTags from '../components/SEOTags/SEOTags';
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,15 @@ const ForgotPassword = () => {
 
   return (
     <div className="bc-ForgotPassword w-full h-full flex flex-col justify-between">
+      <SEOTags
+        title="Forgot Password | BaatChat"
+        description="Request a password reset to regain access to your BaatChat account securely."
+        canonicalLink={import.meta.env.VITE_FED_URL + '/forgot-password'}
+        image="forgot.png"
+        pageType="default"
+        noIndex={true}
+      />
+
       <div className="bc-auth-wrapper">
         <div className="bc-auth-left-panel">
           <AuthLeftContent />
@@ -56,7 +66,11 @@ const ForgotPassword = () => {
               </div>
 
               <div className="bc-auth-title">Reset password</div>
-              {!resetLinkSent && <div className="bc-auth-sub">Enter your email and we'll send you a password reset link</div>}
+              {!resetLinkSent && (
+                <div className="bc-auth-sub">
+                  Enter your email and we'll send you a password reset link
+                </div>
+              )}
             </div>
 
             {resetLinkSent && (
@@ -97,7 +111,9 @@ const ForgotPassword = () => {
                     />
                   </div>
 
-                  {errors.email?.message && <div className="bc-form-input-validation-err">{errors.email?.message}</div>}
+                  {errors.email?.message && (
+                    <div className="bc-form-input-validation-err">{errors.email?.message}</div>
+                  )}
                 </div>
 
                 <button type="submit" className="bc-form-submit-btn primary">
@@ -110,7 +126,8 @@ const ForgotPassword = () => {
                     className="switch-link"
                     onClick={() => {
                       navigate('/auth');
-                    }}>
+                    }}
+                  >
                     ← Back to sign in
                   </span>
                 </div>

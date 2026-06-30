@@ -6,7 +6,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Chat from './pages/Chat';
 import PublicRoute from './components/PublicRoute/PublicRoute';
-import PageNotFound from './components/PageNotFound/PageNotFound';
+import PageNotFound from './pages/PageNotFound';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiesPolicy from './pages/CookiesPolicy';

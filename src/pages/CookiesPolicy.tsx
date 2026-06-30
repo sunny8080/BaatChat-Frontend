@@ -32,6 +32,7 @@ import './CookiesPolicy.scss';
 import Footer from '../components/Footer/Footer';
 import { useEffect, useState } from 'react';
 import GoogleIcon2 from '../assets/social/google2.svg?react';
+import SEOTags from '../components/SEOTags/SEOTags';
 
 type Props = {
   setShowCookieBanner: React.Dispatch<React.SetStateAction<boolean>>;
@@ -96,6 +97,13 @@ const CookiesPolicy = ({ setShowCookieBanner }: Props) => {
 
   return (
     <div className="bc-CookiesPolicy">
+      <SEOTags
+        title="Cookies Policy | BaatChat"
+        description="Read BaatChat's Cookies Policy to understand how cookies and similar technologies improve your browsing experience and enhance our services."
+        canonicalLink={import.meta.env.VITE_FED_URL + '/cookies-policy'}
+        image="cookies.png"
+        pageType="default"
+      />
       {/* bg orbs  */}
       <div className="bg-orb bg-orb1"></div>
       <div className="bg-orb bg-orb2"></div>

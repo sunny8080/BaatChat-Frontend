@@ -20,6 +20,7 @@ import SocialSignupModal from '../components/SocialSignupModal/SocialSignupModal
 import Modal from '../components/Modal/Modal';
 import { triggerAnalyticsEvent } from '../utils/utils';
 import { AnalyticsEvents, UserLoginTypes } from '../utils/constant';
+import SEOTags from '../components/SEOTags/SEOTags';
 
 /**
  * NOTE :-
@@ -116,6 +117,15 @@ const Auth = () => {
 
   return (
     <div className="bc-Auth w-full h-full flex flex-col justify-between">
+      <SEOTags
+        title="Sign In or Create an Account | BaatChat"
+        description="Sign in to your BaatChat account or create a new account to start secure messaging and stay connected with friends and family."
+        canonicalLink={import.meta.env.VITE_FED_URL + '/auth'}
+        image="auth.png"
+        pageType="default"
+        noIndex={true}
+      />
+
       <div className="bc-auth-wrapper">
         <div className="bc-auth-left-panel">
           <AuthLeftContent />

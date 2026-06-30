@@ -6,6 +6,7 @@ import HeroSection from '../components/HeroSection/HeroSection';
 import HowItWorks from '../components/HowItWorks/HowItWorks';
 import Navbar from '../components/Navbar/Navbar';
 import OpenSource from '../components/OpenSource/OpenSource';
+import SEOTags from '../components/SEOTags/SEOTags';
 import Stats from '../components/Stats/Stats';
 import TechCarousel from '../components/TechCarousel/TechCarousel';
 import TechOrbit from '../components/TechOrbit/TechOrbit';
@@ -14,6 +15,13 @@ import Testimonials from '../components/Testimonials/Testimonials';
 function HomePage() {
   return (
     <div className="bc-HomePage w-full h-full flex flex-col justify-between">
+      <SEOTags
+        title="BaatChat - Secure Messaging, Voice & Video Calls"
+        description="Connect instantly with BaatChat. Enjoy secure messaging, crystal-clear voice and video calls, and seamless conversations across devices."
+        canonicalLink={import.meta.env.VITE_FED_URL}
+        image="home.png"
+        pageType="default"
+      />
       <Navbar />
       <GlobalCursorGlow />
 

@@ -39,6 +39,7 @@ import Navbar from '../components/Navbar/Navbar';
 import './TermsOfService.scss';
 import Footer from '../components/Footer/Footer';
 import { useEffect, useState } from 'react';
+import SEOTags from '../components/SEOTags/SEOTags';
 
 const TermsOfService = () => {
   const [progress, setProgress] = useState(0);
@@ -99,6 +100,14 @@ const TermsOfService = () => {
 
   return (
     <div className="bc-TermsOfService">
+      <SEOTags
+        title="Terms of Service | BaatChat"
+        description="Review BaatChat's Terms of Service, including user responsibilities, acceptable use, and the terms governing our messaging platform."
+        canonicalLink={import.meta.env.VITE_FED_URL + '/terms-of-service'}
+        image="terms.png"
+        pageType="default"
+      />
+
       {/* bg orbs  */}
       <div className="bg-orb bg-orb1"></div>
       <div className="bg-orb bg-orb2"></div>

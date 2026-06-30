@@ -1,0 +1,23 @@
+{
+  "default": {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "BaatChat - Secure Messaging, Voice & Video Calls",
+    "url": "https://baatchat.online",
+    "logo": "https://baatchat.online/images/home.jpg",
+    "description": "Connect instantly with BaatChat. Enjoy secure messaging, crystal-clear voice and video calls, and seamless conversations across devices.",
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+91 7352928344",
+        "contactType": "Customer Service",
+        "email": "baatchat.app@gmail.com"
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/sunny80801",
+      "https://www.instagram.com/sunny8080_",
+      "https://x.com/sunny8080_"
+    ]
+  }
+}

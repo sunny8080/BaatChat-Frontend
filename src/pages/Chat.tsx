@@ -12,6 +12,7 @@ import ChatSidebarMobile from '../components/ChatSidebarMobile/ChatSidebarMobile
 import ProfileSettings from '../components/ProfileSettings/ProfileSettings';
 import CallList from '../components/CallList/CallList';
 import FileList from '../components/FileList/FileList';
+import SEOTags from '../components/SEOTags/SEOTags';
 
 export type ChatActiveTabs = 'ChatList' | 'Calls' | 'Files' | 'Friends' | 'Users' | 'Profile';
 
@@ -23,6 +24,15 @@ const Chat = () => {
 
   return (
     <div className="bc-Chat">
+      <SEOTags
+        title="Chats | BaatChat"
+        description="Access your conversations, messages, voice calls, and video calls securely on BaatChat."
+        canonicalLink={import.meta.env.VITE_FED_URL + '/chat'}
+        image="chat.png"
+        pageType="default"
+        noIndex={true}
+      />
+
       <div className="bc-chat-content">
         <div className="bc-chat-sidebar-container">
           <ChatSidebar

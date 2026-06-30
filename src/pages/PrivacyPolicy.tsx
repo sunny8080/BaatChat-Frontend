@@ -61,6 +61,7 @@ import SocketIOIcon from '../assets/techIcons/socketIO.svg?react';
 import MongoDBIcon from '../assets/techIcons/mongoDB.svg?react';
 import WebRTCIcon from '../assets/techIcons/webRTC.svg?react';
 import GoogleIcon from '../assets/social/google.svg?react';
+import SEOTags from '../components/SEOTags/SEOTags';
 
 const PrivacyPolicy = () => {
   const [progress, setProgress] = useState(0);
@@ -121,11 +122,17 @@ const PrivacyPolicy = () => {
 
   return (
     <div className="bc-PrivacyPolicy">
+      <SEOTags
+        title="Privacy Policy | BaatChat"
+        description="Learn how BaatChat collects, uses, stores, and protects your personal information while providing secure messaging and communication services."
+        canonicalLink={import.meta.env.VITE_FED_URL + '/privacy-policy'}
+        image="privacy.png"
+        pageType="default"
+      />
       {/* bg orbs  */}
       <div className="bg-orb bg-orb1"></div>
       <div className="bg-orb bg-orb2"></div>
       <div className="bg-orb bg-orb3"></div>
-
       <div className="bc-tos-progress-bar" style={{ width: `${progress}%` }}></div>
       <div
         className={`bc-tos-back-to-top ${showBackToTop ? 'show' : ''}`}
@@ -134,9 +141,7 @@ const PrivacyPolicy = () => {
       >
         <ArrowUp />
       </div>
-
       <Navbar />
-
       {/* HERO section */}
       <div className="bc-tos-hero">
         <div className="hero-tag">
@@ -167,7 +172,6 @@ const PrivacyPolicy = () => {
           </div>
         </div>
       </div>
-
       {/* COLOR LEGEND */}
       <div className="bc-legend-strip">
         <span className="legend-label">Colour key</span>
@@ -197,7 +201,6 @@ const PrivacyPolicy = () => {
           <span>Third-party</span>
         </span>
       </div>
-
       {/* CONTENT */}
       <div className="bc-tos-body">
         {/* Table of Contents */}
@@ -961,9 +964,7 @@ const PrivacyPolicy = () => {
                     className="third-card-logo"
                     style={{ background: 'rgba(59, 130, 246, 0.1)' }}
                   >
-                    <Mail
-                      style={{ color: 'var(--blue-color)', width: '17px', height: '17px' }}
-                    />
+                    <Mail style={{ color: 'var(--blue-color)', width: '17px', height: '17px' }} />
                   </div>
                   <div>
                     <div className="third-card-name">Mailgen / SMTP</div>
@@ -1475,7 +1476,6 @@ const PrivacyPolicy = () => {
           </section>
         </div>
       </div>
-
       <Footer />
     </div>
   );

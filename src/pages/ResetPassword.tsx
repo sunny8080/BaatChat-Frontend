@@ -9,11 +9,18 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { getRandomMorse } from '../utils/utils';
 import { resetPassword } from '../services/authService';
 import toast from 'react-hot-toast';
+import SEOTags from '../components/SEOTags/SEOTags';
 
 const randMorse = getRandomMorse();
 const passwordStrengthLabel = ['', 'Weak ❌', 'Fair 🙂', 'Good 👍', 'Strong 💪'];
 const passwordStrengthClass = ['', 'weak', 'fair', 'good', 'strong'];
-const passReqStr = ['At least 6 characters', 'One lowercase letter (a-z)', 'One uppercase letter (A-Z)', 'One special character (!@#$...)', 'One number (0-9)'];
+const passReqStr = [
+  'At least 6 characters',
+  'One lowercase letter (a-z)',
+  'One uppercase letter (A-Z)',
+  'One special character (!@#$...)',
+  'One number (0-9)',
+];
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -35,8 +42,14 @@ const ResetPassword = () => {
 
   const ResetPasswordSchema = z
     .object({
-      password: z.string().min(1, 'Password is required').min(6, 'Password must be of at least 6 characters!'),
-      confirmPassword: z.string().min(1, 'Password is required').min(6, 'Password must be of at least 6 characters!'),
+      password: z
+        .string()
+        .min(1, 'Password is required')
+        .min(6, 'Password must be of at least 6 characters!'),
+      confirmPassword: z
+        .string()
+        .min(1, 'Password is required')
+        .min(6, 'Password must be of at least 6 characters!'),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Both passwords don't match",
@@ -124,6 +137,15 @@ const ResetPassword = () => {
 
   return (
     <div className="bc-ResetPassword w-full h-full">
+      <SEOTags
+        title="Reset Password | BaatChat"
+        description="Create a new password to securely restore access to your BaatChat account."
+        canonicalLink={import.meta.env.VITE_FED_URL + '/reset-password'}
+        image="reset.png"
+        pageType="default"
+        noIndex={true}
+      />
+
       <div className="bc-rp-blob blob-top-right"></div>
       <div className="bc-rp-blob blob-bottom-left"></div>
       <div className="bc-rp-blob blob-center-left"></div>
@@ -158,7 +180,10 @@ const ResetPassword = () => {
           <div className="bc-rp-pass-reqs">
             <div className="bc-rp-req-title">Password Requirements</div>
             {passReqStr.map((req, ind) => (
-              <div className={`bc-rp-pass-req-item ${passwordReqFulfillment[ind] ? 'fulfilled' : ''}`} key={ind}>
+              <div
+                className={`bc-rp-pass-req-item ${passwordReqFulfillment[ind] ? 'fulfilled' : ''}`}
+                key={ind}
+              >
                 <span>
                   <Check size={10} />
                 </span>
@@ -185,7 +210,10 @@ const ResetPassword = () => {
                   placeholder="Enter a strong password"
                   {...register('password')}
                 />
-                <span className="bc-form-right-icon" onClick={() => setShowPassword((prev) => !prev)}>
+                <span
+                  className="bc-form-right-icon"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
                   {showPassword ? <EyeOff /> : <Eye />}
                 </span>
               </div>
@@ -196,13 +224,16 @@ const ResetPassword = () => {
                     <div
                       key={bar}
                       className={`bc-form-pw-bar 
-                          ${bar <= passwordStrength ? passwordStrengthClass[passwordStrength] : ''}`}></div>
+                          ${bar <= passwordStrength ? passwordStrengthClass[passwordStrength] : ''}`}
+                    ></div>
                   ))}
                 </div>
                 <div className="bc-form-pw-label">{passwordStrengthLabel[passwordStrength]}</div>
               </div>
 
-              {errors.password?.message && <div className="bc-form-input-validation-err">{errors.password?.message}</div>}
+              {errors.password?.message && (
+                <div className="bc-form-input-validation-err">{errors.password?.message}</div>
+              )}
             </div>
 
             <div className="bc-form-field">
@@ -222,12 +253,19 @@ const ResetPassword = () => {
                   placeholder="Re-enter your password"
                   {...register('confirmPassword')}
                 />
-                <span className="bc-form-right-icon" onClick={() => setShowConfirmPassword((prev) => !prev)}>
+                <span
+                  className="bc-form-right-icon"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                >
                   {showConfirmPassword ? <EyeOff /> : <Eye />}
                 </span>
               </div>
 
-              {errors.confirmPassword?.message && <div className="bc-form-input-validation-err">{errors.confirmPassword?.message}</div>}
+              {errors.confirmPassword?.message && (
+                <div className="bc-form-input-validation-err">
+                  {errors.confirmPassword?.message}
+                </div>
+              )}
             </div>
 
             <button type="submit" className="bc-form-submit-btn primary">
@@ -246,7 +284,9 @@ const ResetPassword = () => {
             <p className="bc-rp-morse" title={`Decode this - ${randMorse.hint}`}>
               {randMorse.morse}
             </p>
-            <p className="bc-copyright-txt">© 2026 BaatChat · baatchat.online · Made with ❤️ in India</p>
+            <p className="bc-copyright-txt">
+              © 2026 BaatChat · baatchat.online · Made with ❤️ in India
+            </p>
           </div>
         </div>
       </div>
