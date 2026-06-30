@@ -10,8 +10,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginUser } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
 import { connectSocket } from '../../socket/socket';
-import { UserLoginTypes } from '../../utils/constant';
-import { getCookie } from '../../utils/utils';
+import { AnalyticsEvents, UserLoginTypes } from '../../utils/constant';
+import { getCookie, triggerAnalyticsEvent } from '../../utils/utils';
 
 type Props = {
   setCurAuthTab: React.Dispatch<React.SetStateAction<string>>;
@@ -51,6 +51,9 @@ const SignInForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
         setUser(res.data.user);
         setAccessToken(res.data.accessToken);
         connectSocket(res.data.user);
+        triggerAnalyticsEvent(AnalyticsEvents.sign_in, {
+          method: UserLoginTypes.EMAIL_PASSWORD,
+        });
         navigate('/chat');
       }
     } finally {

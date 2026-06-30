@@ -18,6 +18,8 @@ import { useAuth } from '../context/AuthContext';
 import { googleCallback } from '../services/authService';
 import SocialSignupModal from '../components/SocialSignupModal/SocialSignupModal';
 import Modal from '../components/Modal/Modal';
+import { triggerAnalyticsEvent } from '../utils/utils';
+import { AnalyticsEvents, UserLoginTypes } from '../utils/constant';
 
 /**
  * NOTE :-
@@ -53,6 +55,7 @@ const Auth = () => {
   const onSuccessGoogleLogin = async (credentialResponse: googleSuccessResponseType) => {
     let code = '';
     let credential = '';
+    triggerAnalyticsEvent(AnalyticsEvents.google_login_triggered);
 
     if ('code' in credentialResponse) {
       // auth-code flow
@@ -73,11 +76,17 @@ const Auth = () => {
           // setUserName(res.data?.user?.username?.split('_')[0]);
           setShowSocialSignupModal(true);
           setSocialLoginUserData(res.data.user);
+          triggerAnalyticsEvent(AnalyticsEvents.sign_up, {
+            method: UserLoginTypes.GOOGLE,
+          });
         } else {
           // signin
           setUser(res.data.user);
           setAccessToken(res.data.accessToken);
           connectSocket(res.data.user);
+          triggerAnalyticsEvent(AnalyticsEvents.sign_in, {
+            method: UserLoginTypes.GOOGLE,
+          });
         }
       }
     } else {

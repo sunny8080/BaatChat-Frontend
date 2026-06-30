@@ -180,3 +180,22 @@ export type SetCookieOptions = {
   secure?: boolean;
   sameSite?: 'Strict' | 'Lax' | 'None';
 };
+
+// todo add js docs
+export const AnalyticsEvents = {
+  sign_up: 'sign_up', // User successfully creates an account
+  register: 'register', // User registered, nay or may not be signed up
+  sign_in: 'sign_in', // User logs in successfully
+  logout: 'logout', // User logs out
+  message_sent: 'message_sent', // Message is successfully sent
+  call_started: 'call_started', // Audio/video call starts
+  call_ended: 'call_ended', // Call ends
+  profile_updated: 'profile_updated', // Profile changes are saved
+  password_reset_requested: 'password_reset_requested', // User requests a password reset
+  password_reset_completed: 'password_reset_completed', // Password is successfully reset
+  notification_enabled: 'notification_enabled', // User grants push notification permission
+  google_login_triggered: 'google_login_triggered',
+} as const;
+
+// todo add js docs
+export type AnalyticsEvent = (typeof AnalyticsEvents)[keyof typeof AnalyticsEvents];

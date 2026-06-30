@@ -331,3 +331,11 @@ export const functionalCookiesAllowed = (): boolean => {
   const cookiesPref = getCookiesPref();
   return cookiesPref ? cookiesPref.functional : false;
 };
+
+// todo add js docs
+export const triggerAnalyticsEvent = (
+  targetIdOrEventName: string,
+  params?: Record<string, unknown>,
+) => {
+  window.gtag('', targetIdOrEventName, params);
+};

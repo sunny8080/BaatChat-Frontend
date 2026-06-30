@@ -13,8 +13,13 @@ import {
   Video,
 } from 'lucide-react';
 import type { ChatDetailsInterface } from '../../interfaces/ChatDetailsInterface';
-import { BLOCKED_MIME_TYPES, ChatTypes, MessageTypes } from '../../utils/constant';
-import { formatLastSeen, formatMsgDate, getRandomMorse } from '../../utils/utils';
+import { AnalyticsEvents, BLOCKED_MIME_TYPES, ChatTypes, MessageTypes } from '../../utils/constant';
+import {
+  formatLastSeen,
+  formatMsgDate,
+  getRandomMorse,
+  triggerAnalyticsEvent,
+} from '../../utils/utils';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useChatDetailsStore } from '../../zustand/ChatDetailsStore';
@@ -199,6 +204,9 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
           // add new msg in query cache
           addMessageInCache(chatDetails!.id, response.message);
         }
+        triggerAnalyticsEvent(AnalyticsEvents.message_sent, {
+          message_type: 'text',
+        });
       } else {
         // TODO - handle error scenario
         setTimeout(() => {
@@ -270,6 +278,9 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
         // add new msg in query cache
         addMessageInCache(chatDetails!.id, response.message);
       }
+      triggerAnalyticsEvent(AnalyticsEvents.message_sent, {
+        message_type: 'audio',
+      });
     } else {
       // TODO - handle error scenario
       setTimeout(() => {
@@ -579,6 +590,10 @@ const ChatDetails = ({ setShowMobilePanel2 }: Props) => {
         // add new msg in query cache
         addMessageInCache(chatDetails!.id, response.message);
       }
+      triggerAnalyticsEvent(AnalyticsEvents.message_sent, {
+        message_type: 'file',
+        file_type: response.type,
+      });
     } else {
       // TODO - handle error scenario
       setTimeout(() => {

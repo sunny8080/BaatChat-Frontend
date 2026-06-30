@@ -6,6 +6,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { resendSignUpOtp, verifyEmail } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
 import { connectSocket } from '../../socket/socket';
+import { triggerAnalyticsEvent } from '../../utils/utils';
+import { AnalyticsEvents, UserLoginTypes } from '../../utils/constant';
 
 type Props = {
   setOtpSent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -95,6 +97,9 @@ const OTPForm = ({ email, setOtpSent, setEmailVerified }: Props) => {
       }, 4000);
       setEmailVerified(true);
       toast.success('Email Verified 🎉');
+      triggerAnalyticsEvent(AnalyticsEvents.sign_up, {
+        method: UserLoginTypes.EMAIL_PASSWORD,
+      });
     }
     setOtpValidating(false);
   }, [otp, email, setAccessToken, setEmailVerified, setUser]);

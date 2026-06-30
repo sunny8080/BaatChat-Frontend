@@ -24,6 +24,8 @@ import { signUpUser } from '../../services/authService';
 import OTPForm from '../OTPForm/OTPForm.js';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { triggerAnalyticsEvent } from '../../utils/utils.js';
+import { AnalyticsEvents, UserLoginTypes } from '../../utils/constant.js';
 
 /**
  * NOTE :-
@@ -110,6 +112,9 @@ const SignUpForm = ({ setCurAuthTab, openGoogleLoginPopup }: Props) => {
     if (res && res.success) {
       setOtpSent(true);
       toast.success('OTP sent to your email and phone.');
+      triggerAnalyticsEvent(AnalyticsEvents.register, {
+        method: UserLoginTypes.EMAIL_PASSWORD,
+      });
     }
     setLoading(false);
   };
