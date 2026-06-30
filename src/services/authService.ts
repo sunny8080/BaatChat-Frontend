@@ -229,9 +229,10 @@ export const getAccessToken = async (): Promise<ApiResponse> => {
 // todo add js docs
 export const googleCallback = async (data: any): Promise<ApiResponse> => {
   let response = null;
+  let toastLoading = undefined;
 
   try {
-    const toastLoading = toast.loading('Loading your profile...');
+    toastLoading = toast.loading('Loading your profile...');
     const res = await apiClient.post(AUTH_ROUTES.POST_GOOGLE_CALLBACK, data);
     toast.remove(toastLoading);
     if (res.data && res.data.success && res.data?.data?.accessToken) {
@@ -246,6 +247,7 @@ export const googleCallback = async (data: any): Promise<ApiResponse> => {
   } catch (error: any) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     response = error?.response?.data;
+    toast.remove(toastLoading);
   }
   return response;
 };
