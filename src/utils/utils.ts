@@ -337,5 +337,5 @@ export const triggerAnalyticsEvent = (
   targetIdOrEventName: string,
   params?: Record<string, unknown>,
 ) => {
-  window.gtag('', targetIdOrEventName, params);
+  window.gtag('event', targetIdOrEventName, params);
 };
